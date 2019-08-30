@@ -61,7 +61,7 @@ void main( void ){
     while(1){
         SRAM_write(0,0);
         _delay_ms(1000);
-        SRAM_write(2,0);
+        SRAM_write(3,0);
         _delay_ms(1000);
 
     }
