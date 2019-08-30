@@ -27,6 +27,7 @@ void main( void ){
 
     USART_Init ( MYUBRR );
     fdevopen(USART_Transmit, USART_Receive); //Make a stream between terminal and t/r functions
-    while(1) USART_Transmit('1');
+    //while(1)printf();
+    while(1) USART_Transmit(USART_Receive());
 
 }
