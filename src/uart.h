@@ -4,8 +4,6 @@
 #include <stdio.h>
 
 
-extern FILE* uart;
-
 void USART_Init( unsigned int ubrr );
 
 void USART_Transmit( unsigned char data );
