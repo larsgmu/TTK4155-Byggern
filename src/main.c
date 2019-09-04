@@ -49,12 +49,24 @@ unsigned int SRAM_read(unsigned int adr) {
     volatile char* external_ram = (char *) 0x1800;
 
     return external_ram[adr];
-
 }
 
 void main( void ){
     string_init();
     SRAM_init();
-    SRAM_test();
-
+  // while(1){
+  //   SRAM_write(0,0); //Alle lyse
+  //   //_delay_ms(1000);
+  //   // SRAM_write(400,0); //P17, P16 lyse
+  //   // _delay_ms(1000);
+  //   // SRAM_write(200,0); //P16, P18 lyse
+  //   // _delay_ms(1000);
+  //   // SRAM_write(0,0); // P17, P18 lyse
+  //   // _delay_ms(1000);
+  //
+  //
+  //
+  // }
+  //SRAM_write(0,0);
+  SRAM_test();
 }

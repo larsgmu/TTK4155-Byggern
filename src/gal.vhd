@@ -28,6 +28,6 @@ end address_decoder;
 architecture behave of address_decoder is begin
 	ram_cs <= a11;
 	adc_cs <= NOT (NOT a11 AND a10);
-	oled_cs <= NOT (NOT a11 AND NOT a10);
+	oled_cs <= NOT (NOT a11 AND NOT a10 AND NOT a9);
 	oled_dc <= NOT a11 AND NOT a10 AND a9;
 end behave;
