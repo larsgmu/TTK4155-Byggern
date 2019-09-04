@@ -5,6 +5,7 @@
 #define SRAM_START_ADR 0x1800
 #include <util/delay.h>
 #include "uart.h"
+#include "sram.h"
 
 
 
@@ -31,16 +32,12 @@ void string_init(){
     fdevopen(USART_Transmit, USART_Receive); //Make a stream between terminal and t/r functions
     //while(1)printf("Knjut"); //Prints a string
     //while(1) USART_Transmit(USART_Receive()); //Transmits what it recieves from terminal back to the terminal
+    //while(1) USART_Transmit('a');
 }
 
 void SRAM_init(){
     MCUCR |= (1 << SRE);
     SFIOR |= (1 << XMM2);
-
-
-
-
-
 }
 
 void SRAM_write(unsigned int adr, unsigned int data) {
@@ -58,12 +55,6 @@ unsigned int SRAM_read(unsigned int adr) {
 void main( void ){
     string_init();
     SRAM_init();
-    while(1){
-        SRAM_write(0,0);
-        _delay_ms(1000);
-        SRAM_write(3,0);
-        _delay_ms(1000);
-
-    }
+    SRAM_test();
 
 }
