@@ -15,7 +15,7 @@ void SRAM_test(void){
     ext_ram[i] = some_value;
     uint8_t retreived_value = ext_ram[i];
     if (retreived_value != some_value) {
-      printf("Write phase error: ext_ram[%4d] = %02X (should be %02X)\n", i, retreived_value, some_value);
+      printf("Write phase error: ext_ram[%4d] = %02X (should be %02X)\r\n", i, retreived_value, some_value);
       write_errors++;
     }
   }
@@ -25,9 +25,9 @@ void SRAM_test(void){
     uint8_t some_value = rand();
     uint8_t retreived_value = ext_ram[i];
     if (retreived_value != some_value) {
-      printf("Retrieval phase error: ext_ram[%4d] = %02X (should be %02X)\n", i, retreived_value, some_value);
+      printf("Retrieval phase error: ext_ram[%4d] = %02X (should be %02X)\r\n", i, retreived_value, some_value);
       retrieval_errors++;
     }
   }
-  printf("SRAM test completed with \n%4d errors in write phase and \n%4d errors in retrieval phase\n\n", write_errors, retrieval_errors);
+  printf("SRAM test completed with \r\n%4d errors in write phase and \r\n%4d errors in retrieval phase\r\n\n", write_errors, retrieval_errors);
 }

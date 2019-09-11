@@ -3,8 +3,8 @@
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
 #define SRAM_START_ADR 0x1800
-#include <util/delay.h>
 #include "uart.h"
+#include "adc_driver.h"
 #include "sram.h"
 
 
@@ -41,32 +41,36 @@ void SRAM_init(){
 }
 
 void SRAM_write(unsigned int adr, unsigned int data) {
-    volatile char* external_ram = (char *) 0x1800;
+    volatile char* external_ram = (char *) 0x1000;
     external_ram[adr] = data;
 }
 
 unsigned int SRAM_read(unsigned int adr) {
-    volatile char* external_ram = (char *) 0x1800;
-
+    volatile char* external_ram = (char *) 0x1000;
+    printf(external_ram[adr]);
     return external_ram[adr];
 }
 
 void main( void ){
     string_init();
     SRAM_init();
-  // while(1){
-  //   SRAM_write(0,0); //Alle lyse
-  //   //_delay_ms(1000);
-  //   // SRAM_write(400,0); //P17, P16 lyse
-  //   // _delay_ms(1000);
-  //   // SRAM_write(200,0); //P16, P18 lyse
-  //   // _delay_ms(1000);
-  //   // SRAM_write(0,0); // P17, P18 lyse
-  //   // _delay_ms(1000);
-  //
-  //
-  //
-  // }
-  //SRAM_write(0,0);
-  SRAM_test();
+    adc_init();
+/*  while(1){
+    SRAM_write(0,0); //Alle lyse
+    _delay_ms(1000);
+    SRAM_write(400,0); //P17, P16 lyse
+    _delay_ms(1000);
+    SRAM_write(200,0); //P16, P18 lyse
+    _delay_ms(1000);
+    SRAM_write(0,0); // P17, P18 lyse
+    _delay_ms(1000);
+
+
+
+  }
+  SRAM_write(0,0);*/
+  while(1){
+     adc_read(X_axis);
+  }
+//SRAM_test();
 }
