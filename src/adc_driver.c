@@ -3,6 +3,10 @@
 volatile bool interrupt_flag = false;
 
 void adc_init(void) {
+
+  //Disable interrupt on PE0
+  GICR |= (0 << INT2);
+
   //Interrupt on falling edge: PE0
   EMCUCR |= (0 << ISC2);
 
@@ -17,9 +21,9 @@ uint8_t adc_read(enum channel_type channel){
   volatile char *address = (char*)0x1400;
   address[0] = channel;
   printf("Reading from mux %d, ", channel);
-  // while(!(interrupt_flag));
-  // interrupt_flag = false;
-  _delay_ms(80);
+  while(!(interrupt_flag));
+  interrupt_flag = false;
+
 
   uint8_t ADC_read = address[0];
 
@@ -27,6 +31,6 @@ uint8_t adc_read(enum channel_type channel){
   return address[0];
 }
 
-ISR(INT2_vec){
+ISR(INT2_vect){
   interrupt_flag = true;
 }

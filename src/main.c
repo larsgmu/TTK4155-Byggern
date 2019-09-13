@@ -3,9 +3,9 @@
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
 #define SRAM_START_ADR 0x1800
-#include "uart.h"
+#include "uart_driver.h"
 #include "adc_driver.h"
-#include "sram.h"
+#include "sram_driver.h"
 
 
 
@@ -52,25 +52,19 @@ unsigned int SRAM_read(unsigned int adr) {
 }
 
 void main( void ){
+    cli();
     string_init();
     SRAM_init();
     adc_init();
-/*  while(1){
-    SRAM_write(0,0); //Alle lyse
-    _delay_ms(1000);
-    SRAM_write(400,0); //P17, P16 lyse
-    _delay_ms(1000);
-    SRAM_write(200,0); //P16, P18 lyse
-    _delay_ms(1000);
-    SRAM_write(0,0); // P17, P18 lyse
-    _delay_ms(1000);
+    sei();
+    DDRB |= (1 << PB0) | (1 << PB1);
+    uint8_t btn =0;
+    while(1){
+      btn = PORTB;
+      printf(btn);
+    }
 
 
 
-  }
-  SRAM_write(0,0);*/
-  while(1){
-     adc_read(X_axis);
-  }
 //SRAM_test();
 }

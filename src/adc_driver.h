@@ -12,6 +12,8 @@
 enum channel_type{
   Y_axis = 4,
   X_axis = 5,
+  Left_slider = 6,
+  Right_slider = 7,
 };
 
 
