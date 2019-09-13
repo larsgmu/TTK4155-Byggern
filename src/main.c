@@ -6,7 +6,7 @@
 #include "uart_driver.h"
 #include "adc_driver.h"
 #include "sram_driver.h"
-
+#include "joystick_driver.h"
 
 
 
@@ -57,13 +57,22 @@ void main( void ){
     SRAM_init();
     adc_init();
     sei();
-    DDRB |= (1 << PB0) | (1 << PB1);
-    uint8_t btn =0;
-    while(1){
-      btn = PORTB;
-      printf(btn);
-    }
+    // DDRB &= ~((1 << PB0) | (1 << PB1) ); //Pins set as input
+    // while(1){
+    //   int btn0 = PINB & (1 << PB0);
+    //   int btn1 = PINB & (1 << PB1);
+    //   printf("Button 0: %d ", btn0);
+    //   printf("Button 1: %d \n\r", btn1);
+    //   _delay_ms(40);
+    // }
+    struct joystick* joy;
+    joystick_init(joy);
 
+    while(1){
+      analog_position(joy);
+      //analog_direction(joy);
+      printf("X: %d Y: %d DIR: %d \n\r",joy->x,joy->y,joy->dir);
+    }
 
 
 //SRAM_test();
