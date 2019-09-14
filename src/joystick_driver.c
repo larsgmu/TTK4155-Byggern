@@ -1,4 +1,5 @@
 #include "joystick_driver.h"
+#include "adc_driver.h"
 
 void joystick_init(struct joystick* joy){
   joy->neutralx = adc_read(X_axis);
@@ -9,26 +10,23 @@ void joystick_init(struct joystick* joy){
 }
 
 void analog_position(struct joystick* joy){
-  //Returns joystick x and y position as integers between -100 and 100
-  joy->x = 222;//(adc_read(X_axis)-joy->neutralx)*JOYSTICK_CONSTANT - 100;
-  joy->y = round((adc_read(Y_axis)-joy->neutraly)*JOYSTICK_CONSTANT); //Stemmer ganske bra, men konstanten påvirker joy->x av en eller annen rar grunn!!! TODO
-
+  //Returns joystickx and y position as integers between -100 and 100
+  
+  joy->x = (int)(JOYSTICK_CONSTANT*adc_read(X_axis) - 100) ;//Må fikse offset
+  joy->y = (int)(JOYSTICK_CONSTANT*adc_read(Y_axis) - 100) ;
 }
 
 void analog_direction(struct joystick* joy) {
   //Will return NEUTRAL, UP, DOWN, LEFT or RIGHT
 
-  int threshold = 5; //Threshold on 5 percent
+  int threshold = 10; //Threshold on 10 percent
 
-  // if ( ( ((abs(joy->x)) - abs(joy->neutralx)) < threshold ) && ( (abs(joy->y)) - abs(joy->neutraly)) < threshold ) {
-  //   joy->dir =  NEUTRAL;
-  //   return;
-  // }
   double angle = atan2(joy->y,joy->x);
 
-  // if (angle >= M_PI/4 && angle < 3*M_PI/4) {  joy->dir = UP;  }
-  // if (angle > -3*M_PI/4 && angle <= -M_PI/4) { joy->dir = DOWN; }
-  // else if (angle > 3*M_PI/4 || angle <= -3*M_PI/4) { joy->dir = LEFT; }
-  // else if (angle > -M_PI/4  && angle <= M_PI/4 ) { joy->dir = RIGHT; }
+  if ( ((abs(joy->x)) < threshold) && ((abs(joy->y)) < threshold) ) { joy->dir = NEUTRAL; }
+  else if (angle >= M_PI/4 && angle < 3*M_PI/4) { joy->dir = UP; }
+  else if (angle > -3*M_PI/4 && angle <= -M_PI/4) { joy->dir = DOWN; }
+  else if (angle > 3*M_PI/4 || angle <= -3*M_PI/4) { joy->dir = LEFT; }
+  else if (angle > -M_PI/4  && angle <= M_PI/4 ) { joy->dir = RIGHT; }
 
 }

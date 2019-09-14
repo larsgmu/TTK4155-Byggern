@@ -1,11 +1,9 @@
-
 #include <stdlib.h>
 #include <math.h>
-#include "adc_driver.h"
 
-#define JOYSTICK_CONSTANT 0.75
+#define JOYSTICK_CONSTANT (255/200)
 
-enum joystick_dir{
+enum joystick_dir {
   NEUTRAL = 0,
   UP = 1,
   DOWN = 2,
