@@ -8,6 +8,7 @@
 #include "sram_driver.h"
 #include "joystick_driver.h"
 #include "slider_driver.h"
+#include "oled_driver.h"
 
 
 
@@ -58,6 +59,21 @@ void main( void ){
     SRAM_init();
     adc_init();
     sei();
+
+    //OLED_reset();
+
+
+
+
+
+
+
+    oled_init();
+    oled_reset();
+
+
+
+
     // DDRB &= ~((1 << PB0) | (1 << PB1) ); //Pins set as input
     // while(1){
     //   int btn0 = PINB & (1 << PB0);
@@ -68,19 +84,19 @@ void main( void ){
     // }
     struct joystick joy;
     joystick_init(&joy);
-    
+
     struct slider slider;
 
-    while(1){
-      analog_position(&joy);
-      analog_direction(&joy);
-      printf("X: %d     Y: %d     DIR: %d       NX: %d \n\r",joy.x,joy.y,joy.dir, joy.neutralx);
-      //printf( "X: %d \n\r", adc_read(X_axis));
-      get_slider_pos(&slider);
-      //printf("right: %d         left: %d \n\r", slider.right_pos, slider.left_pos);
-
-
-    }
+    // while(1){
+    //   analog_position(&joy);
+    //   analog_direction(&joy);
+    //   printf("X: %d     Y: %d     DIR: %d       NX: %d \n\r",joy.x,joy.y,joy.dir, joy.neutralx);
+    //   //printf( "X: %d \n\r", adc_read(X_axis));
+    //   get_slider_pos(&slider);
+    //   //printf("right: %d         left: %d \n\r", slider.right_pos, slider.left_pos);
+    //
+    //
+    // }
 
 //SRAM_test();
 }
