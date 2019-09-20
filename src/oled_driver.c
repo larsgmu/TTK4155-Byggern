@@ -5,11 +5,21 @@
 #include <avr/pgmspace.h>
 #include "adc_driver.h"
 
-volatile char* oled_command_address = (volatile char*)0x1000;
-volatile char* oled_data_address = (volatile char*)0x1200;    //   sjekk h-fil
+volatile char* oled_command_address = (char*)0x1000;
+volatile char* oled_data_address = (char*)0x1200;    //   sjekk h-fil
 static uint8_t PAGE, COLUMN; // Keep track of cursor position
 
 //const char* const font[] PROGMEM = {font8, font5, font4};
+
+void oled_write_c(uint8_t command){
+  *oled_command_address = command;
+}
+
+void oled_write_d(uint8_t data){
+  *oled_data_address = data;
+}
+
+
 
 void oled_init()   {
   oled_write_c(0xae);        //  display  off
@@ -26,7 +36,7 @@ void oled_init()   {
   oled_write_c(0xd9);        //set  pre-charge  period
   oled_write_c(0x21);
   oled_write_c(0x20);        //Set  Memory  Addressing  Mode
-  oled_write_c(0x02);
+  oled_write_c(0x00);
   oled_write_c(0xdb);        //VCOM  deselect  level  mode
   oled_write_c(0x30);
   oled_write_c(0xad);        //master  configuration
@@ -34,80 +44,92 @@ void oled_init()   {
   oled_write_c(0xa4);        //out  follows  RAM  content
   oled_write_c(0xa6);        //set  normal  display
   oled_write_c(0xaf);        //display  on
+
+
+  oled_write_c(0x21);   // Addressing mode
+  oled_write_c(0);      // Horizontal Mode
+  oled_write_c(127);
+  oled_write_c(0x22);
+  oled_write_c(0);
+  oled_write_c(7);
+
+  // oled_write_c(0x20);   // Addressing mode setup Horizontal
+  // oled_write_c(2);      // Page addressing mode
+  // oled_write_c(127);
+  // oled_write_c(0x22);
+  // oled_write_c(0);
+  // oled_write_c(7);
+
 }
 
-void oled_write_c(uint8_t command){
-  *oled_command_address = command;
-}
+void oled_print_char(unsigned char c){
 
-void oled_write_d(uint8_t data){
-  oled_data_address[0] = data;
-}
+    int output = c - 32;
 
-void oled_clear_display() {
-  for (int page = 0; page < 8; page++) {
-    oled_go_to_page(page);
-    for (int col = 0; col < 128; col++) {
-      oled_data_address[col] = 0;
+    for(int i = 0; i<8; i++){
+
+        *oled_data_address = pgm_read_byte(&font8[output][i]);
     }
-  }
-}
-
-void oled_go_to_page(uint8_t page){
-  PAGE = page;
-  page = page + 0xB0;
-
-  *oled_command_address = page;
-  *oled_command_address = 0x00;
-  *oled_command_address = 0x10;
-}
-
-void oled_top_left(void){
-  PAGE = 0;
-  COLUMN = 0;
-
-  *oled_command_address = 0xB0; //Set GDDRAM Page Start Address
-  *oled_command_address = 0x00; //Set the lower nibble of the column start address register for Page Addressing Mode
-  *oled_command_address = 0x10; // Horizontal Addressing Mode
 
 }
 
-// void oled_print_char(unsigned char c) {
-//   unsigned char pc = c - 32;
-//
-//   for(int page = 0; page < 8; page++){
-//     for(int col = 0; col < 128; col++){
-//
-//       oled_data_address[page*128 + col] = (pgm_read_word(&(font8[pc][page])));
-//       //oled_write_d(pgm_read_byte(&font5[pc][i]))
-//     }
-//   }
-// }
-
-void OLED_print(unsigned char* c)
-{
-    int length = strlen(c);//FORSTESS HER FREDAG, SE BILDE PÅ MOBILEN
-		for(int i = 0; i < 8; i++)
-		{
-      oled_go_to_page(i);
-		  oled_data_address[0] = (pgm_read_byte(&(font8[c - ASCII_OFFSET][i])));
-		}
+void oled_print_string(char* str){
+    int length = strlen(str);
+    for(int i = 0; i < length; i++){
+        oled_print_char(str[i]);
+    }
 }
+
 
 void oled_reset(void){
-  oled_write_c(0xb0); //Choose page 1
-  oled_write_c(0x21); //Set size of col
-  oled_write_c(0x00); //low = 0
-  oled_write_c(0x7f); //to high = width = 128
-  oled_write_c(0x22); //Select size of row
-  oled_write_c(0x00);
-  oled_write_c(0x07);
   for(int rows =0; rows < 8; rows++){
-    for(int cols =0; cols<128; cols++){
-      oled_write_d(0x00);
+    for(int columns = 0; columns < 127; columns++)
+        *oled_data_address=0x00;
     }
-    oled_write_c(0xb0 + rows);
-  }
-  oled_write_c(0xb0);
-
 }
+
+void oled_goto_line(int line){
+
+    oled_write_c(0x22); //Choosing page/line (synonyms)
+    oled_write_c(line);
+    oled_write_c(line+1);
+
+    oled_write_c(0x21); //Moving cursor to left
+    oled_write_c(0);
+    oled_write_c(127);
+}
+
+void oled_goto_column(int column){
+    oled_write_c(0x21);
+    oled_write_c(column);
+    oled_write_c(127);
+}
+
+void oled_home(void){
+  oled_write_c(0x22); //Choosing page/line 1
+    oled_write_c(0);
+    oled_write_c(1);
+
+    oled_write_c(0x21); //Moving cursor to left
+    oled_write_c(0);
+    oled_write_c(127);
+}
+
+void oled_clear_line(int line){
+  oled_goto_line(line);
+  for(int i=0; i<127; i++){
+    oled_write_d(0x00);
+  }
+}
+
+void oled_pos(int row,int column){
+  oled_write_c(0x22); //Choosing page/line (synonyms)
+    oled_write_c(row);
+    oled_write_c(row+1);
+
+    oled_write_c(0x21); //Moving cursor to column
+    oled_write_c(column);
+    oled_write_c(127);
+}
+
+

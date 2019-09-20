@@ -8,7 +8,7 @@
 #include "sram_driver.h"
 #include "joystick_driver.h"
 #include "slider_driver.h"
-#include "oled_driver.h"
+#include "OLED_driver.h"
 
 
 
@@ -60,18 +60,19 @@ void main( void ){
     adc_init();
     sei();
 
-    //OLED_reset();
-
-
-
-
 
 
 
     oled_init();
     oled_reset();
+    oled_home();
+    oled_print_string("Smoke weed erry");
+    oled_goto_line(1);
+    oled_print_string("day!");
+    oled_goto_line(7);
+    oled_print_string("    #420");
 
-
+   
 
 
     // DDRB &= ~((1 << PB0) | (1 << PB1) ); //Pins set as input
@@ -82,6 +83,7 @@ void main( void ){
     //   printf("Button 1: %d \n\r", btn1);
     //   _delay_ms(40);
     // }
+
     struct joystick joy;
     joystick_init(&joy);
 

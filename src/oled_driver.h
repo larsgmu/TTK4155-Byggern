@@ -10,14 +10,14 @@
 
 
 void oled_init();
-void oled_write_c(unsigned char out_command);
-void oled_write_d(unsigned char out_data);
+void oled_write_c(uint8_t command);
+void oled_write_d(uint8_t data);
 void oled_print_char(unsigned char c);
-void OLED_print(unsigned char c);
-void oled_go_to_page(uint8_t page);
-void oled_top_left(void);
-
-void oled_reset(void);
-
-
+void oled_reset(void);  //Funker ikke helt
+void oled_print_string(char* str);  //Funker
+void oled_goto_line(int line);  //Funker
+void oled_goto_column(int column);  //Funker
+void oled_home(void);   //Funker
+void oled_clear_line(int line); //Funker
+void oled_pos(int row,int column);
 #endif
