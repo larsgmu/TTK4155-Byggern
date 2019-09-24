@@ -8,12 +8,13 @@
 #include "sram_driver.h"
 #include "joystick_driver.h"
 #include "slider_driver.h"
-#include "OLED_driver.h"
+#include "oled_driver.h"
+#include "menu.h"
 
 
 
 //Excercise 6 day one
-void squareSignalTest() {
+/*void squareSignalTest() {
 
     DDRB   |= (1 << PB2);           // LED on pin PB2
 
@@ -25,7 +26,7 @@ void squareSignalTest() {
         PORTB |=  (1 << PB2);       // LED on
     }
 
-}
+}*/
 
 //Exercise 11 day one, but used for debugging
 void string_init(){
@@ -60,45 +61,24 @@ void main( void ){
     adc_init();
     sei();
 
-
-
-
     oled_init();
     oled_reset();
     oled_home();
-    oled_print_string("Smoke weed erry");
-    oled_goto_line(1);
-    oled_print_string("day!");
-    oled_goto_line(7);
-    oled_print_string("    #420");
 
-   
+    menu_init();
 
-
-    // DDRB &= ~((1 << PB0) | (1 << PB1) ); //Pins set as input
-    // while(1){
-    //   int btn0 = PINB & (1 << PB0);
-    //   int btn1 = PINB & (1 << PB1);
-    //   printf("Button 0: %d ", btn0);
-    //   printf("Button 1: %d \n\r", btn1);
-    //   _delay_ms(40);
-    // }
 
     struct joystick joy;
     joystick_init(&joy);
-
     struct slider slider;
 
-    // while(1){
-    //   analog_position(&joy);
-    //   analog_direction(&joy);
-    //   printf("X: %d     Y: %d     DIR: %d       NX: %d \n\r",joy.x,joy.y,joy.dir, joy.neutralx);
-    //   //printf( "X: %d \n\r", adc_read(X_axis));
-    //   get_slider_pos(&slider);
-    //   //printf("right: %d         left: %d \n\r", slider.right_pos, slider.left_pos);
-    //
-    //
-    // }
+    while(1){
+      analog_position(&joy);
+      analog_direction(&joy);
+      printf("X: %d     Y: %d     DIR: %d       NX: %d \n\r",joy.x,joy.y,joy.dir, joy.neutralx);
+      //get_slider_pos(&slider);
+      menu_run(&joy);
+    }
 
 //SRAM_test();
 }

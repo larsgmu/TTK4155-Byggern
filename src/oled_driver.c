@@ -4,6 +4,7 @@
 #include "fonts.h"
 #include <avr/pgmspace.h>
 #include "adc_driver.h"
+#include "menu.h"
 
 volatile char* oled_command_address = (char*)0x1000;
 volatile char* oled_data_address = (char*)0x1200;    //   sjekk h-fil
@@ -132,4 +133,23 @@ void oled_pos(int row,int column){
     oled_write_c(127);
 }
 
+void oled_print_menu(Menu* menu, uint8_t line) {
+  oled_reset();
+  _delay_ms(200);
+  oled_home();
+  oled_goto_column(15);
+  oled_print_string(menu->name); //print menu name on top
 
+  for (int i = 0; i < menu->num_sub_menu; i++ ) {
+    oled_goto_line(i+1);
+    oled_goto_column(15);
+    oled_print_string(menu->sub_menu[i]->name);
+  }
+  oled_print_arrow(line);
+}
+
+void oled_print_arrow(uint8_t line){
+  oled_goto_line(line);
+  oled_goto_column(0);
+  oled_print_string("->");
+}

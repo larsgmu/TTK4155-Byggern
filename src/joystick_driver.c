@@ -11,7 +11,7 @@ void joystick_init(struct joystick* joy){
 
 void analog_position(struct joystick* joy){
   //Returns joystickx and y position as integers between -100 and 100
-  
+
   joy->x = (int)(JOYSTICK_CONSTANT*adc_read(X_axis) - 100) ;//Må fikse offset
   joy->y = (int)(JOYSTICK_CONSTANT*adc_read(Y_axis) - 100) ;
 }
@@ -19,7 +19,7 @@ void analog_position(struct joystick* joy){
 void analog_direction(struct joystick* joy) {
   //Will return NEUTRAL, UP, DOWN, LEFT or RIGHT
 
-  int threshold = 10; //Threshold on 10 percent
+  int threshold = 15; //Threshold on 10 percent
 
   double angle = atan2(joy->y,joy->x);
 

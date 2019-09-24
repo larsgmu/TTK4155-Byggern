@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define JOYSTICK_CONSTANT (255/200)
+#define JOYSTICK_CONSTANT 0.78431
 
 enum joystick_dir {
   NEUTRAL = 0,
