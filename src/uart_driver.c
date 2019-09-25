@@ -1,5 +1,9 @@
-#include "uart_driver.h"
+#define F_CPU 4915200
+#define FOSC 4915200
+#define BAUD 9600
+#define MYUBRR FOSC/16/BAUD-1
 
+#include "uart_driver.h"
 
 void USART_Init( unsigned int ubrr ){
     /* Set baud rate */
@@ -25,4 +29,13 @@ unsigned char USART_Receive( void ){
     while ( !(UCSR0A & (1<<RXC0)) );
     /* Get and return received data from buffer */
     return UDR0;
+}
+
+void string_init(){
+
+    USART_Init ( MYUBRR );
+    fdevopen(USART_Transmit, USART_Receive); //Make a stream between terminal and t/r functions
+    //while(1)printf("Knjut"); //Prints a string
+    //while(1) USART_Transmit(USART_Receive()); //Transmits what it recieves from terminal back to the terminal
+    //while(1) USART_Transmit('a');
 }
