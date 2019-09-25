@@ -1,6 +1,12 @@
 #include "joystick_driver.h"
 #include "adc_driver.h"
 
+
+/* double JOYSTICK_C_UP;		//ikke slett, skal brukes 
+double JOYSTICK_C_DOWN;
+double JOYSTICK_C_LEFT;
+double JOYSTICK_C_RIGHT; */
+
 void joystick_init(struct joystick* joy){
   joy->neutralx = adc_read(X_axis);
   joy->neutraly = adc_read(Y_axis);
@@ -11,15 +17,22 @@ void joystick_init(struct joystick* joy){
 
 void analog_position(struct joystick* joy){
   //Returns joystickx and y position as integers between -100 and 100
+  
+ // JOYSTICK_C_UP = 	(255 - joy->neutraly) / 100;			//Ikke slett
+ // JOYSTICK_C_DOWN = 	  (joy->neutraly) / 100;
+ // JOYSTICK_C_RIGHT = 	  (joy->neutralx) / 100;
+ // JOYSTICK_C_LEFT = (255 - joy->neutralx) / 100;
 
   joy->x = (int)(JOYSTICK_CONSTANT*adc_read(X_axis) - 100) ;//Må fikse offset
   joy->y = (int)(JOYSTICK_CONSTANT*adc_read(Y_axis) - 100) ;
+  
+
 }
 
 void analog_direction(struct joystick* joy) {
   //Will return NEUTRAL, UP, DOWN, LEFT or RIGHT
 
-  int threshold = 15; //Threshold on 10 percent
+  int threshold = 15; //Threshold on 15 percent
 
   double angle = atan2(joy->y,joy->x);
 
