@@ -2,15 +2,13 @@
 #define MENU_H
 
 #include <stdint.h>
-
 typedef struct Menu_struct Menu;
-typedef struct Menu_struct
-{
+typedef struct Menu_struct {
   char* name;
 
   Menu* super_menu;
-  Menu** sub_menu;
-
+  //Menu** sub_menu;
+  Menu* sub_menu[7];
   uint8_t num_sub_menu;
 }Menu;
 

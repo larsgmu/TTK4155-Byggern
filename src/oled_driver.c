@@ -1,10 +1,11 @@
-#include "oled_driver.h"
+
 #include <string.h>
+#include <avr/pgmspace.h>
 #include <math.h>
 #include "fonts.h"
-#include <avr/pgmspace.h>
+#include "oled_driver.h"
 #include "adc_driver.h"
-#include "menu.h"
+//#include "menu.h"
 
 volatile char* oled_command_address = (char*)0x1000;
 volatile char* oled_data_address = (char*)0x1200;    //   sjekk h-fil
@@ -47,8 +48,8 @@ void oled_init()   {
   oled_write_c(0xaf);        //display  on
 
 
-  oled_write_c(0x21);   // Addressing mode
-  oled_write_c(0);      // Horizontal Mode
+  oled_write_c(0x21);
+  oled_write_c(0);
   oled_write_c(127);
   oled_write_c(0x22);
   oled_write_c(0);
@@ -83,12 +84,15 @@ void oled_print_string(char* str){
 
 
 void oled_reset(void){
-  for(int rows =0; rows < 8; rows++){
-    for(int columns = 0; columns < 127; columns++)
-        *oled_data_address=0x00;
+    for(int rows =0; rows < 8; rows++){
+      oled_goto_line(rows);
+      for(int cols = 0; cols < 128; cols++){
+        oled_data_address[cols] = 0x00;
+      }
     }
-}
+    oled_home();
 
+}
 void oled_goto_line(int line){
 
     oled_write_c(0x22); //Choosing page/line (synonyms)
@@ -136,8 +140,6 @@ void oled_pos(int row,int column){
 void oled_print_menu(Menu* menu, uint8_t line) {
   oled_reset();
   _delay_ms(200);
-  oled_home();
-  oled_goto_column(15);
   oled_print_string(menu->name); //print menu name on top
 
   for (int i = 0; i < menu->num_sub_menu; i++ ) {
@@ -145,10 +147,16 @@ void oled_print_menu(Menu* menu, uint8_t line) {
     oled_goto_column(15);
     oled_print_string(menu->sub_menu[i]->name);
   }
-  oled_print_arrow(line);
 }
 
 void oled_print_arrow(uint8_t line){
+  for(int page = 1; page < 8; page++){
+    oled_goto_line(page);
+    for(int col = 0; col < 16; col++){
+      oled_goto_column(col);
+      oled_write_d(0);
+    }
+  }
   oled_goto_line(line);
   oled_goto_column(0);
   oled_print_string("->");

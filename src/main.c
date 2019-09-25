@@ -63,7 +63,6 @@ void main( void ){
 
     oled_init();
     oled_reset();
-    oled_home();
 
     menu_init();
 

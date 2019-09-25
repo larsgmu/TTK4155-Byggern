@@ -23,4 +23,6 @@ void oled_pos(int row,int column);
 
 void oled_print_menu(Menu* menu, uint8_t line);
 void oled_print_arrow(uint8_t line);
+
+
 #endif
