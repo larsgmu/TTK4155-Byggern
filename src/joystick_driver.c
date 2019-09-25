@@ -2,10 +2,10 @@
 #include "adc_driver.h"
 
 
-/* double JOYSTICK_C_UP;		//ikke slett, skal brukes 
+double JOYSTICK_C_UP;		//ikke slett, skal brukes 
 double JOYSTICK_C_DOWN;
 double JOYSTICK_C_LEFT;
-double JOYSTICK_C_RIGHT; */
+double JOYSTICK_C_RIGHT;
 
 void joystick_init(struct joystick* joy){
   joy->neutralx = adc_read(X_axis);
