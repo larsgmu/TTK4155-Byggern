@@ -22,6 +22,20 @@ void analog_position(struct joystick* joy){
  // JOYSTICK_C_DOWN = 	  (joy->neutraly) / 100;
  // JOYSTICK_C_RIGHT = 	  (joy->neutralx) / 100;
  // JOYSTICK_C_LEFT = (255 - joy->neutralx) / 100;
+	
+	/* if (adc_read(Y_axis) > joy->neutraly) {
+		joy->y = (int)(JOYSTICK_C_UP*adc_read(Y_axis));
+	}
+	else if (adc_read(Y_axis) <= joy->neutraly) {
+		joy->y = (int)(JOYSTICK_C_DOWN*adc_read(Y_axis));
+	}
+	if (adc_read(X_axis) > joy->neutralx) {
+		joy->x = (int)(JOYSTICK_C_RIGHT*adc_read(X_axis));
+	}
+	else if (adc_read(X_axis) <= joy->neutralX) {
+		joy->x = (int)(JOYSTICK_C_LEFT*adc_read(X_axis));
+	} */
+	
 
   joy->x = (int)(JOYSTICK_CONSTANT*adc_read(X_axis) - 100) ;//Må fikse offset
   joy->y = (int)(JOYSTICK_CONSTANT*adc_read(Y_axis) - 100) ;
@@ -37,9 +51,9 @@ void analog_direction(struct joystick* joy) {
   double angle = atan2(joy->y,joy->x);
 
   if ( ((abs(joy->x)) < threshold) && ((abs(joy->y)) < threshold) ) { joy->dir = NEUTRAL; }
-  else if (angle >= M_PI/4 && angle < 3*M_PI/4) { joy->dir = UP; }
-  else if (angle > -3*M_PI/4 && angle <= -M_PI/4) { joy->dir = DOWN; }
-  else if (angle > 3*M_PI/4 || angle <= -3*M_PI/4) { joy->dir = LEFT; }
-  else if (angle > -M_PI/4  && angle <= M_PI/4 ) { joy->dir = RIGHT; }
+  else if (angle >= M_PI/4 && angle < 3*M_PI/4) 										{ joy->dir = UP; }
+  else if (angle > -3*M_PI/4 && angle <= -M_PI/4) 									{ joy->dir = DOWN; }
+  else if (angle > 3*M_PI/4 || angle <= -3*M_PI/4) 									{ joy->dir = LEFT; }
+  else if (angle > -M_PI/4  && angle <= M_PI/4 ) 										{ joy->dir = RIGHT; }
 
 }
