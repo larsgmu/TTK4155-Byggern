@@ -28,9 +28,9 @@
 
 
 /*Functions for initializing OLED, where configurations and addressing modes are set,
-and OLED_reset for clearing the screen.*/
+and oled_sram_reset for clearing the screen.*/
 void OLED_init(void);
-void OLED_reset(void);
+void oled_sram_reset(void);
 void OLED_clear_page(uint8_t page);
 
 /*Functions for moving the cursor in the OLED printing. OLED_home makes the cursor move

@@ -45,7 +45,7 @@ void OLED_init(void){
 
 	  *adresse = (0x00);  //lower colums start adressing
 	  *adresse = (0x10);  //higher column start adressing
-	  OLED_reset();
+	  oled_sram_reset();
 	  OLED_home();
 
 }
@@ -101,7 +101,7 @@ void OLED_print(unsigned char c)
 }
 
 
-void OLED_reset()
+void oled_sram_reset()
 {
 	OLED_home();
 	for (uint8_t page = 0; page < 8; page++)

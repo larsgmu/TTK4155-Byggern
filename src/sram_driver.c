@@ -1,18 +1,18 @@
 #include "sram_driver.h"
-
+#include <avr/io.h>
 void SRAM_init(){
     MCUCR |= (1 << SRE);
     SFIOR |= (1 << XMM2);
 }
 
 void SRAM_write(unsigned int adr, unsigned int data) {
-    volatile char* external_ram = (char *) 0x1000;
+    volatile char* external_ram = (char *) 0x1800;
     external_ram[adr] = data;
 }
 
 unsigned int SRAM_read(unsigned int adr) {
-    volatile char* external_ram = (char *) 0x1000;
-    printf(external_ram[adr]);
+    volatile char* external_ram = (char *) 0x1800;
+    //printf(external_ram[adr]);
     return external_ram[adr];
 }
 
