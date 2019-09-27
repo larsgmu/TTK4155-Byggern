@@ -55,6 +55,8 @@ void menu_run(struct joystick* joy) {
         //oled_print_arrow(1);
         current_line = 1;
       }
+      oled_sram_menu(current_menu);
+      oled_sram_arrow(current_line);
       _delay_ms(200);
       break;
 
@@ -65,6 +67,8 @@ void menu_run(struct joystick* joy) {
         //oled_print_arrow(1);
         current_line = 1;
       }
+      oled_sram_menu(current_menu);
+      oled_sram_arrow(current_line);
       _delay_ms(200);
 
       break;
@@ -74,6 +78,8 @@ void menu_run(struct joystick* joy) {
         current_line --; //radnr minker når vi går oppover
         //oled_print_arrow(current_line);
       }
+      oled_sram_menu(current_menu);
+      oled_sram_arrow(current_line);
       _delay_ms(200);
       break;
 
@@ -82,6 +88,8 @@ void menu_run(struct joystick* joy) {
         current_line ++;
         //oled_print_arrow(current_line);
       }
+      oled_sram_menu(current_menu);
+      oled_sram_arrow(current_line);
       _delay_ms(200);
       break;
 
@@ -92,6 +100,5 @@ void menu_run(struct joystick* joy) {
       break;
   }
 
-  oled_sram_menu(current_menu, current_line);
-  oled_sram_arrow(current_line);
+
 }

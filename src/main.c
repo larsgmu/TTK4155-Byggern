@@ -27,12 +27,12 @@ void main( void ){
     while(1){
       analog_position(&joy);
       analog_direction(&joy);
-      printf("X: %d     Y: %d     DIR: %d       NX: %d \n\r",joy.x,joy.y,joy.dir, joy.neutralx);
+      //printf("X: %d     Y: %d     DIR: %d       NX: %d \n\r",joy.x,joy.y,joy.dir, joy.neutralx);
       //get_slider_pos(&slider);
+
+      //oled_sram_test("~");
       menu_run(&joy);
-      _delay_ms(40);
-      oled_draw();
-    }
+          }
     SRAM_test();
 
     // SRAM_write(0,'A');
