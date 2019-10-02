@@ -58,16 +58,16 @@ void oled_init()   {
 }
 
 ISR(TIMER1_OVF_vect){
-  cli();
-  TIFR = 0x00; //clear overflow flag
-  TCNT1L = 0xB0;//For intterupt every 60hz
-  TCNT1H = 0xff;
-  if(!oled_state.CHANGED){
-    return;
-  }
-  oled_draw();
-  oled_state.CHANGED = 0;
-  sei();
+  // cli();
+  // TIFR = 0x00; //clear overflow flag
+  // TCNT1L = 0xB0;//For intterupt every 60hz
+  // TCNT1H = 0xff;
+  // if(!oled_state.CHANGED){
+  //   return;
+  // }
+  // oled_draw();
+  // oled_state.CHANGED = 0;
+  // sei();
 }
 
 

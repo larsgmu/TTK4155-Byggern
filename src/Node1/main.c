@@ -8,6 +8,9 @@
 #include "joystick_driver.h"
 #include "slider_driver.h"
 #include "oled_driver.h"
+#include "spi_driver.h"
+#include "mcp2515_driver.h"
+#include "MCP2515.h"
 #include "menu.h"
 
 void main( void ){
@@ -18,30 +21,28 @@ void main( void ){
     sei();
     oled_init();
     oled_sram_reset();
+
     menu_init();
+
+    mcp2515_init();
+    printf("Read from MCP_CANSTAT %d\n\r", mcp2515_read(MCP_READ_STATUS));
+
     //oled_sram_write_char('~');
     struct joystick joy;
     joystick_init(&joy);
     struct slider slider;
 
     while(1){
+      mcp2515_write(0x00, 0b10001000);
+
       analog_position(&joy);
       analog_direction(&joy);
+
       //printf("X: %d     Y: %d     DIR: %d       NX: %d \n\r",joy.x,joy.y,joy.dir, joy.neutralx);
       //get_slider_pos(&slider);
 
-      //oled_sram_test("~");
       menu_run(&joy);
-          }
-    SRAM_test();
-
-    // SRAM_write(0,'A');
-    // oled_home();
-    // int output = SRAM_read(0) - 32;
-    // static volatile char* oled_data_address = (char*)0x1200;
-    // for(int i = 0; i<8; i++){
-    //
-    //     *oled_data_address = pgm_read_byte(&font8[output][i]);
-    // }
-
+      _delay_ms(100);
+      oled_draw();
+    }
 }

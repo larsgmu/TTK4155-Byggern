@@ -41,6 +41,9 @@ Menu* menu_init() {
   Menu* sub_mem_3 = menu_make_sub_menu(main_menu, "sub_menu_3");
   Menu* sub_mem_1_1 = menu_make_sub_menu(sub_mem_1, "sub_menu_1_1");
   Menu* sub_mem_1_2 = menu_make_sub_menu(sub_mem_1, "sub_menu_1_2");
+  Menu* sub_mem_1_1_1 = menu_make_sub_menu(sub_mem_1_1, "sub_menu_1_1_1");
+  Menu* sub_mem_1_2_1 = menu_make_sub_menu(sub_mem_1_2, "`horer er ok`");
+  Menu* sub_mem_1_1_2 = menu_make_sub_menu(sub_mem_1_1, "sub sub sub");
 
   //oled initialisering
   current_line = 1; //top line
@@ -55,8 +58,6 @@ void menu_run(struct joystick* joy) {
         //oled_print_arrow(1);
         current_line = 1;
       }
-      oled_sram_menu(current_menu);
-      oled_sram_arrow(current_line);
       _delay_ms(200);
       break;
 
@@ -67,8 +68,6 @@ void menu_run(struct joystick* joy) {
         //oled_print_arrow(1);
         current_line = 1;
       }
-      oled_sram_menu(current_menu);
-      oled_sram_arrow(current_line);
       _delay_ms(200);
 
       break;
@@ -78,8 +77,6 @@ void menu_run(struct joystick* joy) {
         current_line --; //radnr minker når vi går oppover
         //oled_print_arrow(current_line);
       }
-      oled_sram_menu(current_menu);
-      oled_sram_arrow(current_line);
       _delay_ms(200);
       break;
 
@@ -88,8 +85,7 @@ void menu_run(struct joystick* joy) {
         current_line ++;
         //oled_print_arrow(current_line);
       }
-      oled_sram_menu(current_menu);
-      oled_sram_arrow(current_line);
+
       _delay_ms(200);
       break;
 
@@ -99,6 +95,7 @@ void menu_run(struct joystick* joy) {
     default:
       break;
   }
-
+  oled_sram_menu(current_menu);
+  oled_sram_arrow(current_line);
 
 }
