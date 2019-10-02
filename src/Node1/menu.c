@@ -49,7 +49,7 @@ Menu* menu_init() {
   current_line = 1; //top line
 }
 
-void menu_run(struct joystick* joy) {
+void menu_run(Joystick* joy) {
   switch (joy->dir) {
     case RIGHT:
       if (current_menu->sub_menu[current_line-1]->sub_menu[0] != NULL){

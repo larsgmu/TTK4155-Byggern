@@ -28,9 +28,9 @@ void main( void ){
     printf("Read from MCP_CANSTAT %d\n\r", mcp2515_read(MCP_READ_STATUS));
 
     //oled_sram_write_char('~');
-    struct joystick joy;
+    Joystick joy;
     joystick_init(&joy);
-    struct slider slider;
+    Slider slider;
 
     while(1){
       mcp2515_write(0x00, 0b10001000);

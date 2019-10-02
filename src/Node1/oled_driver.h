@@ -1,9 +1,8 @@
 #ifndef OLED_H
 #define OLED_H
+
 #define F_CPU 4915200
 #define ASCII_OFFSET ((volatile unsigned int) 32)
-
-
 
 #include <stdint.h>
 #include "menu.h"

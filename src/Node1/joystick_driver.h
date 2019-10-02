@@ -1,3 +1,6 @@
+#ifndef JOYSTICK_H
+#define JOYSTICK_H
+
 #include <stdlib.h>
 #include <math.h>
 
@@ -11,16 +14,22 @@ enum joystick_dir {
   RIGHT = 4,
 };
 
-struct joystick {
+/*Joystick-struct containing current position, direction and center-point*/
+typedef struct Joystick_struct {
   int x;
   int y;
   int neutralx;
   int neutraly;
   enum joystick_dir dir;
-};
+} Joystick;
 
-void joystick_init(struct joystick* joy);
+/*Initializing and calibrating*/
+void joystick_init(Joystick* joy);
 
-void analog_position(struct joystick* joy);
+/*Sets current joystick X and Y-position as integers between -100 and 100*/
+void analog_position(Joystick* joy);
 
-void analog_direction(struct joystick* joy);
+/*Sets current direction of Joystick as an enum*/
+void analog_direction(Joystick* joy);
+
+#endif

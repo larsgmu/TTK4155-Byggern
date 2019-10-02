@@ -3,14 +3,13 @@
 
 void can_init() {
   mcp2515_init();
-
-  //loopback mode
+  /*loopback mode*/
   mcp2515_write(MCP_CANCTRL, MODE_LOOPBACK);
 
-  //Turn mask/filters off
+  /*Turn mask/filters off*/
   mcp2515_write(MCP_RXB0CTRL, 0b01100000);
 
-  //Generate interrupt when recieved message kissmypuiss
+  /*Generate interrupt when recieved message kissmypuiss*/
   mcp2515_bit_modify(MCP_CANINTE, 0b00000001, 1);
 }
 

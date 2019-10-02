@@ -1,5 +1,5 @@
-#ifndef ADC_DRIVER_H
-#define ADC_DRIVER_H
+#ifndef ADC_H
+#define ADC_H
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
