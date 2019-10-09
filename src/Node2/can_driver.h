@@ -1,3 +1,6 @@
+/*!@file
+* CAN interface
+*/
 #ifndef CAN_H
 #define CAN_H
 #define CAN_MSG_DATA_LENGTH 8

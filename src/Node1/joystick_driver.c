@@ -1,3 +1,6 @@
+/*!@file
+* Joystick interface
+*/
 #include "joystick_driver.h"
 #include "adc_driver.h"
 

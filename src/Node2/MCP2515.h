@@ -1,3 +1,6 @@
+/*!@file
+* mcp2515 interface
+*/
 #ifndef __MCP2515_H
 #define __MCP2515_H
 

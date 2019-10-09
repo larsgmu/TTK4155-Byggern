@@ -1,0 +1,22 @@
+digraph "src/Node1/joystick_driver.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="src/Node1/joystick\l_driver.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="src/Node1/joystick\l_driver.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$joystick__driver_8c.html"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="src/Node1/main.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$Node1_2main_8c.html"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="src/Node1/menu.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$menu_8h.html"];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="src/Node1/oled_driver.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$oled__driver_8h.html"];
+  Node5 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="src/Node1/menu.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$menu_8c.html"];
+  Node5 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="src/Node1/oled_driver.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$oled__driver_8c.html"];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

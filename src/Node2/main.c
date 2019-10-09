@@ -1,3 +1,6 @@
+/*!@file
+* NODE 2 MAIN FILE
+*/
 #define F_CPU 16000000
 
 #include "usart_driver.h"

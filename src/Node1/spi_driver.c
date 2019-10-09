@@ -1,3 +1,6 @@
+/*!@file
+* SPI interface
+*/
 #include "spi_driver.h"
 #include <stdlib.h>
 #include <avr/io.h>

@@ -1,0 +1,44 @@
+\hypertarget{adc__driver_8h}{}\section{src/\+Node1/adc\+\_\+driver.h File Reference}
+\label{adc__driver_8h}\index{src/\+Node1/adc\+\_\+driver.\+h@{src/\+Node1/adc\+\_\+driver.\+h}}
+{\ttfamily \#include $<$avr/io.\+h$>$}\\*
+{\ttfamily \#include $<$avr/interrupt.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdbool.\+h$>$}\\*
+{\ttfamily \#include $<$stdint.\+h$>$}\\*
+{\ttfamily \#include $<$util/delay.\+h$>$}\\*
+Include dependency graph for adc\+\_\+driver.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries channel\+\_\+type} \{ {\bfseries Y\+\_\+axis} = 4, 
+{\bfseries X\+\_\+axis} = 5, 
+{\bfseries Left\+\_\+slider} = 6, 
+{\bfseries Right\+\_\+slider} = 7
+ \}\hypertarget{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}{}\label{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{adc__driver_8h_a2b815e6730e8723a6d1d06d9ef8f31c0}{adc\+\_\+init} (void)
+\item 
+uint8\+\_\+t {\bfseries adc\+\_\+read} (enum channel\+\_\+type channel)\hypertarget{adc__driver_8h_a17c6244e26388b37bab7ff5757205cfe}{}\label{adc__driver_8h_a17c6244e26388b37bab7ff5757205cfe}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A\+DC interface 
+
+\subsection{Function Documentation}
+\index{adc\+\_\+driver.\+h@{adc\+\_\+driver.\+h}!adc\+\_\+init@{adc\+\_\+init}}
+\index{adc\+\_\+init@{adc\+\_\+init}!adc\+\_\+driver.\+h@{adc\+\_\+driver.\+h}}
+\subsubsection[{\texorpdfstring{adc\+\_\+init(void)}{adc_init(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void adc\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{adc__driver_8h_a2b815e6730e8723a6d1d06d9ef8f31c0}{}\label{adc__driver_8h_a2b815e6730e8723a6d1d06d9ef8f31c0}
+Initialize A\+DC interface 

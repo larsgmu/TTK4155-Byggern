@@ -1,0 +1,37 @@
+\hypertarget{menu_8c}{}\section{src/\+Node1/menu.c File Reference}
+\label{menu_8c}\index{src/\+Node1/menu.\+c@{src/\+Node1/menu.\+c}}
+{\ttfamily \#include \char`\"{}joystick\+\_\+driver.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}menu.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}oled\+\_\+driver.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$util/delay.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}can\+\_\+driver.\+h\char`\"{}}\\*
+Include dependency graph for menu.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structMenu__struct}{Menu} $\ast$ {\bfseries menu\+\_\+make\+\_\+sub\+\_\+menu} (\hyperlink{structMenu__struct}{Menu} $\ast$parent\+\_\+menu, char $\ast$name)\hypertarget{menu_8c_a0c3ad9c2d885788051b4dedb509ad3ea}{}\label{menu_8c_a0c3ad9c2d885788051b4dedb509ad3ea}
+
+\item 
+\hyperlink{structMenu__struct}{Menu} $\ast$ {\bfseries menu\+\_\+init} ()\hypertarget{menu_8c_ab8d87400f41dcd387e256b43cc50cdb1}{}\label{menu_8c_ab8d87400f41dcd387e256b43cc50cdb1}
+
+\item 
+void {\bfseries menu\+\_\+run} (\hyperlink{structJoystick__struct}{Joystick} $\ast$joy)\hypertarget{menu_8c_a7c86ee9f9c7fc08dba683b3a5b12757e}{}\label{menu_8c_a7c86ee9f9c7fc08dba683b3a5b12757e}
+
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structMenu__struct}{Menu} $\ast$ {\bfseries main\+\_\+menu}\hypertarget{menu_8c_a2ec4df081ad1c99827a50f273e2bdc66}{}\label{menu_8c_a2ec4df081ad1c99827a50f273e2bdc66}
+
+\item 
+\hyperlink{structMenu__struct}{Menu} $\ast$ {\bfseries current\+\_\+menu}\hypertarget{menu_8c_ab13e54449c4b13552828777cd12e4172}{}\label{menu_8c_ab13e54449c4b13552828777cd12e4172}
+
+\item 
+uint8\+\_\+t {\bfseries current\+\_\+line}\hypertarget{menu_8c_abbdcccf19cfae8e1f7e64715fa089e2b}{}\label{menu_8c_abbdcccf19cfae8e1f7e64715fa089e2b}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+O\+L\+ED menu 

@@ -1,0 +1,60 @@
+\hypertarget{joystick__driver_8h}{}\section{src/\+Node1/joystick\+\_\+driver.h File Reference}
+\label{joystick__driver_8h}\index{src/\+Node1/joystick\+\_\+driver.\+h@{src/\+Node1/joystick\+\_\+driver.\+h}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+Include dependency graph for joystick\+\_\+driver.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structJoystick__struct}{Joystick\+\_\+struct}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries J\+O\+Y\+S\+T\+I\+C\+K\+\_\+\+C\+O\+N\+S\+T\+A\+NT}~0.\+78431\hypertarget{joystick__driver_8h_aa774e0d2cd628298ee4d5ace0aec3d8a}{}\label{joystick__driver_8h_aa774e0d2cd628298ee4d5ace0aec3d8a}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structJoystick__struct}{Joystick\+\_\+struct} {\bfseries Joystick}\hypertarget{joystick__driver_8h_ad428d3a60096dde6d3d6ba80fc363085}{}\label{joystick__driver_8h_ad428d3a60096dde6d3d6ba80fc363085}
+
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries joystick\+\_\+dir} \{ \\*
+{\bfseries N\+E\+U\+T\+R\+AL} = 0, 
+{\bfseries UP} = 1, 
+{\bfseries D\+O\+WN} = 2, 
+{\bfseries L\+E\+FT} = 3, 
+\\*
+{\bfseries R\+I\+G\+HT} = 4, 
+{\bfseries N\+E\+U\+T\+R\+AL} = 0, 
+{\bfseries UP} = 1, 
+{\bfseries D\+O\+WN} = 2, 
+\\*
+{\bfseries L\+E\+FT} = 3, 
+{\bfseries R\+I\+G\+HT} = 4
+ \}\hypertarget{joystick__driver_8h_aa3a9a26c5c7753341a574e9e4c967f26}{}\label{joystick__driver_8h_aa3a9a26c5c7753341a574e9e4c967f26}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries joystick\+\_\+init} (\hyperlink{structJoystick__struct}{Joystick} $\ast$joy)\hypertarget{joystick__driver_8h_afad9610cf5b5f3ebae6cf2009daaec42}{}\label{joystick__driver_8h_afad9610cf5b5f3ebae6cf2009daaec42}
+
+\item 
+void {\bfseries analog\+\_\+position} (\hyperlink{structJoystick__struct}{Joystick} $\ast$joy)\hypertarget{joystick__driver_8h_abfc867e62ae57e9cd84b676ee092a183}{}\label{joystick__driver_8h_abfc867e62ae57e9cd84b676ee092a183}
+
+\item 
+void {\bfseries analog\+\_\+direction} (\hyperlink{structJoystick__struct}{Joystick} $\ast$joy)\hypertarget{joystick__driver_8h_aa5a6673a61d738f07936e7e412c0c995}{}\label{joystick__driver_8h_aa5a6673a61d738f07936e7e412c0c995}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Joystick interface 

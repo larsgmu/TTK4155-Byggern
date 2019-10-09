@@ -1,3 +1,6 @@
+/*!@file
+* OLED menu
+*/
 #include "joystick_driver.h"
 #include "menu.h"
 #include "oled_driver.h"

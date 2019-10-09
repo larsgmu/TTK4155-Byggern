@@ -1,3 +1,6 @@
+/*!@file
+* MCP2515 interface
+*/
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
 #include "spi_driver.h"

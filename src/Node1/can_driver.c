@@ -1,3 +1,6 @@
+/*!@file
+* CANbus interface
+*/
 #include "can_driver.h"
 #include "mcp2515_driver.h"
 #include "MCP2515.h"

@@ -1,3 +1,6 @@
+/*!@file
+* SRAM interface
+*/
 #include "sram_driver.h"
 #include <avr/io.h>
 void SRAM_init(){

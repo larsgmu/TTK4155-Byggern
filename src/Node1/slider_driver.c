@@ -1,3 +1,6 @@
+/*!@file
+* Slider interface
+*/
 #include "slider_driver.h"
 
 void get_slider_pos(Slider* slider) {

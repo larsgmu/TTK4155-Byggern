@@ -1,3 +1,6 @@
+/*!@file
+* USART interface
+*/
 #ifndef UART__H__
 #define UART__H__
 

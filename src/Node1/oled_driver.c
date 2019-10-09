@@ -1,4 +1,6 @@
-
+/*!@file
+* OLED interface
+*/
 #include <string.h>
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>

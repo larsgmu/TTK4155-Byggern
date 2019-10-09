@@ -1,3 +1,6 @@
+/*!@file
+* SRAM interface
+*/
 #ifndef SRAM_H
 #define SRAM_H
 

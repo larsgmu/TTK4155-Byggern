@@ -1,3 +1,6 @@
+/*!@file
+* Node 1 main file
+*/
 #define F_CPU 4915200
 #define FOSC 4915200
 #define BAUD 9600

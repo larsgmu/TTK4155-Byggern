@@ -1,3 +1,6 @@
+/*!@file
+* USART interface
+*/
 //#define F_CPU 1843200
 #define FOSC 16000000
 #define BAUD 9600

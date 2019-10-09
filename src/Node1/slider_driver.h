@@ -1,3 +1,6 @@
+/*!@file
+* Slider interface
+*/
 #ifndef SLIDER_H
 #define SLIDER_H
 
