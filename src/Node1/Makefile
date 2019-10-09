@@ -1,5 +1,5 @@
 # List all source files to be compiled; separate with space
-SOURCE_FILES := main.c uart_driver.c sram_driver.c adc_driver.c joystick_driver.c
+SOURCE_FILES := main.c usart_driver.c sram_driver.c adc_driver.c joystick_driver.c
 SOURCE_FILES += slider_driver.c oled_driver.c menu.c spi_driver.c mcp2515_driver.c
 SOURCE_FILES += can_driver.c 
 

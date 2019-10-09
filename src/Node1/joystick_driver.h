@@ -23,7 +23,7 @@ typedef struct Joystick_struct {
   enum joystick_dir dir;
 } Joystick;
 
-/*Initializing and calibrating*/
+/*initializing and calibrating*/
 void joystick_init(Joystick* joy);
 
 /*Sets current joystick X and Y-position as integers between -100 and 100*/

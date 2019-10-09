@@ -2,6 +2,7 @@
 #include "menu.h"
 #include "oled_driver.h"
 #include <util/delay.h>
+#include "can_driver.h"
 
 Menu* main_menu;
 Menu* current_menu;
@@ -50,6 +51,11 @@ Menu* menu_init() {
 }
 
 void menu_run(Joystick* joy) {
+
+  CANmsg joystick_direction_msg;
+  joystick_direction_msg.id = 0;
+  joystick_direction_msg.length = 3;
+
   switch (joy->dir) {
     case RIGHT:
       if (current_menu->sub_menu[current_line-1]->sub_menu[0] != NULL){
@@ -57,8 +63,12 @@ void menu_run(Joystick* joy) {
         //oled_print_menu(current_menu, current_line);
         //oled_print_arrow(1);
         current_line = 1;
+        _delay_ms(200);
       }
-      _delay_ms(200);
+      joystick_direction_msg.data[0] = 0;
+      joystick_direction_msg.data[1] = 0;
+      joystick_direction_msg.data[2] = 1;
+
       break;
 
     case LEFT:
@@ -67,34 +77,46 @@ void menu_run(Joystick* joy) {
         //oled_print_menu(current_menu, current_line);
         //oled_print_arrow(1);
         current_line = 1;
+        _delay_ms(200);
       }
-      _delay_ms(200);
-
+      joystick_direction_msg.data[0] = 1;
+      joystick_direction_msg.data[1] = 1;
+      joystick_direction_msg.data[2] = 0;
       break;
 
     case UP:
       if (current_line > 1) {
         current_line --; //radnr minker når vi går oppover
         //oled_print_arrow(current_line);
+        _delay_ms(200);
       }
-      _delay_ms(200);
+      joystick_direction_msg.data[0] = 1;
+      joystick_direction_msg.data[1] = 0;
+      joystick_direction_msg.data[2] = 0;
       break;
 
     case DOWN:
       if (current_line < current_menu->num_sub_menu) {
         current_line ++;
         //oled_print_arrow(current_line);
+        _delay_ms(200);
       }
+      joystick_direction_msg.data[0] = 0;
+      joystick_direction_msg.data[1] = 1;
+      joystick_direction_msg.data[2] = 0;
 
-      _delay_ms(200);
       break;
 
     case NEUTRAL:
+      joystick_direction_msg.data[0] = 0;
+      joystick_direction_msg.data[1] = 0;
+      joystick_direction_msg.data[2] = 0;
       break;
 
     default:
       break;
   }
+  can_send_msg(&joystick_direction_msg);
   oled_sram_menu(current_menu);
   oled_sram_arrow(current_line);
 

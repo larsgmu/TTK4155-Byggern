@@ -12,7 +12,7 @@ void mcp2515_init() {
 
 uint8_t mcp2515_read(uint8_t address) {
   /*Set slave select low*/
-  PORTB &= ~(1 << PB4);
+  PORTB &= ~(1 << PB7);
 
   /*Send read instruction*/
   spi_master_transceive(MCP_READ);
@@ -25,13 +25,13 @@ uint8_t mcp2515_read(uint8_t address) {
   data = spi_master_transceive(0xFF);
 
   /*CS High*/
-  PORTB |= (1 << PB4);
+  PORTB |= (1 << PB7);
   return data;
 }
 
 void mcp2515_write(uint8_t address, uint8_t data) {
   /*Slave select low*/
-  PORTB &= ~(1 << PB4);
+  PORTB &= ~(1 << PB7);
 
   /*Send write instr */
   spi_master_transceive(MCP_WRITE);
@@ -39,12 +39,12 @@ void mcp2515_write(uint8_t address, uint8_t data) {
   spi_master_transceive(data);
 
   /*Slave Select High*/
-  PORTB |= (1 << PB4);
+  PORTB |= (1 << PB7);
 }
 
 void mcp2515_request_send(uint8_t pin) {
   /* Slave select low*/
-  PORTB &= ~(1 << PB4);
+  PORTB &= ~(1 << PB7);
 
   switch(pin) {
     case (0):
@@ -63,7 +63,7 @@ void mcp2515_request_send(uint8_t pin) {
       break;
   }
   /* Slave select high */
-  PORTB |= (1 << PB4);
+  PORTB |= (1 << PB7);
 }
 
 uint8_t mcp2515_read_status() {
@@ -72,7 +72,7 @@ uint8_t mcp2515_read_status() {
 
 void mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
   /* Slave select low */
-  PORTB &= ~(1 << PB4);
+  PORTB &= ~(1 << PB7);
 
   spi_master_transceive(MCP_BITMOD);
   spi_master_transceive(address);
@@ -80,14 +80,14 @@ void mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
   spi_master_transceive(data);
 
   /*Slave select high*/
-  PORTB |= (1 << PB4);
+  PORTB |= (1 << PB7);
 }
 
 void mcp2515_reset() {
   /*Set slave select low*/
-  PORTB &= ~(1 << PB4);
+  PORTB &= ~(1 << PB7);
   /*Sends reset-command*/
   spi_master_transceive(MCP_RESET);
   /*Set slave select high*/
-  PORTB |= (1 << PB4);
+  PORTB |= (1 << PB7);
 }

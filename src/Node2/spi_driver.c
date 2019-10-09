@@ -4,8 +4,8 @@
 #include <util/delay.h>
 
 void spi_master_init(){
-  /* Sets MCU-pins to output mode */
-  DDRB |= (1<<PB4) | (1<<PB5) | (1<<PB7) ;
+  /* Sets MCU-pins to output mode . Dette er andre pins enn i N1*/
+  DDRB |= (1<<PB0) | (1<<PB1) | (1<<PB2) | (1<<PB7); //The arduino defines SS as PB7
 
   /* Enable SPI */
   SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);

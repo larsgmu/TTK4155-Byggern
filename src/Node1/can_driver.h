@@ -1,6 +1,7 @@
 #ifndef CAN_H
 #define CAN_H
 #define CAN_MSG_DATA_LENGTH 8
+#define CAN_SHIFT_CONSTANT 5
 #include <avr/interrupt.h>
 
 //extern int can_interrupt_flag;
