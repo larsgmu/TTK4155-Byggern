@@ -11,6 +11,7 @@
 #include "spi_driver.h"
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
+#include "can_driver.h"
 #include "menu.h"
 
 void main( void ){
@@ -18,25 +19,37 @@ void main( void ){
     string_init();
     SRAM_init();
     adc_init();
-    sei();
     oled_init();
     oled_sram_reset();
-
     menu_init();
-
-    mcp2515_init();
-    printf("Read from MCP_CANSTAT %d\n\r", mcp2515_read(MCP_READ_STATUS));
+    can_init();
+    sei();
 
     //oled_sram_write_char('~');
     Joystick joy;
     joystick_init(&joy);
     Slider slider;
 
-    while(1){
-      mcp2515_write(0x00, 0b10001000);
+    //mcp2515_write(0x00, 0b10001000);
 
+    CANmsg msg;
+    msg.id = 2;
+    msg.length = 3;
+    msg.data[0] = 1;
+    msg.data[1] = 0;
+    msg.data[2] = 1;
+
+    while(1){
       analog_position(&joy);
       analog_direction(&joy);
+
+      //printf("Read from MCP_CANSTAT %d\n\r", mcp2515_read(MCP_READ_STATUS));
+      can_send_msg(&msg);
+
+      // if (can_interrupt_flag) {
+      //   printf("Do we get here?\n\r");
+      //   can_receive_msg();
+      // }
 
       //printf("X: %d     Y: %d     DIR: %d       NX: %d \n\r",joy.x,joy.y,joy.dir, joy.neutralx);
       //get_slider_pos(&slider);

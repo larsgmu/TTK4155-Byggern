@@ -36,6 +36,6 @@ void string_init(){
     USART_Init ( MYUBRR );
     fdevopen(USART_Transmit, USART_Receive); //Make a stream between terminal and t/r functions
     //while(1)printf("Knjut"); //Prints a string
-    //while(1) USART_Transmit(USART_Receive()); //Transmits what it recieves from terminal back to the terminal
+    //while(1) USART_Transmit(USART_Receive()); //Transmits what it receives from terminal back to the terminal
     //while(1) USART_Transmit('a');
 }

@@ -51,12 +51,12 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_RXM1SIDL	0x25
 #define MCP_RXM1EID8	0x26
 #define MCP_RXM1EID0	0x27
-#define MCP_CNF3		0x28
-#define MCP_CNF2		0x29
-#define MCP_CNF1		0x2A
+#define MCP_CNF3		  0x28
+#define MCP_CNF2		  0x29
+#define MCP_CNF1	 	0x2A
 #define MCP_CANINTE		0x2B
 #define MCP_CANINTF		0x2C
-#define MCP_EFLG		0x2D
+#define MCP_EFLG		  0x2D
 #define MCP_TXB0CTRL	0x30
 #define MCP_TXB1CTRL	0x40
 #define MCP_TXB2CTRL	0x50
@@ -84,6 +84,7 @@ Copyright 2003 Kimberly Otten Software Consulting
 
 #define MCP_LOAD_TX0	0x40
 #define MCP_LOAD_TX1	0x42
+
 #define MCP_LOAD_TX2	0x44
 
 #define MCP_RTS_TX0		0x81
@@ -158,6 +159,10 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_TXB0SIDH    0x31
 #define MCP_TXB0SIDL    0x32
 #define MCP_TXB0DLC     0x35
-#define MCP_TXB0D0      0x36 
+#define MCP_TXB0D0      0x36
+
+#define MCP_RXB0SIDL    0x62
+#define MCP_RXB0DLC     0x65
+#define MCP_RXB0D0      0x66
 
 #endif

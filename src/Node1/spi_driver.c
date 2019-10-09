@@ -14,7 +14,7 @@ void spi_master_init(){
 char spi_master_transceive(char c) {
   SPDR = c;
   while(!(SPSR & (1 << SPIF))){
-    _delay_ms(100);
+    //_delay_ms(100);
   }
   return SPDR;
 }
