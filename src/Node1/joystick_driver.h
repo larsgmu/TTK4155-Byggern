@@ -8,6 +8,7 @@
 #include <math.h>
 
 #define JOYSTICK_CONSTANT 0.78431
+#define JOYSTICK_INIT_NO 4
 
 enum joystick_dir {
   NEUTRAL = 0,

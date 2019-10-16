@@ -24,7 +24,7 @@ void adc_init(void) {
   GICR |= (1 << INT2);
 }
 
-uint8_t adc_read(enum channel_type channel){
+uint8_t adc_read(enum channel_type channel){		//er interrupts brukt fornuftig her ? 
   volatile char *address = (char*)0x1400;
   address[0] = channel;
   while(!(interrupt_flag));
