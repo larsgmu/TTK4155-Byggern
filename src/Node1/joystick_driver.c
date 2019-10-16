@@ -4,6 +4,7 @@
 #include "joystick_driver.h"
 #include "adc_driver.h"
 #include <util/delay.h>
+#include "can_driver.h"
 
 
 double JOYSTICK_C_UP;		//ikke slett, skal brukes
@@ -16,18 +17,20 @@ void joystick_init(Joystick* joy){
 	uint8_t y_init[JOYSTICK_INIT_NO];
 	uint16_t x_sum = 0;
 	uint16_t y_sum = 0;
-	
+
 	/*Sampling 4 times to determine initial position*/
 	for (int i = 0; i < JOYSTICK_INIT_NO; i++) {
-		x_init[i] = adc_read(X_axis)
-		y_init[i] = adc_read(Y_axis)
+		x_init[i] = adc_read(X_axis);
+		y_init[i] = adc_read(Y_axis);
 		x_sum += x_init[i];
 		y_sum += y_init[i];
 		_delay_ms(10);
 	}
-  joy->neutralx = x_sum / JOYSTICK_INIT_NO;
-  joy->neutraly = y_sum / JOYSTICK_INIT_NO;
-  joy->x = 0;
+  //joy->neutralx = x_sum / JOYSTICK_INIT_NO;
+  //joy->neutraly = y_sum / JOYSTICK_INIT_NO;
+	joy->neutralx = adc_read(X_axis);
+	joy->neutralx = adc_read(Y_axis);
+	joy->x = 0;
   joy->y = 0;
   joy->dir = NEUTRAL;
 }
@@ -61,11 +64,20 @@ void analog_direction(Joystick* joy) {
   /*Calculates direction based on angle*/
   double angle = atan2(joy->y,joy->x);
 
-  if ( ((abs(joy->neutralx - joy->x)) < threshold) && ((abs(joy->neutraly - joy->y)) < threshold) ) { 
-		joy->dir = NEUTRAL; 
+  if ( ((abs(joy->x)) < threshold) && ((joy->y) < threshold))  {
+		joy->dir = NEUTRAL;
 	}
   else if (angle >= M_PI/4 && angle < 3*M_PI/4) 										{ joy->dir = UP; }
   else if (angle > -3*M_PI/4 && angle <= -M_PI/4) 									{ joy->dir = DOWN; }
   else if (angle > 3*M_PI/4 || angle <= -3*M_PI/4) 									{ joy->dir = LEFT; }
   else if (angle > -M_PI/4  && angle <= M_PI/4 ) 										{ joy->dir = RIGHT; }
+}
+
+void send_joystick_pos(Joystick* joy){
+	CANmsg joystick_pos_msg;
+	joystick_pos_msg.id = 1;
+	joystick_pos_msg.length = 2;
+	joystick_pos_msg.data[0] = (uint8_t)joy->x + 100;
+	joystick_pos_msg.data[1] = (uint8_t)joy->y + 100;
+	can_send_msg(&joystick_pos_msg);
 }

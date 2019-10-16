@@ -5,6 +5,7 @@
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
 #include <stdio.h>
+#include <util/delay.h>
 
 //int can_interrupt_flag = 0;
 
@@ -41,6 +42,7 @@ void can_send_msg(CANmsg* can_msg) {
 
   for (int length = 0; length < can_msg->length; length++){
     mcp2515_write(MCP_TXB0D0 + length, can_msg->data[length]);
+    _delay_ms(1);
   }
   mcp2515_request_send(0);
 

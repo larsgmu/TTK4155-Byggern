@@ -10,6 +10,7 @@ void timer_init(){
   TCCR1A |= (1 << COM1A1) | (1 << WGM11);
   TCCR1A &= ~(1 << WGM10);
   TCCR1A &= ~(1 << COM1A0);
+  TCCR1B &= ~(1 << CS10) & ~(1 << CS12);
   TCCR1B |= (1 << WGM12) | (1 << WGM13) | (1 << CS11);
 
   /*Our desired TOP*/
@@ -31,7 +32,7 @@ void timer_init(){
 void set_duty_cycle(uint16_t cycle) {
   if ((cycle >= minPWM) && (cycle <= maxPWM)){
     OCR1A = cycle;
-    printf("Horer\n\r");
+    printf("Working\n\r");
   }
   else {
     printf("Invalid dutycycle!\n\r");
@@ -39,7 +40,6 @@ void set_duty_cycle(uint16_t cycle) {
 }
 
 ISR(TIMER1_COMPA_vect) {
-  //printf("Interrupt vector!\n\r");
 }
 
 /*

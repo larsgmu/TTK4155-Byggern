@@ -36,4 +36,6 @@ void analog_position(Joystick* joy);
 /*Sets current direction of Joystick as an enum*/
 void analog_direction(Joystick* joy);
 
+void send_joystick_pos(Joystick* joy);
+
 #endif

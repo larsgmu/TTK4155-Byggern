@@ -57,7 +57,7 @@ void menu_run(Joystick* joy) {
 
   CANmsg joystick_direction_msg;
   joystick_direction_msg.id = 0;
-  joystick_direction_msg.length = 3;
+  joystick_direction_msg.length = 1;
 
   switch (joy->dir) {
     case RIGHT:
@@ -68,9 +68,7 @@ void menu_run(Joystick* joy) {
         current_line = 1;
         _delay_ms(200);
       }
-      joystick_direction_msg.data[0] = 0;
-      joystick_direction_msg.data[1] = 0;
-      joystick_direction_msg.data[2] = 1;
+      joystick_direction_msg.data[0] = 4;
 
       break;
 
@@ -82,9 +80,7 @@ void menu_run(Joystick* joy) {
         current_line = 1;
         _delay_ms(200);
       }
-      joystick_direction_msg.data[0] = 1;
-      joystick_direction_msg.data[1] = 1;
-      joystick_direction_msg.data[2] = 0;
+      joystick_direction_msg.data[0] = 3;
       break;
 
     case UP:
@@ -94,8 +90,7 @@ void menu_run(Joystick* joy) {
         _delay_ms(200);
       }
       joystick_direction_msg.data[0] = 1;
-      joystick_direction_msg.data[1] = 0;
-      joystick_direction_msg.data[2] = 0;
+
       break;
 
     case DOWN:
@@ -104,22 +99,18 @@ void menu_run(Joystick* joy) {
         //oled_print_arrow(current_line);
         _delay_ms(200);
       }
-      joystick_direction_msg.data[0] = 0;
-      joystick_direction_msg.data[1] = 1;
-      joystick_direction_msg.data[2] = 0;
+      joystick_direction_msg.data[0] = 2;
 
       break;
 
     case NEUTRAL:
       joystick_direction_msg.data[0] = 0;
-      joystick_direction_msg.data[1] = 0;
-      joystick_direction_msg.data[2] = 0;
       break;
 
     default:
       break;
   }
-  can_send_msg(&joystick_direction_msg);
+  //can_send_msg(&joystick_direction_msg);
   oled_sram_menu(current_menu);
   oled_sram_arrow(current_line);
 

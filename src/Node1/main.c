@@ -37,8 +37,9 @@ void main( void ){
     while(1){
       analog_position(&joy);
       analog_direction(&joy);
-      printf("Joystick dir: %d\n\r", joy.dir );
+      send_joystick_pos(&joy);
       menu_run(&joy);
+      printf("Joystick dir %d\n\r",joy.dir);
       _delay_ms(40);
       oled_draw();
     }

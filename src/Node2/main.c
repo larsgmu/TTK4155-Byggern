@@ -34,16 +34,18 @@ void main () {
     //   set_duty_cycle(cycle);
     //   _delay_ms(500);
     // }
+    // printf("-------------------------\n\r");
 
     //printf("bajs\n\r");
-  //   latest_msg = can_receive_msg();
-  //   printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);
-  //   printf("Data: ");
-  //   for (int i = latest_msg.length - 1; i >= 0; i --) {
-  //     printf("%d", latest_msg.data[i]);
-  //   }
-  //   _delay_ms(200);
-  //   printf("\n\r");
+    latest_msg = can_receive_msg();
+    if (latest_msg.id == 1){
+      printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);
+      printf("Data: ");
+      for (int i = 0; i < latest_msg.length; i ++) {
+        printf("%d \n\r", latest_msg.data[i]);
+      }
+      _delay_ms(200);
+    }
   }
 
 }

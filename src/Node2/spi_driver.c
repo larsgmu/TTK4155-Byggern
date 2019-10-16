@@ -11,7 +11,7 @@ void spi_master_init(){
   DDRB |= (1<<PB0) | (1<<PB1) | (1<<PB2) | (1<<PB7); //The arduino defines SS as PB7
 
   /* Enable SPI */
-  SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
+  SPCR |= (1 << SPE) | (1 << MSTR) | (1 << SPR0);
 }
 
 char spi_master_transceive(char c) {
