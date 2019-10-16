@@ -11,7 +11,7 @@
 void can_init() {
   mcp2515_init();
 
-  /*loopback mode*/
+  /*Normal mode*/
   mcp2515_write(MCP_CANCTRL, MODE_NORMAL);
 
   /*Turn mask/filters off*/

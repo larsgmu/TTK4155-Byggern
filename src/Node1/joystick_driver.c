@@ -36,7 +36,7 @@ JOYSTICK_C_LEFT = (255 - joy->neutralx) / 100;
 		joy->x = (int)(JOYSTICK_C_LEFT*adc_read(X_axis));
 	} */
 
-  joy->x = (int)(JOYSTICK_CONSTANT*adc_read(X_axis) - 100) ;//Må fikse offset
+  joy->x = (int)(JOYSTICK_CONSTANT*adc_read(X_axis) - 100) ;//Må fikse offset TODO
   joy->y = (int)(JOYSTICK_CONSTANT*adc_read(Y_axis) - 100) ;
 
 }

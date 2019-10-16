@@ -8,6 +8,7 @@
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
 #include "can_driver.h"
+#include "timer_driver.h"
 
 #include <avr/io.h>
 #include <stdio.h>
@@ -20,19 +21,29 @@ void main () {
   cli();
   string_init();
   can_init();
+  timer_init();
   sei();
+
+  // DDRB |= (1 << PB6);
+  // PORTB |= (1 << PB6);
+
 
   CANmsg latest_msg;
   while (1){
-    //printf("horer er greit\n\r");
-    latest_msg = can_receive_msg();
-    printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);
-    printf("Data: ");
-    for (int i = latest_msg.length - 1; i >= 0; i --) {
-      printf("%d", latest_msg.data[i]);
-    }
-    _delay_ms(200);
-    printf("\n\r");
+    // for (int cycle = 1000; cycle <= 5000; cycle += 200){
+    //   set_duty_cycle(cycle);
+    //   _delay_ms(500);
+    // }
+
+    //printf("bajs\n\r");
+  //   latest_msg = can_receive_msg();
+  //   printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);
+  //   printf("Data: ");
+  //   for (int i = latest_msg.length - 1; i >= 0; i --) {
+  //     printf("%d", latest_msg.data[i]);
+  //   }
+  //   _delay_ms(200);
+  //   printf("\n\r");
   }
 
 }
