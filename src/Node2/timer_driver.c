@@ -7,40 +7,38 @@
 void timer_init(){
 
   /*Sets Waveform gen mode to  14 and clock to prescalar 8*/
-  TCCR1A |= (1 << COM1A1) | (1 << WGM11);
-  TCCR1A &= ~(1 << WGM10);
-  TCCR1A &= ~(1 << COM1A0);
-  TCCR1B &= ~(1 << CS10) & ~(1 << CS12);
+  TCCR1A |= (1 << COM1C1) | (1 << WGM11); // COM1C0 = 0 implisitt for non-inverting
   TCCR1B |= (1 << WGM12) | (1 << WGM13) | (1 << CS11);
 
   /*Our desired TOP*/
   ICR1 = 40000; //PWM resolutino = lo
 
   /*Set dutycycle*/
-  OCR1A = 3000;
+  OCR1C = 3000;
 
   /*Enable interrupt*/
-  TIMSK1 |= (1 << OCIE1A);
+  //TIMSK1 |= (1 << OCIE1A);
 
   /*Clear interrupt flag*/
   TIFR1 = 0;
 
-  /*Set PB5 as output*/
-  DDRB |= (1 << PB5);
+  /*Set PB6 as output*/
+  DDRB |= (1 << PB7);
+
 }
 
-void set_duty_cycle(uint16_t cycle) {
+void set_duty_cycle(uint32_t cycle) {
   if ((cycle >= minPWM) && (cycle <= maxPWM)){
-    OCR1A = cycle;
+    OCR1C = cycle;
     printf("Working\n\r");
   }
   else {
-    printf("Invalid dutycycle!\n\r");
+    printf("not working: %d\n\r",cycle);
   }
 }
 
-ISR(TIMER1_COMPA_vect) {
-}
+//ISR(TIMER1_COMPA_vect) {
+//}
 
 /*
 TCNT0(timer/counter) og OCR0A og B(Output compare)  er 8-bit.

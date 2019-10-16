@@ -12,9 +12,20 @@
 
 #include <avr/io.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <util/delay.h>
 
-//sudo picocom /dev/ttyACM0
+
+
+/*
+###### STATUS DAG 7 #######
+- Arduino må byttes, da både pb5 og pb6 er ødelagt.
+- Pb7 funker, men den er egt reservert for SS, så dermed er vi nødt til å få en ny Arduino
+- Når timer_init() blir kalt, fungerer ikke å motta meldinger over canbus
+- Joystick er ustabil - Det funker ikke alltid å navigere opp og ned
+*/
+
+
 
 void main () {
 
@@ -22,21 +33,23 @@ void main () {
   string_init();
   can_init();
   timer_init();
-  sei();
-
-  // DDRB |= (1 << PB6);
-  // PORTB |= (1 << PB6);
+  uint8_t pos = 3000;
+  //sei();
 
 
-  CANmsg latest_msg;
+
+
   while (1){
-    // for (int cycle = 1000; cycle <= 5000; cycle += 200){
-    //   set_duty_cycle(cycle);
-    //   _delay_ms(500);
+    // for (int i = 0; i < 50; i++) {
+    //   set_duty_cycle(i*100);
+    //   _delay_ms(10);
     // }
-    // printf("-------------------------\n\r");
-
-    //printf("bajs\n\r");
+    // for (int i = 50; i > 0; i--) {
+    //   set_duty_cycle(i*100);
+    //   _delay_ms(10);
+    // }
+    //printf("-------------------------\n\r");
+    CANmsg latest_msg;
     latest_msg = can_receive_msg();
     if (latest_msg.id == 1){
       printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);

@@ -1,5 +1,5 @@
 /*!@file
-* CAN interface
+* CAN interface Node 2
 */
 #include "can_driver.h"
 #include "mcp2515_driver.h"
