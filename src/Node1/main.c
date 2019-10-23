@@ -28,7 +28,6 @@ void main( void ){
     can_init();
     sei();
 
-    //oled_sram_write_char('~');
     Joystick joy;
     joystick_init(&joy);
     Slider slider;
@@ -37,9 +36,9 @@ void main( void ){
     while(1){
       analog_position(&joy);
       analog_direction(&joy);
-      send_joystick_pos(&joy);
+      //send_joystick_pos(&joy);
       menu_run(&joy);
-      printf("Joystick dir %d\n\r",joy.dir);
+      printf("Joystick X:  %d Y: %d  dir: %d \n\r",joy.x, joy.y, joy.dir);
       _delay_ms(40);
       oled_draw();
     }

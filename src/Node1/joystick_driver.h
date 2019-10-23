@@ -9,6 +9,7 @@
 
 #define JOYSTICK_CONSTANT 0.78431
 #define JOYSTICK_INIT_NO 4
+#define JOYSTICK_OFFSET 100
 
 enum joystick_dir {
   NEUTRAL = 0,
