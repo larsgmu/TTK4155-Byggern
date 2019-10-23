@@ -38,7 +38,7 @@ void main( void ){
       analog_direction(&joy);
       //send_joystick_pos(&joy);
       menu_run(&joy);
-      printf("Joystick X:  %d Y: %d  dir: %d \n\r",joy.x, joy.y, joy.dir);
+      printf("Joystick X:  %d Y: %d  dir: %d  neutX: %d  neutY:  %d \n\r",joy.x, joy.y, joy.dir, joy.neutralx, joy.neutraly);
       _delay_ms(40);
       oled_draw();
     }

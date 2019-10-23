@@ -5,6 +5,7 @@
 #include "adc_driver.h"
 #include <util/delay.h>
 #include "can_driver.h"
+#include <avr/io.h>
 
 // double JOYSTICK_C_UP;		//ikke slett, skal brukes
 // double JOYSTICK_C_DOWN;
@@ -12,23 +13,17 @@
 // double JOYSTICK_C_RIGHT;
 
 void joystick_init(Joystick* joy){
-	uint8_t x_init[JOYSTICK_INIT_NO];
-	uint8_t y_init[JOYSTICK_INIT_NO];
 	uint16_t x_sum = 0;
 	uint16_t y_sum = 0;
 
 	/*Sampling 4 times to determine initial position*/
 	for (int i = 0; i < JOYSTICK_INIT_NO; i++) {
-		x_init[i] = adc_read(X_axis);
-		y_init[i] = adc_read(Y_axis);
-		x_sum += x_init[i];
-		y_sum += y_init[i];
+		x_sum += adc_read(X_axis);
+		y_sum += adc_read(Y_axis);
 		_delay_ms(10);
 	}
   joy->neutralx = JOYSTICK_CONSTANT*(x_sum / JOYSTICK_INIT_NO) - JOYSTICK_OFFSET;
   joy->neutraly = JOYSTICK_CONSTANT*(y_sum / JOYSTICK_INIT_NO) - JOYSTICK_OFFSET;
-	//joy->neutralx = adc_read(X_axis);
-	//joy->neutralx = adc_read(Y_axis);
 	joy->x = 0;
   joy->y = 0;
   joy->dir = NEUTRAL;
@@ -60,21 +55,20 @@ JOYSTICK_C_LEFT = (255 - joy->neutralx) / 100;
 void analog_direction(Joystick* joy) {
   /*Threshold on 15 percent*/
   int threshold = 15;
+
   /*Calculates direction based on angle*/
-  double angle = atan2(joy->y,joy->x);
-	double angle2 = 4.444;
-	printf("\n angle: %f ", angle2);
-	angle = (int)angle* 180 / M_PI;
+  double anglerad = atan2(joy->y,joy->x);
+	int angle = 180 * anglerad / M_PI;
+	printf("\n angle: %d ", angle);
 
 
-
-  if ( ((abs(joy->x - joy->neutralx)) < threshold) && ((joy->y - joy->neutraly) < threshold))  {
+  if ( ((abs(joy->x - joy->neutralx)) < threshold) && (abs(joy->y - joy->neutraly) < threshold))  {
 		joy->dir = NEUTRAL;
 	}
-	else if (angle >= 45 && angle < 135) 										{ joy->dir = UP; }
-	else if (angle > -135 && angle <= -45) 									{ joy->dir = DOWN; }
-	else if (angle > 135 || angle <= -135) 									{ joy->dir = LEFT; }
-	else if (angle < 45  && angle >= -45 ) 									{ joy->dir = RIGHT; }
+	else if (angle < 135 		&& angle >= 45) 						{ joy->dir = UP; }			// 	45  < angle < 135
+	else if (angle < 45  		&& angle >= -45) 						{ joy->dir = RIGHT; }		// -45  < angle < 45
+	else if (angle < -45 		&& angle >= -135) 					{ joy->dir = DOWN; }    // -135 < angle < -45
+	else if (angle <= -135 	|| angle >= 135) 						{ joy->dir = LEFT; }		//  135 < angle or angle < -135
   // else if (angle >= M_PI/4 && angle < 3*M_PI/4) 										{ joy->dir = UP; }
   // else if (angle > -3*M_PI/4 && angle <= -M_PI/4) 									{ joy->dir = DOWN; }
   // else if (angle > 3*M_PI/4 || angle <= -3*M_PI/4) 									{ joy->dir = LEFT; }
