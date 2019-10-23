@@ -10,7 +10,9 @@
 #include <stdint.h>
 #include "menu.h"
 
+/*Initialize OLED screen*/
 void oled_init();
+/*Writes char to OLED*/
 void oled_write_c(uint8_t command);
 void oled_write_d(uint8_t data);
 void oled_goto_line(int line);  //Funker

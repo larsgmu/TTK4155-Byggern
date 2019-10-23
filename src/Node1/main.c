@@ -34,9 +34,7 @@ void main( void ){
 
 
     while(1){
-      analog_position(&joy);
-      analog_direction(&joy);
-      //send_joystick_pos(&joy);
+      joystick_run(&joy);
       menu_run(&joy);
       printf("Joystick X:  %d Y: %d  dir: %d  neutX: %d  neutY:  %d \n\r",joy.x, joy.y, joy.dir, joy.neutralx, joy.neutraly);
       _delay_ms(40);

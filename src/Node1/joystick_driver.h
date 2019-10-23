@@ -8,8 +8,10 @@
 #include <math.h>
 
 #define JOYSTICK_CONSTANT 0.78431
-#define JOYSTICK_INIT_NO 4
+#define JOYSTICK_SAMPLE_NO 4
 #define JOYSTICK_OFFSET 100
+
+
 
 enum joystick_dir {
   NEUTRAL = 0,
@@ -37,6 +39,10 @@ void analog_position(Joystick* joy);
 /*Sets current direction of Joystick as an enum*/
 void analog_direction(Joystick* joy);
 
+/*Sends CANmsg with joystick position, ID = 1*/
 void send_joystick_pos(Joystick* joy);
+
+/*General joystick function. Sends message if condition = true */
+void joystick_run(Joystick* joy);
 
 #endif

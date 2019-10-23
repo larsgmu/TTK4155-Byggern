@@ -1,3 +1,5 @@
 CAN MESSAGE ID
   0 = Joystick direction
   1 = Joystick position
+    1.1 = X
+    1.2 = Y

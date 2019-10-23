@@ -4,7 +4,7 @@
 
 #include "adc_driver.h"
 
-volatile bool interrupt_flag = false;
+volatile bool adc_interrupt_flag = false;
 
 /*!
   * Initialize ADC interface
@@ -24,14 +24,14 @@ void adc_init(void) {
   GICR |= (1 << INT2);
 }
 
-uint8_t adc_read(enum channel_type channel){		//er interrupts brukt fornuftig her ? 
+uint8_t adc_read(enum channel_type channel){		//er interrupts brukt fornuftig her ?
   volatile char *address = (char*)0x1400;
   address[0] = channel;
-  while(!(interrupt_flag));
-  interrupt_flag = false;
+  while(!(adc_interrupt_flag));
+  adc_interrupt_flag = false;
   return address[0];
 }
 
 ISR(INT2_vect){
-  interrupt_flag = true;
+  adc_interrupt_flag = true;
 }
