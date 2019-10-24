@@ -1,0 +1,3 @@
+#23 okt
+ir-sensor halvveis ferdig
+adc drivere skrevet

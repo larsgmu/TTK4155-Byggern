@@ -5,6 +5,7 @@
 
 #define IR_SAMPLE_NO 4
 volatile static int ir_adc_interrupt_flag = 0;
+int score = 0;
 
 void servo_joystick_control(CANmsg* pos_msg){
   /* position between 0 and 200 */
@@ -38,14 +39,32 @@ uint8_t ir_adc_read() {
     while(!ir_adc_interrupt_flag);
     ir_adc_interrupt_flag = 0;
 
-    adc_value += ADC; /* ADC = (V_IN * 1024) / V_REF */
+    adc_value += ADC; 
   }
   return adc_value/IR_SAMPLE_NO;
 }
 
-//    0.5 - 3V  = Invalid
-// => 102 - 615 = Invalid
+/* ADC = (V_IN * 1024) / V_REF 
+    0.5 - 3V  = Invalid
+ => 102 - 615 = Invalid
+*/
 
 ISR(ADC_vect) {
   ir_adc_interrupt_flag = 1;
 }
+
+
+void ir_game_score(Player* player) {
+	if (ir_adc_read() > 615) {
+		player->score
+	}
+	return;
+}
+
+
+
+
+
+
+
+
