@@ -1,3 +1,6 @@
 #23 okt
 ir-sensor halvveis ferdig
 adc drivere skrevet
+
+Får bare 2 V fra den forbanne IR-sensoren når de er langt unna hverandre, men
+ellers funker det fint.

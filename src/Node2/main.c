@@ -31,30 +31,22 @@ void main () {
   string_init();
   can_init();
   timer_init();
+  ir_adc_init();
   uint8_t pos = 3000;
   sei();
-
-
-
+  CANmsg latest_msg;
+  Player ung_spiller;
+  player_init(&ung_spiller, "Ung Spiller");
+  printf("Velkommen til Mujafas BMW!\n\r");
 
   while (1){
-    // for (int i = 0; i < 50; i++) {
-    //   set_duty_cycle(i*100);
-    //   _delay_ms(10);
+     latest_msg = can_receive_msg();
+     ir_game_score(&ung_spiller);
+    //
+    // printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);
+    // for (int i = 0; i < latest_msg.length; i ++) {
+    //   printf("Data: %d \n\r", latest_msg.data[i]);
     // }
-    // for (int i = 50; i > 0; i--) {
-    //   set_duty_cycle(i*100);
-    //   _delay_ms(10);
-    // }
-    printf("-------------------------\n\r");
-    CANmsg latest_msg;
-    latest_msg = can_receive_msg();
-
-    printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);
-    for (int i = 0; i < latest_msg.length; i ++) {
-      printf("Data: %d \n\r", latest_msg.data[i]);
-    }
-
     if (latest_msg.id = 1) {
       servo_joystick_control(&latest_msg);
     }
