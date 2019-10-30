@@ -22,7 +22,7 @@ void timer_init(){
   /*Clear interrupt flag*/
   TIFR1 |= (1 << OCF1A);
 
-  /*Set PB5 as output*/
+  /*Set PB6 as output*/
   DDRB |= (1 << PB6);
 
 }

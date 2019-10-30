@@ -28,48 +28,60 @@ static struct oled_data_marker_struct oled_state;
 
 
 void oled_init()   {
-  oled_write_c(0xae);        //  display  off
-  oled_write_c(0xa1);        //segment  remap
-  oled_write_c(0xda);        //common  pads  hardware:  alternative
+  oled_write_c(0xae);        // display  off
+  oled_write_c(0xa1);        // segment  remap
+  oled_write_c(0xda);        // common  pads  hardware:  alternative
   oled_write_c(0x12);
-  oled_write_c(0xc8);        //common  output scan direction:com63~com0
-  oled_write_c(0xa8);        //multiplex  ration  mode:63
+  oled_write_c(0xc8);        // common  output scan direction:com63~com0
+  oled_write_c(0xa8);        // multiplex  ration  mode:63
   oled_write_c(0x3f);
-  oled_write_c(0xd5);        //display  divide ratio/osc. freq. mode
+  oled_write_c(0xd5);        // display  divide ratio/osc. freq. mode
   oled_write_c(0x80);
-  oled_write_c(0x81);        //contrast  control
+  oled_write_c(0x81);        // contrast  control
   oled_write_c(0x50);
-  oled_write_c(0xd9);        //set  pre-charge  period
+  oled_write_c(0xd9);        // set  pre-charge  period
   oled_write_c(0x21);
-  oled_write_c(0x20);        //Set  Memory  Addressing  Mode
+  oled_write_c(0x20);        // set  Memory  Addressing  Mode
   oled_write_c(0x00);
-  oled_write_c(0xdb);        //VCOM  deselect  level  mode
+  oled_write_c(0xdb);        // VCOM  deselect  level  mode
   oled_write_c(0x30);
-  oled_write_c(0xad);        //master  configuration
+  oled_write_c(0xad);        // master  configuration
   oled_write_c(0x00);
-  oled_write_c(0xa4);        //out  follows  RAM  content
-  oled_write_c(0xa6);        //set  normal  display
-  oled_write_c(0xaf);        //display  on
+  oled_write_c(0xa4);        // out  follows  RAM  content
+  oled_write_c(0xa6);        // set  normal  display
+  oled_write_c(0xaf);        // display  on
 
-  //Setup timer interrupt
-  TCNT1L = 0xB0;//For intterupt every 60hz
-  TCNT1H = 0xff;
-	TCCR1A = 0x00;
-	TCCR1B = (1<<CS10) | (1<<CS12);;  // Timer mode with 1024 prescler
-	TIMSK = (1 << TOIE1) ;   // Enable timer1 overflow interrupt(TOIE1)
+
+  /*  Want the timer to overflow every
+      60Hz = 0.01667s= 16.67ms          */      // CPU = 4915200 Hz
+  /* Timer with 1024 prescaler*/
+  TCCR1B |= (1<<CS10) | (1<<CS12);
+  /* Setting the counter reg such that overflow occurs after 16.67ms (60Hz)*/
+  TCNT1H = 0xFF;
+  TCNT1L = 0xB0;
+  /* Normal mode (just to be sure) */
+	TCCR1A &= ~(1 << COM1A1);
+  TCCR1A &= ~(1 << COM1A0);
+  /*Clear overflow flag by writing 1 to its location*/
+  TIFR  |= (1 << TOV1) ;
+  /* Enable Timer1 Overflow Interrupts*/
+	TIMSK |= (1 << TOIE1) ;
 }
 
 ISR(TIMER1_OVF_vect){
   // cli();
-  // TIFR = 0x00; //clear overflow flag
-  // TCNT1L = 0xB0;//For intterupt every 60hz
-  // TCNT1H = 0xff;
-  // if(!oled_state.CHANGED){
+  // /*Clear overflow flag by writing 1 to its location*/
+  // TIFR  |= (1 << TOV1) ;
+  // TCNT1H = 0xFF; //resetting the counter
+  // TCNT1L = 0xB0;
+  // if (!oled_state.CHANGED) {
+  //   sei();
   //   return;
   // }
   // oled_draw();
   // oled_state.CHANGED = 0;
   // sei();
+  // return;
 }
 
 
@@ -132,8 +144,8 @@ void oled_pos(int row,int column){
 
 
 void oled_sram_write_d(uint8_t adr, uint8_t data){
-  oled_sram_adress[adr] = data;
   oled_state.CHANGED = 1;
+  oled_sram_adress[adr] = data;
 }
 
 void oled_sram_write_char(unsigned char c){
@@ -204,8 +216,8 @@ void oled_sram_arrow(uint8_t line){
 
 void oled_draw(){
   oled_home();
-  for (int line = 0; line < 8; line++ ){
-    for(int col = 0; col < 128; col++){
+  for (int line = 0; line < 8; line++ ) {
+    for (int col = 0; col < 128; col++){
       oled_pos(line,col);
       oled_write_d(oled_sram_adress[line*128 + col]);
     }
