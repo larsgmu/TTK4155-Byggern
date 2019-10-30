@@ -27,7 +27,7 @@ void timer_init(){
 
 }
 
-void set_duty_cycle(uint32_t cycle) {
+void set_duty_cycle(uint16_t cycle) {
   if ((cycle >= minPWM) && (cycle <= maxPWM)){
     OCR1B = cycle;
   }

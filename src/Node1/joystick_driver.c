@@ -22,8 +22,8 @@ void joystick_init(Joystick* joy){
 		y_sum += adc_read(Y_axis);
 		_delay_ms(10);
 	}
-  joy->neutralx = JOYSTICK_CONSTANT*(x_sum / JOYSTICK_INIT_NO) - JOYSTICK_OFFSET;
-  joy->neutraly = JOYSTICK_CONSTANT*(y_sum / JOYSTICK_INIT_NO) - JOYSTICK_OFFSET;
+  joy->neutralx = JOYSTICK_CONSTANT*(x_sum / JOYSTICK_SAMPLE_NO) - JOYSTICK_OFFSET;
+  joy->neutraly = JOYSTICK_CONSTANT*(y_sum / JOYSTICK_SAMPLE_NO) - JOYSTICK_OFFSET;
 	joy->x = 0;
   joy->y = 0;
   joy->dir = NEUTRAL;
@@ -57,8 +57,9 @@ void send_joystick_pos(Joystick* joy){
 	CANmsg joystick_pos_msg;
 	joystick_pos_msg.id = 1;
 	joystick_pos_msg.length = 2;
-	joystick_pos_msg.data[0] = (uint8_t)joy->x + 100;
-	joystick_pos_msg.data[1] = (uint8_t)joy->y + 100;
+	joystick_pos_msg.data[0] = (uint8_t)joy->x + 100; //X mellom 0 og 200
+	joystick_pos_msg.data[1] = (uint8_t)joy->y + 100; // Y mellom 0 og 200
+	printf("X: %d 		Y: %d \n\r", joystick_pos_msg.data[0], joystick_pos_msg.data[1]);
 	can_send_msg(&joystick_pos_msg);
 }
 

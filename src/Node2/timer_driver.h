@@ -4,6 +4,6 @@
 #include <stdint.h>
 
 void timer_init();
-void set_duty_cycle(uint32_t cycle);
+void set_duty_cycle(uint16_t cycle);
 
 #endif

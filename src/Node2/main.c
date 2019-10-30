@@ -10,20 +10,12 @@
 #include "can_driver.h"
 #include "timer_driver.h"
 #include "gameboard_driver.h"
+#include "motor_driver.h"
 
 #include <avr/io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <util/delay.h>
-
-
-
-/*
-###### STATUS DAG 7 #######
-- Når timer_init() blir kalt, fungerer ikke å motta meldinger over canbus
-*/
-
-
 
 void main () {
 
@@ -32,6 +24,7 @@ void main () {
   can_init();
   timer_init();
   ir_adc_init();
+  motor_init();
   uint8_t pos = 3000;
   sei();
   CANmsg latest_msg;
@@ -42,13 +35,15 @@ void main () {
   while (1){
      latest_msg = can_receive_msg();
      ir_game_score(&ung_spiller);
-    //
-    // printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);
-    // for (int i = 0; i < latest_msg.length; i ++) {
-    //   printf("Data: %d \n\r", latest_msg.data[i]);
-    // }
-    if (latest_msg.id = 1) {
+
+     // printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);
+     // for (int i = 0; i < latest_msg.length; i ++){
+     //   printf("Data: %d \n\r", latest_msg.data[i]);
+     // }
+     
+    if (latest_msg.id == 1) {
       servo_joystick_control(&latest_msg);
+      motor_run(latest_msg.data[0]);
     }
   }
 }

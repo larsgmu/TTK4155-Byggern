@@ -36,7 +36,7 @@ void main( void ){
     while(1){
       joystick_run(&joy);
       menu_run(&joy);
-      printf("Joystick X:  %d Y: %d  dir: %d  neutX: %d  neutY:  %d \n\r",joy.x, joy.y, joy.dir, joy.neutralx, joy.neutraly);
+      //printf("Joystick X:  %d Y: %d  dir: %d  neutX: %d  neutY:  %d \n\r",joy.x, joy.y, joy.dir, joy.neutralx, joy.neutraly);
       _delay_ms(40);
       oled_draw();
     }

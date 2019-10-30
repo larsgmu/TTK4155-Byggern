@@ -12,9 +12,8 @@ volatile static int adc_value;
 
 void servo_joystick_control(CANmsg* pos_msg){
   /* position between 0 and 200 */
-  uint32_t cycle = 12*pos_msg->data[0] + 1800;
+  uint32_t cycle = 12*pos_msg->data[1] + 1800;
   set_duty_cycle(cycle);
-  //printf("Duty cycle: %d\n\r", cycle );
 }
 
 void ir_adc_init() {
