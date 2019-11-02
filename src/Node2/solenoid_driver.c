@@ -8,13 +8,13 @@ void solenoid_init(){
   DDRB |= (1 << PB4);
 
   /* "Active high"  */
-  PORTB |= (1 << PB4);
+  PORTB &= ~(1 << PB4);
 
 }
 void solenoid_extend(){
 
   PORTB |= (1 << PB4);
-  _delay_ms(100);
+  _delay_ms(3000);
   PORTB &= ~(1 << PB4);
 
 

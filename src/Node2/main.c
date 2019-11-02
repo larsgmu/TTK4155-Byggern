@@ -13,6 +13,7 @@
 #include "motor_driver.h"
 #include "solenoid_driver.h"
 
+
 #include <avr/io.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,17 +22,7 @@
 
 
 
-/*
-TODO 30. Oktober
 
-- Solenoide driver er satt opp og fungerer som den skal
-- Må koble om strømforsyning slik at arduino får strøm fra den andre kretsen isteden for fra
- USB evt. fra en separat PSU
- - Fikse OLED update med time interrupt
- - Encoder på Lab plass 8 brettet fungerer ikke (viser kun 0??)
- - Fiks^ Så fortsette på PI regulator
-
-*/
 
 
 
@@ -59,18 +50,22 @@ void main () {
      latest_msg = can_receive_msg();
      // ir_game_score(&ung_spiller);
      //motor_run(30);
-     // printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);
+     //printf("Message ID: %d      Length: %d \n\r", latest_msg.id, latest_msg.length);
      // for (int i = 0; i < latest_msg.length; i ++){
      //   printf("Data: %d \n\r", latest_msg.data[i]);
      // }
 
-    if (latest_msg.id == 1) {
+     if (latest_msg.id == 1) {
       servo_joystick_control(&latest_msg);
       motor_run(latest_msg.data[0]);
     }
-    printf("ENCODER: %d\n\r", encoder_read());
-    // solenoid_extend();
-    // _delay_ms(1000);
+    // printf("ENCODER: %d\n\r", encoder_read());
+    if(latest_msg.data[2] == 1){
+        solenoid_extend();
+    }
+
+    printf("Right button: %d\n\r", latest_msg.data[2]);
+     // _delay_ms(5000);
 
   }
 }

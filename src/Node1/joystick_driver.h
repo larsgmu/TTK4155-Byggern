@@ -45,4 +45,9 @@ void send_joystick_pos(Joystick* joy);
 /*General joystick function. Sends message if condition = true */
 void joystick_run(Joystick* joy);
 
+/*Check if left button on Gameboard is pressed*/
+int8_t left_button_pressed();
+
+/*Check if right button on Gameboard is pressed*/
+int8_t right_button_pressed();
 #endif

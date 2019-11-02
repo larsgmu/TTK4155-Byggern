@@ -4,3 +4,12 @@ adc drivere skrevet
 #25 okt
 Får bare 2 V fra den forbanne IR-sensoren når de er langt unna hverandre, men
 ellers funker det fint.
+
+#2. Nov
+- Solenoide driver er satt opp og fungerer som den skal med touch knapp
+- Må koble om strømforsyning slik at arduino får strøm fra den andre kretsen isteden for fra
+ USB evt. fra en separat PSU - har prøvd men får ikke nok spenning ut av arduino etterpå
+ - Fikse OLED update med time interrupt
+ - OLED glitcher litt til tider
+ - Encoder på Lab plass 8 brettet fungerer ikke (viser kun 0??)
+ - Fiks^ Så fortsette på PI regulator

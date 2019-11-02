@@ -5,6 +5,8 @@
 #define SLIDER_H
 
 #include "adc_driver.h"
+#include "stdbool.h"
+#include "stdlib.h"
 
 typedef struct Slider_struct {
     int right_pos;

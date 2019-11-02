@@ -22,6 +22,13 @@ void adc_init(void) {
 
   //Enable interrupt  on PE0
   GICR |= (1 << INT2);
+
+  //Setup PB2 as input for right button on game gameboard
+  DDRB &= ~(1 << PB2);
+
+  //Setup PB3 as input for left button on game gameboard
+  DDRB &= ~(1 << PB3);
+
 }
 
 uint8_t adc_read(enum channel_type channel){		//er interrupts brukt fornuftig her ?
