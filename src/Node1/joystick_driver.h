@@ -4,7 +4,7 @@
 #ifndef JOYSTICK_H
 #define JOYSTICK_H
 
-#include <stdlib.h>
+#include <stdint.h>
 #include <math.h>
 
 #define JOYSTICK_CONSTANT 0.78431
