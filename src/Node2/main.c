@@ -11,7 +11,6 @@
 #include "timer_driver.h"
 #include "gameboard_driver.h"
 #include "motor_driver.h"
-#include "solenoid_driver.h"
 
 
 #include <avr/io.h>

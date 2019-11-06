@@ -45,11 +45,11 @@ int8_t left_button_pressed(){
 }
 int8_t right_button_pressed(){
   if(PINB&(1<<PB2)){
-    printf("Right Button Pressed\n\r");
+  //  printf("Right Button Pressed\n\r");
     return 1;
   }
   else{
-    printf("Right button not pressed\n\r");
+    //printf("Right button not pressed\n\r");
   }
   return 0;
 }

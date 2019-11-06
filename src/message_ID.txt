@@ -10,3 +10,5 @@ CAN MESSAGE ID
     data = 0: easy
     data = 1: medium
     data = 2: hard
+
+5 = Joystick direction

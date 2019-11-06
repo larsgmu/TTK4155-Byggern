@@ -7,6 +7,7 @@
 #include <util/delay.h>
 #include "can_driver.h"
 #include <stdlib.h>
+#include <string.h>
 
 Menu* main_menu;
 Menu* current_menu;
@@ -33,11 +34,17 @@ Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info
   return new_menu;
 }
 
+void change_difficulty(char* diff){
+  current_difficulty = diff;
+  current_menu->parent_menu->info = diff;
+}
+
+
 Menu* menu_init() {
 
   //main menu creation
   main_menu = malloc(sizeof(Menu));
-  current_difficulty = "easy";
+  current_difficulty = "EASY";
   main_menu->name = "Main Menu";
   main_menu->header = "";
   main_menu->info = "";
@@ -48,16 +55,29 @@ Menu* menu_init() {
   }
   current_menu = main_menu;
 
-  Menu* ping_pong = menu_make_sub_menu(main_menu, "Ping Pong!", "","",NULL);
+  Menu* ping_pong = menu_make_sub_menu(main_menu, "Ping Pong!","",current_difficulty,NULL);
   Menu* start_game = menu_make_sub_menu(ping_pong, "Start","","",NULL);
-  Menu* difficulty = menu_make_sub_menu(ping_pong, "Choose difficulty", "Difficulty", current_difficulty,NULL);
-  Menu* level_1 = menu_make_sub_menu(difficulty, "EASY","","",NULL);
-  Menu* level_2 = menu_make_sub_menu(difficulty, "NORMAL","","",NULL);
-  Menu* level_3 = menu_make_sub_menu(difficulty, "HARD","","",NULL);
+  Menu* difficulty = menu_make_sub_menu(ping_pong, "Difficulty", "Select Level", "",NULL);
+  Menu* high_score = menu_make_sub_menu(ping_pong, "High Score", "Select Level", "",NULL);
+  Menu* level_1 = menu_make_sub_menu(difficulty, "EASY","","",&change_difficulty);
+  Menu* level_2 = menu_make_sub_menu(difficulty, "NORMAL","","",&change_difficulty);
+  Menu* level_3 = menu_make_sub_menu(difficulty, "HARD","","",&change_difficulty);
   //oled initialisering
   current_line = 1; //top line
 }
 
+
+void menu_run_functions(){
+
+  /*Change difficulty*/
+  if (current_menu->sub_menu[current_line-1]->fun_ptr == &change_difficulty)
+  {
+      /*Update info lable at bottom of Ping Pong menu with the current difficulty*/
+      (*current_menu->sub_menu[current_line-1]->fun_ptr)(current_menu->sub_menu[current_line-1]->name);
+  }
+}
+
+void menu_run(Joystick* joy) {
 
 void menu_run() {
   joystick_run(&joy);
@@ -72,6 +92,12 @@ void menu_run() {
         current_menu = current_menu->sub_menu[current_line-1];
         current_line = 1;
         _delay_ms(200);
+      }
+      if (current_menu->sub_menu[current_line-1]->fun_ptr != NULL ){
+          menu_run_functions();
+      }
+      else {
+
       }
       joystick_direction_msg.data[0] = 4;
 

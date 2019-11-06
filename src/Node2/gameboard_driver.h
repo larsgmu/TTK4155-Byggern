@@ -19,4 +19,9 @@ uint8_t ir_adc_read();
 /*Checking if ball hit IR-sensor, if so, increase score*/
 void play_pingpong();
 
+void solenoid_init();
+
+void solenoid_extend();
+
+
 #endif

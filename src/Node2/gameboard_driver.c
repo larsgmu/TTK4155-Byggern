@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
 
 #define IR_SAMPLE_NO 4
 #define DEAD 70
@@ -14,9 +15,9 @@ volatile static int adc_value;
 volatile static in ir_value;
 
 
-void servo_joystick_control(CANmsg* pos_msg){
+void servo_joystick_control(uint8_t* pos_msg){
   /* position between 0 and 200 */
-  uint32_t cycle = 12*pos_msg->data[1] + 1800;
+  uint32_t cycle = 12*pos_msg + 1800;
   set_duty_cycle(cycle);
 }
 
@@ -83,4 +84,22 @@ void play_pingpong() {
     stop_pingpong.length = 1;
     stop_pingpong.data[0] = 0;
     can_send_msg(&stop_pingpong);
+}
+
+
+void solenoid_init(){
+
+  /*Set output pin to enable solenoid relay */
+  DDRB |= (1 << PB4);
+
+  /* "Active high"  */
+  PORTB &= ~(1 << PB4);
+
+}
+void solenoid_extend(){
+
+  PORTB |= (1 << PB4);
+  _delay_ms(3000);
+  PORTB &= ~(1 << PB4);
+
 }

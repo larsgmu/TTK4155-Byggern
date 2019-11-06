@@ -29,6 +29,14 @@ void main( void ){
 
     Slider slider;
 
+    char line[8] = {1,0,0,0,0,0,1,0};
+    char temp[1]= {0b00000000};
+    for(int i= 0; i < 8 ; i++){
+      temp[0] |= (line[i]<<(7-i));
+      printf("Temp: %d \n\r",(uint8_t)temp[0]);
+    }
+    //printf("Temp: %s\r\n", temp[0]);
+
 
     while(1){
       menu_run();
