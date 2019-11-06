@@ -73,14 +73,14 @@ void analog_direction(Joystick* joy) {
 
 void send_joystick_pos(Joystick* joy){
 	_delay_ms(10);
-	CANmsg joystick_pos_msg;
-	joystick_pos_msg.id = 1;
-	joystick_pos_msg.length = 3;
-	joystick_pos_msg.data[0] = (uint8_t)joy->x + 100; //X mellom 0 og 200
-	joystick_pos_msg.data[1] = (uint8_t)joy->y + 100; // Y mellom 0 og 200
-	joystick_pos_msg.data[2] = (uint8_t)right_button_pressed();
-	//printf("X: %d 		Y: %d \n\r", joystick_pos_msg.data[0], joystick_pos_msg.data[1]);
-	can_send_msg(&joystick_pos_msg);
+	CANmsg joystick_msg;
+	joystick_msg.id = 1;
+	joystick_msg.length = 3;
+	joystick_msg.data[0] = (uint8_t)joy->x + 100; //X mellom 0 og 200
+	joystick_msg.data[1] = (uint8_t)joy->y + 100; // Y mellom 0 og 200
+	joystick_msg.data[2] = (uint8_t)right_button_pressed();
+	//printf("X: %d 		Y: %d \n\r", joystick_msg.data[0], joystick_msg.data[1]);
+	can_send_msg(&joystick_msg);
 }
 
 void joystick_run(Joystick* joy) {

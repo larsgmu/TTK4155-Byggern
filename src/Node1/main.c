@@ -8,7 +8,6 @@
 #include "usart_driver.h"
 #include "adc_driver.h"
 #include "sram_driver.h"
-#include "joystick_driver.h"
 #include "slider_driver.h"
 #include "oled_driver.h"
 #include "spi_driver.h"
@@ -28,21 +27,11 @@ void main( void ){
     can_init();
     sei();
 
-    Joystick joy;
-    joystick_init(&joy);
     Slider slider;
 
 
     while(1){
-
-    
-
-
-      joystick_run(&joy);
-      menu_run(&joy);
-      //printf("Joystick X:  %d Y: %d  dir: %d  neutX: %d  neutY:  %d \n\r",joy.x, joy.y, joy.dir, joy.neutralx, joy.neutraly);
-      right_button_pressed();
-
+      menu_run();
       _delay_ms(40);
       oled_draw();
     }

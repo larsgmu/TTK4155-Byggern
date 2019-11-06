@@ -10,6 +10,8 @@
 
 Menu* main_menu;
 Menu* current_menu;
+Joystick joy;
+joystick_init(&joy);
 
 uint8_t current_line;
 char* current_difficulty;
@@ -56,22 +58,20 @@ Menu* menu_init() {
   current_line = 1; //top line
 }
 
-void menu_run(Joystick* joy) {
 
+void menu_run() {
+  joystick_run(&joy);
   CANmsg joystick_direction_msg;
-  joystick_direction_msg.id = 0;
+  joystick_direction_msg.id = 5;
   joystick_direction_msg.length = 1;
 
-  switch (joy->dir) {
+  switch (joy.dir) {
     case RIGHT:
       //Om submenyen vi prøver å velge har en submeny
       if (current_menu->sub_menu[current_line-1]->sub_menu[0] != NULL){
         current_menu = current_menu->sub_menu[current_line-1];
         current_line = 1;
         _delay_ms(200);
-      }
-      else {
-
       }
       joystick_direction_msg.data[0] = 4;
 
