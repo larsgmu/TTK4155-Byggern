@@ -16,5 +16,5 @@ ellers funker det fint.
 
 
 #6. Nov
-
+Test med å legge til sei() i slutten eller starten av alle init funksjoner som enabler interrupts
 ADC interrupt funker ikke i det hele tatt
