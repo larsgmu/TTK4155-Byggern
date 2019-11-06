@@ -19,6 +19,6 @@ typedef struct Menu_struct {
 Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info, void (*function)(char*));
 Menu* menu_init();
 void menu_run(Joystick* joy);
-void customLine(int line, char*, int lenght);
-
+void change_difficulty(char* diff);
+void menu_run_functions();
 #endif

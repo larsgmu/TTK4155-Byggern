@@ -11,7 +11,6 @@
 #include "timer_driver.h"
 #include "gameboard_driver.h"
 #include "motor_driver.h"
-#include "solenoid_driver.h"
 
 
 #include <avr/io.h>
@@ -28,7 +27,7 @@ void main () {
   timer_init();
   ir_adc_init();
   motor_init();
-  uint8_t pos = 3000;
+  uint16_t pos = 3000;
   sei();
   CANmsg latest_msg;
   Player ung_spiller;
@@ -50,7 +49,7 @@ void main () {
       servo_joystick_control(&latest_msg);
       motor_run(latest_msg.data[0]);
     }
-    printf("ENCODER: %d\n\r", encoder_read());
+  //  printf("ENCODER: %d\n\r", encoder_read());
     if(latest_msg.data[2] == 1){
         solenoid_extend();
     }
