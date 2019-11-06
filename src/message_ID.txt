@@ -2,6 +2,13 @@ CAN MESSAGE ID
   0 = play game
       data = 0: menu
       data = 1: ping pong
-  1 = Joystick position
-    1.1 = X
-    1.2 = Y
+  1 = Joystick msg
+    1.0 = X
+    1.1 = Y
+    1.2 = Right button
+  3 = Difficulty
+    data = 0: easy
+    data = 1: medium
+    data = 2: hard
+
+5 = Joystick direction

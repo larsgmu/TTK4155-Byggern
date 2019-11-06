@@ -4,10 +4,14 @@
 #include "can_driver.h"
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
+
 #include <stdio.h>
 #include <util/delay.h>
 
+#define F_CPU 4915200
+
 //int can_interrupt_flag = 0;
+static CANmsg latest_msg;
 
 void can_init() {
   mcp2515_init();
@@ -45,7 +49,6 @@ void can_send_msg(CANmsg* can_msg) {
     _delay_ms(1);
   }
   mcp2515_request_send(0);
-
 }
 
 CANmsg can_receive_msg() {
@@ -57,6 +60,10 @@ CANmsg can_receive_msg() {
   }
   mcp2515_bit_modify(MCP_CANINTF, 0b00000001, 0);
   return msg;
+}
+
+CANmsg get_CAN_msg(){
+    return latest_msg;
 }
 
 ISR(INT0_vect){

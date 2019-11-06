@@ -1,18 +1,23 @@
 #include "gameboard_driver.h"
 #include "timer_driver.h"
+#include "can_driver.h"
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
 
 #define IR_SAMPLE_NO 4
+#define DEAD 70
+
 volatile static int ir_adc_interrupt_flag = 0;
 volatile static int playing = 0;
 volatile static int adc_value;
+volatile static in ir_value;
 
 
-void servo_joystick_control(CANmsg* pos_msg){
+void servo_joystick_control(uint8_t* pos_msg){
   /* position between 0 and 200 */
-  uint32_t cycle = 12*pos_msg->data[1] + 1800;
+  uint32_t cycle = 12*pos_msg + 1800;
   set_duty_cycle(cycle);
 }
 
@@ -59,28 +64,42 @@ ISR(ADC_vect) {
   ir_adc_interrupt_flag = 1;
 }
 
-void player_init(Player* player, char* name){
-  player->score = 0;
-  player->lives = 3;
-  player->name = name;
+void play_pingpong() {
+
+    while(1) {
+        ir_value = ir_adc_read();
+        if (get_CAN_msg().id == 1) {
+            motor_run(get_CAN_msg().data[0])
+            servo_joystick_control(get_CAN_msg().data[1])
+            if (get_CAN_msg().data[2]){
+                solenoid_extend();
+            }
+        }
+        if (adc_value < DEAD){
+            break;
+        }
+    }
+    CANmsg stop_pingpong;
+    stop_pingpong.id = 0;
+    stop_pingpong.length = 1;
+    stop_pingpong.data[0] = 0;
+    can_send_msg(&stop_pingpong);
 }
 
-/*Har skrevet denne nå kun for å teste logikken og det funker
-Vi må finne en ny måte å sørge for at den ikke teller ned antall liv
-mens ballen fortsatt bever seg nedover */
-void ir_game_score(Player* player) {
-  adc_value = ir_adc_read();
-  if (adc_value < 70 && player->lives != 0 && playing == 1){
-    player->lives -= 1;
-    playing = 0;
-    if (player->lives == 0) {
-      printf("You dead now\n\r");
-    }
-    else{
-    printf("Lives: %d\n\r", player->lives);
-    }
-  }
-  else if (adc_value > 150 && player->lives != 0 && playing == 0){
-    playing = 1;
-  }
+
+void solenoid_init(){
+
+  /*Set output pin to enable solenoid relay */
+  DDRB |= (1 << PB4);
+
+  /* "Active high"  */
+  PORTB &= ~(1 << PB4);
+
+}
+void solenoid_extend(){
+
+  PORTB |= (1 << PB4);
+  _delay_ms(3000);
+  PORTB &= ~(1 << PB4);
+
 }

@@ -206,6 +206,7 @@ void oled_sram_menu(Menu* menu) {
     oled_sram_write_string(menu->sub_menu[i]->name);
   }
   if (menu->info != "") {
+    oled_goto_column(0);
     oled_goto_line(7);
     oled_sram_write_string(menu->info);
   }
