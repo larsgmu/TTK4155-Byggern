@@ -29,8 +29,13 @@ void oled_sram_menu(Menu* menu);
 void oled_sram_clear_line(int line);
 void oled_sram_arrow(uint8_t line);
 
+<<<<<<< Updated upstream
 
 /* Draws to OLED from the SRAM */
+=======
+void oled_sram_draw_pixel(uint8_t adr);
+
+>>>>>>> Stashed changes
 void oled_draw();
 
 #endif
