@@ -77,8 +77,6 @@ void menu_run_functions(){
   }
 }
 
-void menu_run(Joystick* joy) {
-
 void menu_run() {
   joystick_run(&joy);
   CANmsg joystick_direction_msg;
