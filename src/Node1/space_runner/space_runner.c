@@ -1,10 +1,12 @@
-#include "space_runner.h"
-#include "oled_driver.h"
-#include <time.h>
+#include 	"space_runner.h"
+#include 	"oled_driver.h"
+#include 	<time.h>
+#include 	<util/delay.h>
 
 #define MAX_Y 64	//height of OLED	: 8 chars
 #define MAX_X 128	//width of OLED		:16 chars
 
+static volatile char* oled_sram_adress = (char*)0x1C00;
 srand(time(0));		//seeds time
 
 static uint8_t 						GRAVITY 			= 4;
@@ -18,10 +20,10 @@ volatile static uint16_t 	sr_SCORE 			= 0; 	//max is 65536
 static uint8_t MAP[MAX_Y][MAX_X];
 
 void sr_init(Runner* runner, Obstacle_list* obst) {
-		/*Initialize OLED for game purpose*/
+		/*Initialize OLED for game purposes*/
 		oled_init();
-		//oled_write_c(0x20);       //Set  Memory  Addressing  Mode
-		//oled_write_c(0x10);				// 0x10: Page Adressing Mode
+		oled_write_c(0x20);       //Set  Memory  Addressing  Mode
+		oled_write_c(0x10);					// 0x10: Page Adressing Mode
 	
 		sr_GAMEOVER = 0;
 		sr_JUMPFLAG = 0;
@@ -61,19 +63,17 @@ void sr_sprite_test(Runner* runner) {			//makes a square runner
 }
 
 void sr_gen_obst(Runner* runner, Obstacle_list* obst) {
-	/*Randomly generates obstacles, maximum 3 at a time.*/
-	if (rand()%70 == 2 && obst->size < 2) {
-		Obstacle o;
-		o->posx 	= MAX_X-OBSTACLE_DIM;
-		obst->size ++ ;
-		obst[size] = o;
-	}
+	Obstacle o;
+	o->posx 	= MAX_X-OBSTACLE_DIM;
+	obst->size ++ ;
+	obst[size] = o;
 }
 
 void sr_jump(Runner* runner) {
     if sr_JUMPFLAG == 1 { return;	}		//no double jumps
 		sr_JUMPFLAG  = 1;
     runner->vely = JUMP_SPEED;
+		/*Add another sprite*/
 }
 
 
@@ -91,6 +91,59 @@ void sr_crash() {
 	}
 	delay_ms(1000);
 	sr_GAMEOVER = 1;
+}
+
+
+void sr_run(Runner* runner, Joystick* joy, Obstacle_list* obst) {
+	/*Update score*/
+	sr_SCORE ++;
+	
+	/* Update Y-velocity */
+	if (runner->vely != 0) { //can also check if sr_JUMPFLAG
+		runner->vely -= GRAVITY*0.5;
+		//If player hits ground
+		if (runner->posy == GROUND_LEVEL-1 && sr_JUMPFLAG) {
+			runner->vely = 0;
+			sr_JUMPFLAG = 0;
+			/*Change back to origginal sprite*/
+		}
+	}
+	
+	/*Jump*/
+	if (joy->dir == UP) {
+		sr_jump();
+	}
+	
+	/*Update Y-position*/
+	if (sr_JUMPFLAG) {
+		runner->posy = (int)(runner->posy + vely);		//Values probably not right
+	}
+	
+	/*Update Ostacles' X-position*/
+	for (int i = 0; i < obst->size; i ++) {
+		obst->obstacles[i]->posx -= velx;
+		
+		/*Check if crash*/
+		if ((runner->posx + RUNNER_WIDTH <= obst->obstacles[i]->posx) && (runner->posy >= GROUND_LEVEL+OBSTACLE_DIM)) {
+			sr_crash();
+		}
+	}
+	
+	/*Check if Obstacle 1 out of bounds*/
+	if (obst->obstacles[0]->posx <= 0) {
+		for (int i = 0; i < obst->size-1; i++) {
+			obst->obstacle[i] = obst->obstacle[i+1];	//Pushes the obstacles further down the queue
+		}
+		obst->size --;	//there might be more than (size) obstacles in list but they be ignored
+	}
+	
+	/*Randomly generates obstacles, maximum 3 at a time.*/
+	if (rand()%70 == 2 && obst->size < 2) { 
+		sr_gen_obst(obstacles)
+	}
+	
+	/*Update map*/
+	sr_draw_map(runner, obst);
 }
 
 void sr_draw_map(Runner* runner, Obstacle_list* obst) {
@@ -133,74 +186,45 @@ void sr_draw_map(Runner* runner, Obstacle_list* obst) {
 }
 
 
-void sr_run(Runner* runner, Joystick* joy, Obstacle_list* obst) {
-	/*Update score*/
-	sr_SCORE ++;
-	
-	/* Update Y-velocity */
-	if (runner->vely != 0) { //can also check if sr_JUMPFLAG
-		runner->vely -= GRAVITY*0.5;
-		//If player hits ground
-		if (runner->posy == GROUND_LEVEL-1 && sr_JUMPFLAG) {
-			runner->vely = 0;
-			sr_JUMPFLAG = 0;
-		}
-	}
-	
-	/*Jump*/
-	if (joy->dir == UP) {
-		sr_jump();
-	}
-	
-	/*Update Y-position*/
-	if (sr_JUMPFLAG) {
-		runner->posy = (int)(runner->posy + vely);		//Values probably not right
-	}
-	
-	/*Update Ostacles' X-position*/
-	for (int i = 0; i < obst->size; i ++) {
-		obst->obstacles[i]->posx -= velx;
-		
-		/*Check if crash*/
-		if ((runner->posx + RUNNER_WIDTH <= obst->obstacles[i]->posx) && (runner->posy >= GROUND_LEVEL+OBSTACLE_DIM)) {
-			sr_crash();
-		}
-	}
-	
-	/*Check if Obstacle 1 out of bounds*/
-	if (obst->obstacles[0]->posx <= 0) {
-		for (int i = 0; i < obst->size-1; i++) {
-			obst->obstacle[i] = obst->obstacle[i+1];	//Pushes the obstacles further down the queue
-		}
-		obst->size --;	//there might be more than (size) obstacles in list but they be ignored
-	}
-	
-	/*Update map*/
-	sr_draw_map(runner, obst);
-}
-
-static volatile char* oled_sram_adress = (char*)0x1C00;
-
-
 void sr_map_to_mem() {
-	uint8_t c = 0;
-	uint8_t p = 0;	
-	/*Converts MAP to char arrays for horizontal adressing mode*/
-	for (int y = 0; y < MAX_Y; y++) {
-		for (int x = 0; x < MAX_X; x++) {
-			if ((x-1) % 7) == 0 {
-				c++;		//We are now in correct col
+	/*Converts MAP to char arrays for page adressing mode*/
+	volatile char page_data[MAX_X]; 					//Contains info about an entire page
+	volatile char col_data[OLED_PAGE_HEIGHT];	//Contains info about a single col in page
+	for (int page = OLED_PAGES-1; page >= 0; page--) {		//Iterate from Page7 to Page0
+		
+		for (int x = 0; x < MAX_X; x++ ) {		//normal iteration towards right
+			char temp[1] = {0b00000000};
+		
+			for (int y = OLED_PAGE_HEIGHT-1; y >= 0; y--) {			//reverse iteration . start bottom left
+				
+				col_data[OLED_PAGE_HEIGHT - y] = MAP[page*OLED_PAGE_HEIGHT + y][x];			//col_data[8] = {0,1,1,0,0,1,0,1}
+				temp[0] |= (col_data[7-y] << (y));
 			}
+			page_data[x] = temp[0];	//add the column to page data
 		}
 		
+		/*Send entire page to SRAM*/		//ALTERNATIVT: en stor if/else		//ALTERNATIVT: HORIZONTAL
+		char 		page_adress[1] = {0b10110000};
+		uint8_t page_bin[4] = {0,0,0,0};
+		uint8_t n = page;					//Convert page number to binary
+		uint8_t i = 0;
+		while (n >0) {
+			page_bin[i] = n%2;
+			n = n/2;
+			i++;
+		}
+		for (int bit = 0; bit < 4; bit++) {
+			page_adress[0] |= (page_bin[i] << 3-i);		//left shift page number //CHECK THIS
+		}
 		
-		if ((y-1) % 7) == 0 {
-				r++;		//We are now in correct page 
-			}
+		oled_write_c(page_adress); 	//Set the page start address of the target display location by command 0xB0 to 0xB7. 
+		oled_write_c(0x00);					//Set the lower start column address
+		oled_write_c(0x1F);					//Set the upper start column address
+		
+		oled_write_d(page_data[page]);
 	}
 	
-	
-	
+	/*Test uten SRAM*/	
 	//oled_sram_adress["NEED CODE HERE"] = MAP[y][x];
 	//oled_sram_adress[oled_state.LINE*128 + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
 	
@@ -208,6 +232,18 @@ void sr_map_to_mem() {
 }
 
 
-void sr_oled_draw_pixel(uint8_t adr) {
+void sr_mem_to_oled() {
 	
+}
+
+void sr_play(Joystick* joy) {
+	Runner* runner;
+	Obstacle_list* obstacles;
+	sr_init(runner, obstacles);
+
+	while (!sr_GAMEOVER) {
+		_delay_ms(10);
+		sr_run(runner, joy, obstacles); 
+	}
+	printf("Score: %d", sr_SCORE);
 }
