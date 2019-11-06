@@ -8,6 +8,7 @@
 srand(time(0));		//seeds time
 
 static uint8_t 						GRAVITY 			= 4;
+static uint8_t						JUMP_SPEED		= 5;
 static uint8_t 						GROUND_LEVEL 	= MAX_Y-10;		//ground at 54
 volatile static uint8_t 	sr_JUMPFLAG 	= 0;
 volatile static uint8_t 	sr_GAMEOVER 	= 0;
@@ -17,6 +18,11 @@ volatile static uint16_t 	sr_SCORE 			= 0; 	//max is 65536
 static uint8_t MAP[MAX_Y][MAX_X];
 
 void sr_init(Runner* runner, Obstacle_list* obst) {
+		/*Initialize OLED for game purpose*/
+		oled_init();
+		//oled_write_c(0x20);       //Set  Memory  Addressing  Mode
+		//oled_write_c(0x10);				// 0x10: Page Adressing Mode
+	
 		sr_GAMEOVER = 0;
 		sr_JUMPFLAG = 0;
 		sr_SCORE 		= 0;
@@ -59,21 +65,21 @@ void sr_gen_obst(Runner* runner, Obstacle_list* obst) {
 	if (rand()%70 == 2 && obst->size < 2) {
 		Obstacle o;
 		o->posx 	= MAX_X-OBSTACLE_DIM;
-		obst->size++;
+		obst->size ++ ;
 		obst[size] = o;
 	}
 }
 
 void sr_jump(Runner* runner) {
     if sr_JUMPFLAG == 1 { return;	}		//no double jumps
-		sr_JUMPFLAG = 1;
-    runner->vely = 5;
+		sr_JUMPFLAG  = 1;
+    runner->vely = JUMP_SPEED;
 }
 
 
 void sr_crash() {
 	/*Print message to OLED */
-	printf("score: %d", SCORE);
+	printf("score: %d", sr_SCORE);
 	
 	/*Draws OLED white*/
 	for (int y = 0; y < MAX_Y; y++) {
@@ -175,13 +181,27 @@ void sr_run(Runner* runner, Joystick* joy, Obstacle_list* obst) {
 
 static volatile char* oled_sram_adress = (char*)0x1C00;
 
-//remember we have memory adress mode. look at oled_sram_write_char() 
+
 void sr_map_to_mem() {
+	uint8_t c = 0;
+	uint8_t p = 0;	
+	/*Converts MAP to char arrays for horizontal adressing mode*/
 	for (int y = 0; y < MAX_Y; y++) {
 		for (int x = 0; x < MAX_X; x++) {
-			oled_sram_adress["NEED CODE HERE"] = MAP[y][x];
+			if ((x-1) % 7) == 0 {
+				c++;		//We are now in correct col
+			}
 		}
+		
+		
+		if ((y-1) % 7) == 0 {
+				r++;		//We are now in correct page 
+			}
 	}
+	
+	
+	
+	//oled_sram_adress["NEED CODE HERE"] = MAP[y][x];
 	//oled_sram_adress[oled_state.LINE*128 + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
 	
 	
