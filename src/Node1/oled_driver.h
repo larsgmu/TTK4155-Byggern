@@ -4,6 +4,11 @@
 #ifndef OLED_H
 #define OLED_H
 
+#define OLED_ROWS			64
+#define OLED_COLS 			128
+#define OLED_PAGES			8
+#define OLED_PAGE_HEIGHT	8
+
 #define F_CPU 4915200
 #define ASCII_OFFSET ((volatile unsigned int) 32)
 
@@ -29,8 +34,13 @@ void oled_sram_menu(Menu* menu);
 void oled_sram_clear_line(int line);
 void oled_sram_arrow(uint8_t line);
 
+<<<<<<< Updated upstream
 
 /* Draws to OLED from the SRAM */
+=======
+void oled_sram_draw_pixel(uint8_t adr);
+
+>>>>>>> Stashed changes
 void oled_draw();
 
 #endif

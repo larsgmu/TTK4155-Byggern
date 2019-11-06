@@ -41,9 +41,10 @@ void oled_init()   {
   oled_write_c(0x50);
   oled_write_c(0xd9);        // set  pre-charge  period
   oled_write_c(0x21);
-  oled_write_c(0x20);        // set  Memory  Addressing  Mode
-  oled_write_c(0x00);
-  oled_write_c(0xdb);        // VCOM  deselect  level  mode
+	
+  oled_write_c(0x20);        //Set  Memory  Addressing  Mode
+  oled_write_c(0x00);							// 0x00: Horizontal Adressing Mode
+  oled_write_c(0xdb);        //VCOM  deselect  level  mode
   oled_write_c(0x30);
   oled_write_c(0xad);        // master  configuration
   oled_write_c(0x00);
