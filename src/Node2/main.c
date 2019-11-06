@@ -20,15 +20,6 @@
 #include <util/delay.h>
 
 
-
-
-
-
-
-
-
-
-
 void main () {
 
   cli();
@@ -59,12 +50,12 @@ void main () {
       servo_joystick_control(&latest_msg);
       motor_run(latest_msg.data[0]);
     }
-    // printf("ENCODER: %d\n\r", encoder_read());
+    printf("ENCODER: %d\n\r", encoder_read());
     if(latest_msg.data[2] == 1){
         solenoid_extend();
     }
 
-    printf("Right button: %d\n\r", latest_msg.data[2]);
+    //printf("Right button: %d\n\r", latest_msg.data[2]);
      // _delay_ms(5000);
 
   }

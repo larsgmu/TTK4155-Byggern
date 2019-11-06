@@ -153,7 +153,7 @@ void oled_sram_write_char(unsigned char c){
     int output = c - 32;
     for(int i = 0; i<8; i++){
       oled_sram_adress[oled_state.LINE*128 + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
-			
+
 			//I need to know how this one works exactly
     }
 }
@@ -194,23 +194,23 @@ void oled_sram_clear_line(int line){
 void oled_sram_menu(Menu* menu) {
   oled_sram_reset();
   oled_home();
-  oled_sram_write_string(menu->name); //print menu name on top
+  if(menu->header != ""){
+    oled_sram_write_string(menu->header);
+  }else{
+    oled_sram_write_string(menu->name); //print menu name on top
+  }
   for (int i = 0; i < menu->num_sub_menu; i++ ) {
     oled_goto_line(i+1);
     oled_goto_column(15);
     oled_sram_write_string(menu->sub_menu[i]->name);
   }
+  if (menu->info != "") {
+    oled_goto_line(7);
+    oled_sram_write_string(menu->info);
+  }
 }
 
 void oled_sram_arrow(uint8_t line){
-  // for(int line = 7; line < 8; line++){
-  //   oled_state.LINE = line;
-  //   for(int col = 0; col < 16 ; col++){
-  //     oled_state.COL = col;
-  //     oled_goto_column(col);
-  //     oled_sram_write_d(oled_state.LINE*128 + oled_state.COL, 0x00); //Removes arrows from sram
-  //   }
-  // }
   oled_goto_line(line);
   oled_goto_column(0);
   oled_sram_write_string("~");

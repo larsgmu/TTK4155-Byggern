@@ -1,5 +1,7 @@
 CAN MESSAGE ID
-  0 = Joystick direction
+  0 = play game
+      data = 0: menu
+      data = 1: ping pong
   1 = Joystick position
     1.1 = X
     1.2 = Y
