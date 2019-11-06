@@ -10,26 +10,25 @@
 
 #define F_CPU 4915200
 
-//int can_interrupt_flag = 0;
 static CANmsg latest_msg;
 
 void can_init() {
   mcp2515_init();
 
   /*set mode*/
-  mcp2515_write(MCP_CANCTRL, MODE_NORMAL);
+  mcp2515_bit_modify(MCP_CANCTRL,MODE_MASK, MODE_NORMAL);
 
   /*Turn mask/filters off*/
   mcp2515_write(MCP_RXB0CTRL, 0b01100000);
 
   /*Generate interrupt when received message kissmypuiss*/
-  mcp2515_bit_modify(MCP_CANINTE, 0b00000001, 1);
+  mcp2515_bit_modify(MCP_CANINTE, 0b00000011, MCP_RX_INT);
 
   /* clear interrupt flag*/
   mcp2515_bit_modify(MCP_CANINTF, 0b00000001, 0);
 
   /*Set interrupt on PD2 to falling edge */
-  MCUCR |= (1 << ISC01);
+  //MCUCR |= (1 << ISC01);
 
   /*Enable interrupt  on PD2*/
   GICR |= (1 << INT0);
@@ -67,7 +66,5 @@ CANmsg get_CAN_msg(){
 }
 
 ISR(INT0_vect){
-  cli();
   can_receive_msg();
-  sei();
 }

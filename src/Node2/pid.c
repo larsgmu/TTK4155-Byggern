@@ -2,8 +2,6 @@
 #include "pid.h"
 
 void pid_init() {
-  cli();
-
   // we want this to send interrupts at our sample time frequency!
 
   /* Sets prescalar to 8*/
@@ -12,9 +10,6 @@ void pid_init() {
   TIMSK3 |= (1 << TOIE3);
   /*Clear interrupt flag by writing 1*/
   TIFR3 |= (1 << TOV3);
-
-  sei();
-
 }
 
 

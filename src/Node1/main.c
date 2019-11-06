@@ -9,6 +9,7 @@
 #include "adc_driver.h"
 #include "sram_driver.h"
 #include "slider_driver.h"
+#include "joystick_driver.h"
 #include "oled_driver.h"
 #include "spi_driver.h"
 #include "mcp2515_driver.h"
@@ -26,20 +27,14 @@ void main( void ){
     menu_init();
     can_init();
     sei();
-
+    Joystick joy;
+    joystick_init(&joy);
     Slider slider;
 
-    char line[8] = {1,0,0,0,0,0,1,0};
-    char temp[1]= {0b00000000};
-    for(int i= 0; i < 8 ; i++){
-      temp[0] |= (line[i]<<(7-i));
-      printf("Temp: %d \n\r",(uint8_t)temp[0]);
-    }
-    //printf("Temp: %s\r\n", temp[0]);
 
 
     while(1){
-      menu_run();
+      menu_run(&joy);
       _delay_ms(40);
       oled_draw();
     }

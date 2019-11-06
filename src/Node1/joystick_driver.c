@@ -2,6 +2,7 @@
 * Joystick interface
 */
 #include <util/delay.h>
+#include <math.h>
 #include "joystick_driver.h"
 #include "adc_driver.h"
 #include "can_driver.h"
@@ -9,8 +10,7 @@
 /*This is a global variable which enables sending CAN-msg
   with joystick position to node 2. In order to acess from other
 	files, initialize it with extern int*/
-extern int Jayballs;
-int Jayballs = 1;
+
 
 void joystick_init(Joystick* joy){
 	uint16_t x_sum = 0;
@@ -86,7 +86,5 @@ void send_joystick_pos(Joystick* joy){
 void joystick_run(Joystick* joy) {
 	analog_position(joy);
 	analog_direction(joy);
-	if (Jayballs) {
-		send_joystick_pos(joy);
-	}
+
 }

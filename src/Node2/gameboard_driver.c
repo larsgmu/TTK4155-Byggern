@@ -1,9 +1,12 @@
 #include "gameboard_driver.h"
 #include "timer_driver.h"
 #include "can_driver.h"
+#include "motor_driver.h"
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+
+#define F_CPU 16000000
 #include <util/delay.h>
 
 #define IR_SAMPLE_NO 4
@@ -12,10 +15,10 @@
 volatile static int ir_adc_interrupt_flag = 0;
 volatile static int playing = 0;
 volatile static int adc_value;
-volatile static in ir_value;
+volatile static int ir_value= DEAD;
 
 
-void servo_joystick_control(uint8_t* pos_msg){
+void servo_joystick_control(uint8_t pos_msg){
   /* position between 0 and 200 */
   uint32_t cycle = 12*pos_msg + 1800;
   set_duty_cycle(cycle);
@@ -32,13 +35,17 @@ void ir_adc_init() {
   /*Choose input pin*/
   DDRF &=  ~(1 << PF0);
 
-  /*Finn ut hva denne gjør*/
-  ADMUX  |= (1 << REFS0);
+  /*Choose reference voltage*/
+  ADMUX &= ~(1 << REFS1);
+  ADMUX |= (1 << REFS0);
 
-  /*Enable interrupts | clear int flag */
-  ADCSRA |= (1 << ADIE); //| (1 << ADIF);
+  //ADMUX |= (1 << MUX0);
+
+  /*Enable interrupts*/
+  ADCSRA |= (1 << ADIE);
+
+  /*clear int flag */
   ADCSRA &= ~(1 << ADIF);
-
 }
 
 
@@ -48,6 +55,7 @@ uint8_t ir_adc_read() {
   for (int i = 0; i < IR_SAMPLE_NO; i++) {
     /*Start converting*/
     ADCSRA |= (1 << ADSC);
+    //printf("Kommer vi hit?\n\r");
     while(!ir_adc_interrupt_flag);
     ir_adc_interrupt_flag = 0;
     adc_value += ADC;
@@ -55,27 +63,25 @@ uint8_t ir_adc_read() {
   return adc_value/IR_SAMPLE_NO;
 }
 
+
 /* ADC = (V_IN * 1024) / V_REF
     0.5 - 3V  = Invalid
  => 102 - 615 = Invalid
 */
 
-ISR(ADC_vect) {
-  ir_adc_interrupt_flag = 1;
-}
 
 void play_pingpong() {
 
     while(1) {
         ir_value = ir_adc_read();
         if (get_CAN_msg().id == 1) {
-            motor_run(get_CAN_msg().data[0])
-            servo_joystick_control(get_CAN_msg().data[1])
+            motor_run(get_CAN_msg().data[0]);
+            servo_joystick_control(get_CAN_msg().data[1]);
             if (get_CAN_msg().data[2]){
                 solenoid_extend();
             }
         }
-        if (adc_value < DEAD){
+        if (ir_value < DEAD){
             break;
         }
     }
@@ -94,12 +100,16 @@ void solenoid_init(){
 
   /* "Active high"  */
   PORTB &= ~(1 << PB4);
-
 }
+
 void solenoid_extend(){
 
   PORTB |= (1 << PB4);
   _delay_ms(3000);
   PORTB &= ~(1 << PB4);
+}
 
+ISR(ADC_vect) {
+  printf("THHOIIHSNDFDFDFDSFSDF?\n\r");
+  ir_adc_interrupt_flag = 1;
 }

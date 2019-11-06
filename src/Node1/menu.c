@@ -1,18 +1,18 @@
 /*!@file
 * OLED menu
 */
-#include "joystick_driver.h"
 #include "menu.h"
+#include "joystick_driver.h"
 #include "oled_driver.h"
 #include <util/delay.h>
 #include "can_driver.h"
 #include <stdlib.h>
 #include <string.h>
+#include "games.h"
 
 Menu* main_menu;
 Menu* current_menu;
-Joystick joy;
-joystick_init(&joy);
+
 
 uint8_t current_line;
 char* current_difficulty;
@@ -26,6 +26,26 @@ Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info
     new_menu->sub_menu[i] = NULL;
   }
   new_menu->fun_ptr = function;
+  new_menu->fun_ptr2 = NULL;
+  new_menu->num_sub_menu = 0;
+  //update parent menu
+  parent_menu->num_sub_menu += 1;
+  uint8_t nsm = parent_menu->num_sub_menu;
+  parent_menu->sub_menu[nsm-1] = new_menu;
+  return new_menu;
+}
+
+Menu* menu_make_sub_menu2(Menu* parent_menu, char* name, char* header, char* info, void (*function)(char*, Joystick*) ){
+  Menu* new_menu = malloc(sizeof(Menu));
+  new_menu->name = name;
+  new_menu->header = header;
+  new_menu->info = info;
+  new_menu->parent_menu = parent_menu;
+  for (int i = 0; i < 7; i++) {
+    new_menu->sub_menu[i] = NULL;
+  }
+  new_menu->fun_ptr = NULL;
+  new_menu->fun_ptr2 = function;
   new_menu->num_sub_menu = 0;
   //update parent menu
   parent_menu->num_sub_menu += 1;
@@ -56,7 +76,7 @@ Menu* menu_init() {
   current_menu = main_menu;
 
   Menu* ping_pong = menu_make_sub_menu(main_menu, "Ping Pong!","",current_difficulty,NULL);
-  Menu* start_game = menu_make_sub_menu(ping_pong, "Start","","",NULL);
+  Menu* start_game = menu_make_sub_menu2(ping_pong, "Start","","",&play_pingpong);
   Menu* difficulty = menu_make_sub_menu(ping_pong, "Difficulty", "Select Level", "",NULL);
   Menu* high_score = menu_make_sub_menu(ping_pong, "High Score", "Select Level", "",NULL);
   Menu* level_1 = menu_make_sub_menu(difficulty, "EASY","","",&change_difficulty);
@@ -67,7 +87,7 @@ Menu* menu_init() {
 }
 
 
-void menu_run_functions(){
+void menu_run_functions(Joystick* joy){
 
   /*Change difficulty*/
   if (current_menu->sub_menu[current_line-1]->fun_ptr == &change_difficulty)
@@ -75,15 +95,18 @@ void menu_run_functions(){
       /*Update info lable at bottom of Ping Pong menu with the current difficulty*/
       (*current_menu->sub_menu[current_line-1]->fun_ptr)(current_menu->sub_menu[current_line-1]->name);
   }
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr2 == &play_pingpong)
+  {
+      (*current_menu->sub_menu[current_line-1]->fun_ptr2)("Horefant",joy);
+      current_menu = main_menu;
+  }
 }
 
-void menu_run() {
-  joystick_run(&joy);
-  CANmsg joystick_direction_msg;
-  joystick_direction_msg.id = 5;
-  joystick_direction_msg.length = 1;
+void menu_run(Joystick* joy) {
+  joystick_run(joy);
 
-  switch (joy.dir) {
+
+  switch (joy->dir) {
     case RIGHT:
       //Om submenyen vi prøver å velge har en submeny
       if (current_menu->sub_menu[current_line-1]->sub_menu[0] != NULL){
@@ -91,14 +114,13 @@ void menu_run() {
         current_line = 1;
         _delay_ms(200);
       }
-      if (current_menu->sub_menu[current_line-1]->fun_ptr != NULL ){
-          menu_run_functions();
+      if (current_menu->sub_menu[current_line-1]->fun_ptr != NULL ||
+        current_menu->sub_menu[current_line-1]->fun_ptr2 != NULL){
+          menu_run_functions(joy);
       }
       else {
 
       }
-      joystick_direction_msg.data[0] = 4;
-
       break;
 
     case LEFT:
@@ -107,7 +129,6 @@ void menu_run() {
         current_line = 1;
         _delay_ms(200);
       }
-      joystick_direction_msg.data[0] = 3;
       break;
 
     case UP:
@@ -115,7 +136,6 @@ void menu_run() {
         current_line --; //radnr minker når vi går oppover
         _delay_ms(200);
       }
-      joystick_direction_msg.data[0] = 1;
 
       break;
 
@@ -124,12 +144,10 @@ void menu_run() {
         current_line ++;
         _delay_ms(200);
       }
-      joystick_direction_msg.data[0] = 2;
 
       break;
 
     case NEUTRAL:
-      joystick_direction_msg.data[0] = 0;
       break;
 
     default:

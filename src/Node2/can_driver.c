@@ -7,35 +7,38 @@
 
 #include <util/delay.h>
 #include <stdio.h>
+#include <avr/interrupt.h>
 
 #define F_CPU 16000000
 
-//int can_interrupt_flag = 0;
 static CANmsg latest_msg;
 
 void can_init() {
   mcp2515_init();
 
   /*Normal mode*/
-  mcp2515_write(MCP_CANCTRL, MODE_NORMAL);
+  mcp2515_bit_modify(MCP_CANCTRL,MODE_MASK, MODE_NORMAL);
 
   /*Turn mask/filters off*/
   mcp2515_write(MCP_RXB0CTRL, 0b01100000);
 
   /*Generate interrupt when received message kmp*/
-  mcp2515_bit_modify(MCP_CANINTE, 0b00000001, 1);
+  mcp2515_bit_modify(MCP_CANINTE, 0b00000011, MCP_RX_INT);
 
   /* clear interrupt flag*/
-  mcp2515_bit_modify(MCP_CANINTF, 0b00000001, 0);
+  mcp2515_bit_modify(MCP_CANINTF, 0b00000011, 0);
+
+  EICRA &= ~(1 << ISC00);
 
   /*Set interrupt on PD0 to falling edge */
   EICRA |= (1 << ISC01);
 
   /*Enable interrupt  on PD0 */
-  EIMSK |= (1 << INT0);
+  EIMSK |= (1 << INT2);
 
   /*Clear interrupt flag on PD0 */
-  EIFR |= (1 << INTF0);
+  EIFR |= (1 << INTF2);
+
 }
 
 void can_send_msg(CANmsg* can_msg) {
@@ -66,8 +69,6 @@ CANmsg get_CAN_msg(){
     return latest_msg;
 }
 
-ISR(INT0_vect){
-  cli();
-  latest_msg = can_receive_msg();
-  sei();
+ISR(INT2_vect){
+ latest_msg = can_receive_msg();
 }

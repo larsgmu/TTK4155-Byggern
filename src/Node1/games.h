@@ -2,7 +2,7 @@
 #define GAMES_H
 
 #include <stdint.h>
-
+#include "joystick_driver.h"
 typedef struct Game_info_struct{
   char* player_name;
   uint8_t score;
@@ -10,6 +10,6 @@ typedef struct Game_info_struct{
 
 void pingpong_timer_init();
 void pingpong_score();
-void play_pingpong();
+void play_pingpong(char* player, Joystick* joy);
 
 #endif

@@ -13,3 +13,8 @@ ellers funker det fint.
  - OLED glitcher litt til tider
  - Encoder på Lab plass 8 brettet fungerer ikke (viser kun 0??)
  - Fiks^ Så fortsette på PI regulator
+
+
+#6. Nov
+
+ADC interrupt funker ikke i det hele tatt

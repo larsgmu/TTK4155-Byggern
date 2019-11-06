@@ -64,12 +64,6 @@ void motor_get_position(){
 
 }
 
-void solenoid(){
-
-
-
-}
-
 int16_t encoder_read(){
   uint8_t high;
   uint8_t low;

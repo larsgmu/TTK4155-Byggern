@@ -19,5 +19,6 @@ typedef struct CAN_message_struct {
 void can_init();
 void can_send_msg(CANmsg* can_msg);
 CANmsg can_receive_msg();
+CANmsg get_CAN_msg();
 
 #endif
