@@ -75,7 +75,11 @@ Menu* menu_init() {
   }
   current_menu = main_menu;
 
+  /*Main Menu options*/
   Menu* ping_pong = menu_make_sub_menu(main_menu, "Ping Pong!","",current_difficulty,NULL);
+  Menu* space_runner = menu_make_sub_menu(main_menu, "Space Runner", "", "", NULL);
+
+  /*Sub Menu options*/
   Menu* start_game = menu_make_sub_menu2(ping_pong, "Start","","",&play_pingpong);
   Menu* difficulty = menu_make_sub_menu(ping_pong, "Difficulty", "Select Level", "",NULL);
   Menu* high_score = menu_make_sub_menu(ping_pong, "High Score", "Select Level", "",NULL);

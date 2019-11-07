@@ -1,5 +1,5 @@
 /*!@file
-* Space Runner 
+* Space Runner
 */
 #ifndef SPACE_RUNNER
 #define SPACE_RUNNER
@@ -7,10 +7,10 @@
 #include "joystick_driver.h"
 
 /*
-The game will have a main loop which will be broken when the runner has 0 lives. 
+The game will have a main loop which will be broken when the runner has 0 lives.
 
 The draw_map() will continously update the MAP matrix with the runner and obstacles represented as 1's.
-I guess this eliminates draw_runner() 
+I guess this eliminates draw_runner()
 
 
 
@@ -19,10 +19,10 @@ When jumping, jump flag is activated. This is deactivated once hit ground
 The map_to_mem() will transform the MAP matrix into SRAM-format and write to SRAM. Gonna do this pixel by pixel
 */
 
-#define RUNNER_WIDTH 	12
+#define RUNNER_WIDTH 		12
 #define RUNNER_HEIGHT 	16
-#define OBSTACLE_DIM 	8
-#define OBSTACLE_NO		3
+#define OBSTACLE_DIM 		8
+#define OBSTACLE_NO			3
 
 /*The Space Runner*/
 typedef struct SpaceRunner_struct {
@@ -35,15 +35,15 @@ typedef struct SpaceRunner_struct {
 
 /*Obstacle*/
 typedef struct Obstacle_struct {
-	uint8_t 	posx;									//X-position of obstacle left 
-	uint8_t		height 	= 1	;							//The obstacles may be higher than 1 unit
+	uint8_t 	posx;									//X-position of obstacle left
+	uint8_t		height;							//The obstacles may be higher than 1 unit
 	uint8_t 	sprite[OBSTACLE_DIM][OBSTACLE_DIM]	;	//8x8 pixels
 } Obstacle;
 
 typedef struct Obstacle_list_struct {
-	uint8_t		size 	= 0 ;
+	uint8_t		size;
 	Obstacle 	obstacles[OBSTACLE_NO];
-} Obstable_list;
+} Obstacle_list;
 
 
 void sr_sprite_test(Runner* runner);
@@ -53,13 +53,13 @@ Initializes OLED to be used for this game.
 Initializes the game map and Runner
 Draws empty map with sprite and ground
 */
-void sr_init(Runner* runner);
+void sr_init(Runner* runner, Obstacle_list* obst);
 
 //Draw map with player and obstacle
 void sr_draw_map();
 
 //Renders obstacles
-void sr_gen_obst(Runner* runner);
+void sr_gen_obst(Obstacle_list* obst);
 
 //Player jumps, changes sprite
 void sr_jump(Runner* runner);
@@ -73,7 +73,7 @@ Update runner position
 Update obstacle position
 Check for collsion
 */
-void sr_run(Runner* runner, Joystick* joy);
+void sr_run(Runner* runner, Joystick* joy, Obstacle_list* obst);
 
 //Mapping the 64*128-matrix to SRAM
 void sr_map_to_mem();

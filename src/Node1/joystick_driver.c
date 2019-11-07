@@ -2,7 +2,7 @@
 * Joystick interface
 */
 #include <util/delay.h>
-#include <math.h>
+#include <stdlib.h>
 #include "joystick_driver.h"
 #include "adc_driver.h"
 #include "can_driver.h"

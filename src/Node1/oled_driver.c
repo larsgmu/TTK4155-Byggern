@@ -53,20 +53,20 @@ void oled_init()   {
   oled_write_c(0xaf);        // display  on
 
 
-  /*  Want the timer to overflow every
-      60Hz = 0.01667s= 16.67ms          */      // CPU = 4915200 Hz
-  /* Timer with 1024 prescaler*/
-  TCCR1B |= (1<<CS10) | (1<<CS12);
-  /* Setting the counter reg such that overflow occurs after 16.67ms (60Hz)*/
-  TCNT1H = 0xFF;
-  TCNT1L = 0xB0;
-  /* Normal mode (just to be sure) */
-	TCCR1A &= ~(1 << COM1A1);
-  TCCR1A &= ~(1 << COM1A0);
-  /*Clear overflow flag by writing 1 to its location*/
-  TIFR  |= (1 << TOV1) ;
-  /* Enable Timer1 Overflow Interrupts*/
-	TIMSK |= (1 << TOIE1) ;
+  // /*  Want the timer to overflow every
+  //     60Hz = 0.01667s= 16.67ms          */      // CPU = 4915200 Hz
+  // /* Timer with 1024 prescaler*/
+  // TCCR1B |= (1<<CS10) | (1<<CS12);
+  // /* Setting the counter reg such that overflow occurs after 16.67ms (60Hz)*/
+  // TCNT1H = 0xFF;
+  // TCNT1L = 0xB0;
+  // /* Normal mode (just to be sure) */
+	// TCCR1A &= ~(1 << COM1A1);
+  // TCCR1A &= ~(1 << COM1A0);
+  // /*Clear overflow flag by writing 1 to its location*/
+  // TIFR  |= (1 << TOV1) ;
+  // /* Enable Timer1 Overflow Interrupts*/
+	// TIMSK |= (1 << TOIE1) ;
 }
 
 ISR(TIMER1_OVF_vect){
