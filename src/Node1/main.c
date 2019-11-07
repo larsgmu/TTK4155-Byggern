@@ -19,6 +19,24 @@
 #include "sram_driver.h"
 #include "usart_driver.h"
 
+// typedef struct Bit_struct {
+//     unsigned b:1;
+// } sr_Bit;
+//
+// static sr_Bit MAP[64][128];
+// for (int y = 0; y < 64; y++) {
+//   for (int x = 0; x < 128; x++) {
+//     MAP[y][x].b = 0;
+//   }
+// }
+// uint8_t map[8][128];     //hvorfor funker dette men ikke det over?
+// for (int i = 0; i < 8; i++) {
+//   for(int j = 0; j < 128; j++) {
+//     map[i][j] = 1;
+//   }
+// }
+
+
 void main( void ){
 
     cli();
@@ -35,11 +53,11 @@ void main( void ){
     Slider slider;
     //sr_play(&joy);
 
+
     printf("everyone was not there \n\r");
     while(1){
       menu_run(&joy);
       _delay_ms(40);
-
       printf("everyone is right here \n\r");
       oled_draw();
     }

@@ -25,7 +25,7 @@ struct oled_data_marker_struct
 static struct oled_data_marker_struct oled_state;
 
 //const char* const font[] PROGMEM = {font8, font5, font4};
-
+//
 
 void oled_init()   {
   oled_write_c(0xae);        // display  off
