@@ -41,7 +41,7 @@ void oled_init()   {
   oled_write_c(0x50);
   oled_write_c(0xd9);        // set  pre-charge  period
   oled_write_c(0x21);
-	
+
   oled_write_c(0x20);        //Set  Memory  Addressing  Mode
   oled_write_c(0x00);							// 0x00: Horizontal Adressing Mode
   oled_write_c(0xdb);        //VCOM  deselect  level  mode
@@ -152,8 +152,8 @@ void oled_sram_write_d(uint8_t adr, uint8_t data){
 void oled_sram_write_char(unsigned char c){
     oled_state.CHANGED = 1;
     int output = c - 32;
-    for(int i = 0; i<8; i++){
-      oled_sram_adress[oled_state.LINE*128 + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
+    for(int i = 0; i<OLED_PAGE_HEIGHT; i++){
+      oled_sram_adress[oled_state.LINE*OLED_COLS + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
 
 			//I need to know how this one works exactly
     }
@@ -163,7 +163,7 @@ void oled_sram_write_string(char* str){
   int length = strlen(str);
   for(int i = 0; i < length; i++){
       oled_sram_write_char(str[i]);
-      oled_state.COL += 8;
+      oled_state.COL += OLED_PAGE_HEIGHT;
   }
 }
 
@@ -172,9 +172,9 @@ void oled_sram_write_string(char* str){
 void oled_sram_reset(void){
     for(int row =0; row < 8; row++){
       //oled_goto_line(rows);
-      for(int col = 0; col < 128; col++){
+      for(int col = 0; col < OLED_COLS; col++){
         //oled_data_address[cols] = 0x00;
-        oled_sram_adress[row*128 + col] = 0x00;
+        oled_sram_adress[row*OLED_COLS + col] = 0x00;
       }
     }
     oled_home();
@@ -186,8 +186,8 @@ void oled_sram_clear_line(int line){
   //for(int i=0; i<127; i++){
     //oled_write_d(0x00);
   //}
-  for(int col = 0; col < 128; col++){
-    oled_sram_adress[oled_state.LINE*128 + col] = 0x00;
+  for(int col = 0; col < OLED_COLS; col++){
+    oled_sram_adress[oled_state.LINE*OLED_COLS + col] = 0x00;
   }
 }
 
@@ -220,10 +220,10 @@ void oled_sram_arrow(uint8_t line){
 
 void oled_draw(){
   oled_home();
-  for (int line = 0; line < 8; line++ ) {
-    for (int col = 0; col < 128; col++){
+  for (int line = 0; line < OLED_PAGES; line++ ) {
+    for (int col = 0; col < OLED_COLS; col++){
       oled_pos(line,col);
-      oled_write_d(oled_sram_adress[line*128 + col]);
+      oled_write_d(oled_sram_adress[line*OLED_COLS + col]);
     }
   }
 }

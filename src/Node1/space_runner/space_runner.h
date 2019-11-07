@@ -61,7 +61,7 @@ void sr_draw_map();
 //Renders obstacles
 void sr_gen_obst(Runner* runner);
 
-//Player jumps
+//Player jumps, changes sprite
 void sr_jump(Runner* runner);
 
 //Player collides with obstacles
@@ -75,16 +75,14 @@ Check for collsion
 */
 void sr_run(Runner* runner, Joystick* joy);
 
-/*Draws single pixel*/
-void sr_oled_draw_pixel(uint8_t adr);
-
 //Mapping the 64*128-matrix to SRAM
 void sr_map_to_mem();
 
+/*Draws OLED from memory*/
+void sr_mem_to_oled();
 
-
-
-
+/*Game loop*/
+void sr_play(Joystick* joy);
 
 
 
