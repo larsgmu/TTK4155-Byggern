@@ -108,8 +108,6 @@ void menu_run_functions(Joystick* joy){
 
 void menu_run(Joystick* joy) {
   joystick_run(joy);
-
-
   switch (joy->dir) {
     case RIGHT:
       //Om submenyen vi prøver å velge har en submeny
@@ -118,7 +116,7 @@ void menu_run(Joystick* joy) {
         current_line = 1;
         _delay_ms(200);
       }
-      if (current_menu->sub_menu[current_line-1]->fun_ptr != NULL ||
+      else if (current_menu->sub_menu[current_line-1]->fun_ptr != NULL ||
         current_menu->sub_menu[current_line-1]->fun_ptr2 != NULL){
           menu_run_functions(joy);
       }
