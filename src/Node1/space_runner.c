@@ -79,6 +79,8 @@ void sr_init(sr_Runner* runner, sr_Obstacle_list* obst) {
 		obst->size = 0;
 }
 
+
+//oled_sram_adress[oled_state.LINE*128 + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
 void sr_sram_write(uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2) {
 		for (int y = y1; y < y2; y++) {
 			for (int x = x1; x < x2; x++) {
