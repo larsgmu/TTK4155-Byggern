@@ -9,7 +9,10 @@
 #define SR_MAX_Y 64	//height of OLED	: 8 chars
 #define SR_MAX_X 128	//width of OLED		:16 chars
 
-//static volatile char* oled_sram_adress = (char*)0x1C00;
+static volatile char* oled_command_address 	= (char*)0x1000;
+static volatile char* oled_data_address 		= (char*)0x1200;
+static volatile char* oled_sram_adress 			= (char*)0x1C00;
+
 //srand(time(0));		//seeds time
 
 //
@@ -21,52 +24,21 @@ volatile static uint8_t 	sr_JUMPFLAG 	= 0;
 volatile static uint8_t 	sr_GAMEOVER 	= 0;
 volatile static uint16_t 	sr_SCORE 			= 0; 	//max is 65536
 
+static struct oled_data_marker_struct oled_state;
+
 /*	64x128 Game map. 1 = stuff, 0 = not stuff.	*/
-static sr_Bit MAP[SR_MAX_Y][SR_MAX_X];
+//static sr_Bit MAP[SR_MAX_Y][SR_MAX_X];
 
 void sr_init(sr_Runner* runner, sr_Obstacle_list* obst) {
 		/*Initialize OLED for game purposes*/
-		oled_write_c(0xae);        // display  off
-	  oled_write_c(0xa1);        // segment  remap
-	  oled_write_c(0xda);        // common  pads  hardware:  alternative
-	  oled_write_c(0x12);
-	  oled_write_c(0xc8);        // common  output scan direction:com63~com0
-	  oled_write_c(0xa8);        // multiplex  ration  mode:63
-	  oled_write_c(0x3f);
-	  oled_write_c(0xd5);        // display  divide ratio/osc. freq. mode
-	  oled_write_c(0x80);
-	  oled_write_c(0x81);        // contrast  control
-	  oled_write_c(0x50);
-	  oled_write_c(0xd9);        // set  pre-charge  period
-	  oled_write_c(0x21);
-
-	  oled_write_c(0x20);        //Set  Memory  Addressing  Mode
-	  oled_write_c(0x10);							// 0x10: Page Adressing Mode
-	  oled_write_c(0xdb);        //VCOM  deselect  level  mode
-	  oled_write_c(0x30);
-	  oled_write_c(0xad);        // master  configuration
-	  oled_write_c(0x00);
-	  oled_write_c(0xa4);        // out  follows  RAM  content
-	  oled_write_c(0xa6);        // set  normal  display
-	  oled_write_c(0xaf);        // display  on
+		oled_init();
 
 		sr_GAMEOVER = 0;
 		sr_JUMPFLAG = 0;
 		sr_SCORE 		= 0;
 
-		/*Initialize MAP-matrix with zeroes*/
-		for (int y = 0; y < SR_MAX_Y; y++) {
-			for (int x = 0; x < SR_MAX_X; x++) {
-				MAP[y][x].b = 0;
-			}
-		}
-
-    /*Draw ground*/
-    for (int y = GROUND_LEVEL; y < SR_MAX_Y; y++) {
-        for (int x = 0; x < SR_MAX_X; x++) {
-            MAP[y][x].b = 1;
-        }
-    }
+		/*Draws map and ground*/
+		sr_sram_init();
 
     /*Init and draw runner*/
     runner->velx 	= 2;
@@ -79,6 +51,80 @@ void sr_init(sr_Runner* runner, sr_Obstacle_list* obst) {
 		obst->size = 0;
 }
 
+//THE SHIT BELOW WORKS
+/*   char temp[1] = {0b00000000};
+		volatile char col_data[OLED_PAGE_HEIGHT];
+    for (int y = OLED_PAGE_HEIGHT-1; y >= 0; y--) {			//reverse iteration . start bottom left
+      col_data[OLED_PAGE_HEIGHT - y] = 1;			//col_data[8] = {0,1,1,0,0,1,0,1}
+      temp[0] |= (col_data[7-y] << (y));
+    }
+
+    int length = 2;
+    int COL = 0;
+    for(int p = 0; p < 8; p++) {
+    for(int j = 0; j < length; j++){
+      for(int i = 0; i<OLED_PAGE_HEIGHT; i++){
+
+    //    oled_sram_adress[p*OLED_COLS + COL + i] = temp[0];
+      }
+      COL += OLED_PAGE_HEIGHT;
+    }
+    }
+
+  	oled_draw();
+    oled_pos(3,101);
+    oled_write_d(0b01001001);*/
+
+void sr_sram_init() {
+	/*Clear SRAM*/
+	for (int p = 0; p < OLED_PAGES; p++) {
+		for (int x = 0; x < OLED_COLS; x++) {
+			oled_sram_adress[p*OLED_COLS + x] = 0b00000000;
+		}
+	}
+	/*Draw ground*/
+	char ground = 0b01001011;
+	for (int x = 0; x < OLED_COLS; x++) {
+		oled_sram_adress[7*OLED_COLS + x] = ground;
+	}
+	oled_draw();
+}
+
+void sr_draw_runner(sr_Runner* runner) {
+	/*If runner hasnt jumped, (is on ground)*/
+	char temp[1] = {0b00000000};
+	for (int p = OLED_PAGES-2; p >= OLED_PAGES-3; p--) { //start at p6, then p5
+
+		uint8_t i = 0;
+
+		//uint8_t col_data[8] = {0,0,0,0,0,0,0,0};
+
+		for (int x = 3; x < SR_RUNNER_WIDTH+3; x++) {	//x<12
+			for (int y = 0; y < OLED_PAGE_HEIGHT; y++) {	//y<8
+
+				//col_data[y] = runner->sprite[y + i*OLED_PAGE_HEIGHT ][x].b;
+				temp[0] |= ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x].b) << (7-y));
+			}
+			temp[0] &= ~(1 << 0x04);
+			if (x == 10) {
+				oled_sram_adress[p*OLED_COLS + x] = 0x00;
+			}
+			else {
+				oled_sram_adress[p*OLED_COLS + x] = temp[0];
+			}
+		}
+		i++;
+	}
+	/*If runner has jumped
+	1. Draw new runner sprite in new y-position
+	2. Clear out a row of pixels above and below*/
+
+	oled_draw();
+}
+
+void sr_draw_obstacle(sr_Runner* runner, sr_Obstacle_list* o_list) {
+
+}
 
 //oled_sram_adress[oled_state.LINE*128 + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
 void sr_sram_write(uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2) {
@@ -92,7 +138,7 @@ void sr_sram_write(uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2) {
 void sr_sprite_test(sr_Runner* runner) {			//makes a square runner
 	for (int y = 0; y < SR_RUNNER_HEIGHT; y++) {
 		for (int x = 0; x < SR_RUNNER_WIDTH; x++) {
-			runner->sprite[y][x].b = 1;
+				runner->sprite[y][x].b = 1;
 		}
 	}
 }
@@ -120,7 +166,7 @@ void sr_crash() {
 	/*Draws OLED white*/
 	for (int y = 0; y < SR_MAX_Y; y++) {
 		for (int x = 0; x < SR_MAX_X; x++) {
-			MAP[y][x].b = 1;
+			//MAP[y][x].b = 1;
 			sr_map_to_mem();
 			_delay_ms(1);
 		}
@@ -128,7 +174,6 @@ void sr_crash() {
 	_delay_ms(1000);
 	sr_GAMEOVER = 1;
 }
-
 
 void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* obst) {
 		/*Update score*/
@@ -189,7 +234,7 @@ void sr_draw_map(sr_Runner* runner, sr_Obstacle_list* obst) {
 		/*Clear old map*/
 		for (int y = 0; y < GROUND_LEVEL; y++) {
 			for (int x = 0; x < SR_MAX_X; x++) {
-				MAP[y][x].b = 0;
+				//MAP[y][x].b = 0;
 			}
 		}
 
@@ -199,7 +244,7 @@ void sr_draw_map(sr_Runner* runner, sr_Obstacle_list* obst) {
 			uint8_t n = 0;
 			for (int y = runner->posy - SR_RUNNER_HEIGHT; y < GROUND_LEVEL; y++) {
 				for (int x = runner->posx; x < runner->posx + SR_RUNNER_WIDTH; x++) {
-					MAP[y][x].b = runner->sprite[m][n].b;
+					//MAP[y][x].b = runner->sprite[m][n].b;
 					n++ ;
 				}typedef struct foo
 {
@@ -214,7 +259,7 @@ void sr_draw_map(sr_Runner* runner, sr_Obstacle_list* obst) {
 			for (int i = 0; i < obst->size; i++) {
 				for (int y = GROUND_LEVEL-SR_OBSTACLE_DIM; y < GROUND_LEVEL; y++) {
 					for (int x = obst->obstacles[i].posx; x < obst->obstacles[i].posx + SR_OBSTACLE_DIM; x++) {
-						MAP[y][x].b = 1 ;	//draws square obstacle
+						//MAP[y][x].b = 1 ;	//draws square obstacle
 					}
 				}
 			}
@@ -236,7 +281,7 @@ void sr_map_to_mem() {
 
 				for (int y = OLED_PAGE_HEIGHT-1; y >= 0; y--) {			//reverse iteration . start bottom left
 
-					col_data[OLED_PAGE_HEIGHT - y] = MAP[page*OLED_PAGE_HEIGHT + y][x].b;			//col_data[8] = {0,1,1,0,0,1,0,1}
+				//	col_data[OLED_PAGE_HEIGHT - y] = MAP[page*OLED_PAGE_HEIGHT + y][x].b;			//col_data[8] = {0,1,1,0,0,1,0,1}
 					temp[0] |= (col_data[7-y] << (y));
 				}
 				page_data[x] = temp[0];	//add the column to page data

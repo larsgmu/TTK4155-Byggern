@@ -14,6 +14,13 @@
 #define F_CPU 4915200
 #define ASCII_OFFSET ((volatile unsigned int) 32)
 
+struct oled_data_marker_struct
+{
+    uint8_t LINE; /* Current page */
+    uint8_t COL; /* Current column */
+    int CHANGED; /* Dont flush SRAM if nothing have changed */
+};
+
 /*Initialize OLED screen*/
 void oled_init();
 /*Writes char to OLED*/

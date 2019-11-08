@@ -15,13 +15,6 @@ static volatile char* oled_command_address = (char*)0x1000;
 static volatile char* oled_data_address = (char*)0x1200;    //   sjekk h-fil
 static volatile char* oled_sram_adress = (char*)0x1C00;
 
-struct oled_data_marker_struct
-{
-    uint8_t LINE; /* Current page */
-    uint8_t COL; /* Current column */
-    int CHANGED; /* Dont flush SRAM if nothing have changed */
-};
-
 static struct oled_data_marker_struct oled_state;
 
 //const char* const font[] PROGMEM = {font8, font5, font4};

@@ -14,7 +14,7 @@
 #include "menu.h"
 #include "oled_driver.h"
 #include "slider_driver.h"
-//#include "space_runner.h"
+#include "space_runner.h"
 #include "spi_driver.h"
 #include "sram_driver.h"
 #include "usart_driver.h"
@@ -53,6 +53,15 @@ void main( void ){
     Slider slider;
     //sr_play(&joy);
 
+    sr_Runner* runner; // = malloc(sizeof(Runner));
+    sr_Obstacle_list* obstacles; //= malloc(sizeof(Obstacle_list));
+    runner 		= malloc(sizeof(sr_Runner));
+    obstacles = malloc(sizeof(sr_Obstacle_list));
+
+    sr_init(runner, obstacles);
+    sr_draw_runner(runner);
+
+    while(1) {};
 
     printf("everyone was not there \n\r");
     while(1){

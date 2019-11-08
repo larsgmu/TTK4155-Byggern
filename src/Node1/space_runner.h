@@ -27,7 +27,7 @@ typedef struct SpaceRunner_struct {
 	uint8_t		posx ;  								//X-position of leftmost pixel of sprite
 	uint8_t 	velx ; 									//Running speed		(Changes the speed of obstacles)
 	float 		vely ; 									//Jump speed vector
-	sr_Bit		sprite[SR_RUNNER_HEIGHT][SR_RUNNER_WIDTH];	//The player is 16x8 pixels
+	sr_Bit		sprite[SR_RUNNER_HEIGHT][SR_RUNNER_WIDTH];	//The player is 16x12 pixels
 } sr_Runner;
 
 /*Obstacle*/
@@ -41,8 +41,10 @@ typedef struct Obstacle_list_struct {
 	sr_Obstacle 	obstacles[SR_OBSTACLE_NO];
 } sr_Obstacle_list;
 
-void sr_sram_write(uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2);
+/*Draws empty map and ground to OLED*/
+void sr_sram_init();
 
+void sr_sram_write(uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2);
 void sr_sprite_test(sr_Runner* runner);
 
 /*
@@ -52,8 +54,10 @@ Draws empty map with sprite and ground
 */
 void sr_init(sr_Runner* runner, sr_Obstacle_list* obst);
 
-//Draw map with player and obstacle
-void sr_draw_map();
+
+void sr_draw_runner(sr_Runner* runner);
+
+void sr_draw_obstacle(sr_Runner* runner, sr_Obstacle_list* o_list);
 
 //Renders obstacles
 void sr_gen_obst(sr_Obstacle_list* obst);
@@ -72,9 +76,10 @@ Check for collsion#include <stdint.h>
 */
 void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* obst);
 
+//Draw map with player and obstacle
+void sr_draw_map();
 //Mapping the 64*128-matrix to SRAM
 void sr_map_to_mem();
-
 /*Draws OLED from memory*/
 void sr_mem_to_oled();
 
