@@ -74,10 +74,13 @@ void play_pingpong() {
     while(1) {
         ir_value = ir_adc_read();
         if (get_CAN_msg().id == 1) {
+            //printf("MOTOR: %d     SERVO: %d     SOLENOID: % d\n\r",get_CAN_msg().data[0], get_CAN_msg().data[1], get_CAN_msg().data[2] );
             motor_run(get_CAN_msg().data[0]);
             servo_joystick_control(get_CAN_msg().data[1]);
             if (get_CAN_msg().data[2]){
+                printf("FIRE!\n\r");
                 solenoid_extend();
+                printf("FIRE VOL 2\n\r");
             }
         }
         if (ir_value < DEAD){
@@ -105,7 +108,6 @@ void solenoid_init(){
 void solenoid_extend(){
 
   PORTB |= (1 << PB4);
-  _delay_ms(3000);
   PORTB &= ~(1 << PB4);
 }
 

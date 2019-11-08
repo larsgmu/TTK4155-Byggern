@@ -59,7 +59,7 @@ void play_pingpong(char* player, Joystick* joy) {
 
     joystick_run(joy);
     send_joystick_pos(joy);
-    //latest_msg = get_CAN_msg();
+    latest_msg = get_CAN_msg();
     if (get_CAN_msg().id == 0){
       if (get_CAN_msg().data[0] == 0) {
         oled_sram_reset();

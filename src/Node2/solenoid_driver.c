@@ -12,10 +12,6 @@ void solenoid_init(){
 
 }
 void solenoid_extend(){
-
   PORTB |= (1 << PB4);
-  _delay_ms(3000);
   PORTB &= ~(1 << PB4);
-
-
 }
