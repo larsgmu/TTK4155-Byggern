@@ -10,12 +10,12 @@
 #include <util/delay.h>
 
 #define IR_SAMPLE_NO 4
-#define DEAD 1
+#define DEAD 25
 
 volatile static int ir_adc_interrupt_flag = 0;
 volatile static int playing = 0;
 volatile static int adc_value;
-volatile static int ir_value= DEAD;
+volatile static uint16_t ir_value;
 
 
 void servo_joystick_control(uint8_t pos_msg){
@@ -52,11 +52,11 @@ void solenoid_init(){
   /*Set output pin to enable solenoid relay */
   DDRB |= (1 << PB5);
 
-  /* "Active low"  */
-  PORTB |= (1 << PB5);
+  /* "Active high"  */
+  PORTB &= ~(1 << PB5);
 }
 
-uint8_t ir_adc_read() {
+uint16_t ir_adc_read() {
   /*Sample 4 times to reduce errors*/
   int adc_value = 0;
   for (int i = 0; i < IR_SAMPLE_NO; i++) {
@@ -71,13 +71,13 @@ uint8_t ir_adc_read() {
 
 void solenoid_extend(){
 
-  PORTB &= ~(1 << PB5);
-  _delay_ms(100);
   PORTB |= (1 << PB5);
+  _delay_ms(100);
+  PORTB &= ~(1 << PB5);
 }
 
 void play_pingpong() {
-
+  
     while(1) {
         ir_value = ir_adc_read();
         if (get_CAN_msg().id == 1) {
@@ -99,6 +99,9 @@ void play_pingpong() {
     stop_pingpong.data[0] = 0;
     can_send_msg(&stop_pingpong);
     printf("STOP PINGPONG SENT\n\r");
+    servo_joystick_control(100); //Center servo
+    _delay_ms(200);
+
 }
 
 

@@ -14,7 +14,7 @@ void servo_joystick_control(uint8_t pos_msg);
 void ir_adc_init();
 
 /*Reading the IR sensor with digital filtering*/
-uint8_t ir_adc_read();
+uint16_t ir_adc_read();
 
 /*Checking if ball hit IR-sensor, if so, increase score*/
 void play_pingpong();

@@ -34,6 +34,10 @@ void main () {
   solenoid_init();
   sei();
 
+  CANmsg run_menu;
+  run_menu.id = 0;
+  run_menu.length = 1;
+  run_menu.data[0] = 8;
   printf("########### Reboot ##############\n\r");
 
   typedef enum {IDLE = 0, PINGPONG = 1}mode;
@@ -53,6 +57,8 @@ void main () {
             printf("MODE: PINGPONG\n\r");
             play_pingpong();
             MODE = IDLE;
+            _delay_ms(100);
+            can_send_msg(&run_menu);
             break;
     }
   }

@@ -5,11 +5,11 @@
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
 
-#include <util/delay.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
 
 #define F_CPU 16000000
+#include <util/delay.h>
 
 static CANmsg latest_msg;
 

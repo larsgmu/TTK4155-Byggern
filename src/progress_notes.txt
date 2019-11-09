@@ -26,3 +26,15 @@ IR - logikken fungerer
 ADC med interrupts fungerer
 CAN meldinger begge veier med interrupt fungerer
 Menysystemet fungerer
+
+
+#TO DO
+Implementer pid og fiks encoder
+Solenoide extension time
+Highscore med player valg
+Doxygen
+
+#9. Nov
+  - Arduino fucked?
+  - Motorbux fucked?
+  - Klarer ikke enbale motor - Får bare 2V ut fra arduino.

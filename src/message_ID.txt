@@ -1,14 +1,18 @@
 CAN MESSAGE ID
-  0 = play game
-      data = 0: menu
-      data = 1: ping pong
+  0 = MODE
+      data = 0: stop pingpong
+      data = 1: play pingpong
+
+      data = 8: run menu;
+
   1 = Joystick msg
     1.0 = X
     1.1 = Y
     1.2 = Right button
+
   3 = Difficulty
     data = 0: easy
     data = 1: medium
     data = 2: hard
 
-5 = Joystick direction
+    8 = DUMMY

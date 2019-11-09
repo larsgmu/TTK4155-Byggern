@@ -1,4 +1,3 @@
-
 #include "pid.h"
 
 void pid_init() {
@@ -25,7 +24,7 @@ void pid_controller() {
 
   prev_error = error;
 
-  u = Kp*error + Ki*integral + Kd*derivative
+  u = Kp*error + Ki*integral + Kd*derivative;
 
 }
 
