@@ -7,12 +7,6 @@
 #include "joystick_driver.h"
 #include <stdint.h>
 
-/*
-TODO: Free the Map. We dont need that. Instead, write directly to SRAM!
-How:  Must have a write-function. This will have start and end adress (y/x-pos) and data as input.
-
-*/
-
 #define SR_RUNNER_WIDTH 		12
 #define SR_RUNNER_HEIGHT 		16
 #define SR_OBSTACLE_DIM 		8
