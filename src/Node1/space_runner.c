@@ -122,7 +122,7 @@ void sr_draw_runner(sr_Runner* runner) {
 		else {
 			bottom_page =  runner->posy / OLED_PAGE_HEIGHT ; //floors value;
 			top_page 		= (runner->posy - SR_RUNNER_HEIGHT +1 ) / OLED_PAGE_HEIGHT ;
-			temp[0] 		= {0b00000000};
+			temp[0] 		= 0b00000000;
 			i 					= 0;
 
 			for (int p = bottom_page; p >= top_page; p++) {
@@ -139,7 +139,7 @@ void sr_draw_runner(sr_Runner* runner) {
 						}
 						/*If runner is between 3 pages*/
 						else  {
-							
+
 						}
 					}
 					oled_sram_adress[p*OLED_COLS + x] = temp[0];
@@ -276,7 +276,7 @@ void sr_draw_map(sr_Runner* runner, sr_Obstacle_list* o_list) {
 					n++ ;
 				m++ ;
 			}
-		//}
+		}
 
 		/*Draw obstacles*/
 		if (o_list->size > 0) {
@@ -349,12 +349,13 @@ void sr_play(Joystick* joy) {
 	obstacles = malloc(sizeof(sr_Obstacle_list));
 
 	sr_init(runner, obstacles);
+	sr_draw_runner(runner);
 
-	while (!sr_GAMEOVER) {
-		printf("Playing Space Runner");
-		_delay_ms(10);
-		sr_run(runner, joy, obstacles);
-	}
+	// while (!sr_GAMEOVER) {
+	// 	printf("Playing Space Runner");
+	// 	_delay_ms(10);
+	// 	sr_run(runner, joy, obstacles);
+	// }
 	printf("Score: %d", sr_SCORE);
-	oled_init();
+	//oled_init();
 }
