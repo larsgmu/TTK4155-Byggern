@@ -7,7 +7,7 @@
 #include "joystick_driver.h"
 #include <stdint.h>
 
-#define SR_RUNNER_WIDTH 		12
+#define SR_RUNNER_WIDTH 		10
 #define SR_RUNNER_HEIGHT 		16
 #define SR_OBSTACLE_DIM 		8
 #define SR_OBSTACLE_NO			3
@@ -28,7 +28,7 @@ typedef struct SpaceRunner_struct {
 
 /*Obstacle*/
 typedef struct Obstacle_struct {
-  	uint8_t 	posx;									//X-position of obstacle left
+  	int8_t 	  posx;									//X-position of obstacle left
   	uint8_t		height;							//The obstacles may be higher than 1 unit
 } sr_Obstacle;
 
@@ -72,11 +72,11 @@ Check for collsion#include <stdint.h>
 void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* o_list);
 
 //Draw map with player and obstacle
-void sr_draw_map();
+//void sr_draw_map();
 //Mapping the 64*128-matrix to SRAM
-void sr_map_to_mem();
+//void sr_map_to_mem();
 /*Draws OLED from memory*/
-void sr_mem_to_oled();
+//void sr_mem_to_oled();
 
 /*Game loop*/
 void sr_play(Joystick* joy);

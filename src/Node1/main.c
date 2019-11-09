@@ -51,7 +51,7 @@ void main( void ){
     Joystick joy;
     joystick_init(&joy);
     Slider slider;
-    //sr_play(&joy);
+    sr_play(&joy);
 
     printf("########### Reboot ##############\n\r");
     while(1){
