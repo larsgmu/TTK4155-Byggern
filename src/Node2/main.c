@@ -20,7 +20,7 @@
 #include <util/delay.h>
 
 ISR(__vector_default){
-  printf("FUCK YOU\n\r");
+  printf("FUCK ME\n\r");
 }
 
 void main () {
@@ -34,29 +34,26 @@ void main () {
   solenoid_init();
   sei();
 
-  printf("LATEST MSG: %d\n\r",get_CAN_msg().id);
-  //play_pingpong();
+  printf("########### Reboot ##############\n\r");
 
-  // typedef enum {IDLE = 0, PINGPONG = 1}mode;
-  // mode MODE = IDLE;
-  // while (1){
-  //     printf("ID:               %d\n\r",get_CAN_msg().id);
-  //    switch (MODE) {
-  //      case IDLE:
-  //          //printf("MODE:  NORMAL\n\r");
-  //          if (get_CAN_msg().id == 0 && get_CAN_msg().data[0] == 1){
-  //              MODE = PINGPONG;
-  //          }
-  //          if (get_CAN_msg().id == 3){
-  //              //Implementer detta
-  //              //set_difficulty(get_CAN_msg().data[0]);
-  //          }
-  //          break;
-  //      case PINGPONG:
-  //           printf("MODE:             PINGPONG\n\r");
-  //           play_pingpong();
-  //           MODE = IDLE;
-  //           break;
-  //   }
-  // }
+  typedef enum {IDLE = 0, PINGPONG = 1}mode;
+  mode MODE = IDLE;
+  while (1){
+      switch (MODE) {
+        case IDLE:
+           if (get_CAN_msg().id == 0 && get_CAN_msg().data[0] == 1){
+               MODE = PINGPONG;
+           }
+           if (get_CAN_msg().id == 3){
+               //Implementer detta
+               //set_difficulty(get_CAN_msg().data[0]);
+           }
+           break;
+        case PINGPONG:
+            printf("MODE: PINGPONG\n\r");
+            play_pingpong();
+            MODE = IDLE;
+            break;
+    }
+  }
 }

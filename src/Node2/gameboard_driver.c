@@ -10,7 +10,7 @@
 #include <util/delay.h>
 
 #define IR_SAMPLE_NO 4
-#define DEAD 70
+#define DEAD 1
 
 volatile static int ir_adc_interrupt_flag = 0;
 volatile static int playing = 0;
@@ -55,7 +55,6 @@ uint8_t ir_adc_read() {
   for (int i = 0; i < IR_SAMPLE_NO; i++) {
     /*Start converting*/
     ADCSRA |= (1 << ADSC);
-    //printf("Kommer vi hit?\n\r");
     while(!ir_adc_interrupt_flag);
     ir_adc_interrupt_flag = 0;
     adc_value += ADC;
@@ -75,10 +74,13 @@ void play_pingpong() {
     while(1) {
         ir_value = ir_adc_read();
         if (get_CAN_msg().id == 1) {
+            //printf("MOTOR: %d     SERVO: %d     SOLENOID: % d\n\r",get_CAN_msg().data[0], get_CAN_msg().data[1], get_CAN_msg().data[2] );
             motor_run(get_CAN_msg().data[0]);
             servo_joystick_control(get_CAN_msg().data[1]);
             if (get_CAN_msg().data[2]){
+                printf("FIRE!\n\r");
                 solenoid_extend();
+                printf("FIRE VOL 2\n\r");
             }
         }
         if (ir_value < DEAD){
@@ -90,6 +92,7 @@ void play_pingpong() {
     stop_pingpong.length = 1;
     stop_pingpong.data[0] = 0;
     can_send_msg(&stop_pingpong);
+    printf("STOP PINGPONG SENT\n\r");
 }
 
 
@@ -105,11 +108,9 @@ void solenoid_init(){
 void solenoid_extend(){
 
   PORTB |= (1 << PB4);
-  _delay_ms(3000);
   PORTB &= ~(1 << PB4);
 }
 
 ISR(ADC_vect) {
-  printf("THHOIIHSNDFDFDFDSFSDF?\n\r");
   ir_adc_interrupt_flag = 1;
 }

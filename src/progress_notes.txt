@@ -19,3 +19,10 @@ ellers funker det fint.
 ADC interrupt funker ikke i det hele tatt
  - Test med å legge til sei() i slutten eller starten av alle init funksjoner som enabler interrupts
  - Burde også teste med å kommentere ut alt med interrupts fra node 2 bortsett fra ADC interrupt for å sjekke at det ikke er noe med de andre interruptsene som fucker med adc_interrupt vectoren.
+
+
+#8. Nov
+IR - logikken fungerer
+ADC med interrupts fungerer
+CAN meldinger begge veier med interrupt fungerer
+Menysystemet fungerer

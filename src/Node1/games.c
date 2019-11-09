@@ -58,10 +58,10 @@ void play_pingpong(char* player, Joystick* joy) {
   while(1) {
 
     joystick_run(joy);
-    //send_joystick_pos(joy);
+    send_joystick_pos(joy);
     latest_msg = get_CAN_msg();
-    if (latest_msg.id == 0){
-      if (latest_msg.data[0] = 0) {
+    if (get_CAN_msg().id == 0){
+      if (get_CAN_msg().data[0] == 0) {
         oled_sram_reset();
         oled_goto_line(3);
         oled_sram_write_string("YOU DIED!");

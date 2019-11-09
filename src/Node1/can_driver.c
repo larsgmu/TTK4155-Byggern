@@ -28,13 +28,16 @@ void can_init() {
   mcp2515_bit_modify(MCP_CANINTF, 0b00000001, 0);
 
   /*Set interrupt on PD2 to falling edge */
-  //MCUCR |= (1 << ISC01);
+  MCUCR |= (1 << ISC01);
 
   /*Enable interrupt  on PD2*/
   GICR |= (1 << INT0);
 
   /*Clear interrupt flag on PD2*/
   GIFR |= (1 << INTF0);
+
+  latest_msg.id = 8;
+  latest_msg.data[0] = 8;
 }
 
 void can_send_msg(CANmsg* can_msg) {
@@ -66,5 +69,5 @@ CANmsg get_CAN_msg(){
 }
 
 ISR(INT0_vect){
-  can_receive_msg();
+  latest_msg = can_receive_msg();
 }

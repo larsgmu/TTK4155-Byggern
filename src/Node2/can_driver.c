@@ -13,7 +13,18 @@
 
 static CANmsg latest_msg;
 
+
 void can_init() {
+
+
+  /*Set interrupt on PD0 to falling edge */
+  EICRA &= ~(1 << ISC20);
+  EICRA |= (1 << ISC21);
+  /*Enable interrupt  on PD0 */
+  EIMSK |= (1 << INT2);
+  /*Clear interrupt flag on PD0 */
+  EIFR |= (1 << INTF2);
+
   mcp2515_init();
 
   /*Normal mode*/
@@ -28,17 +39,8 @@ void can_init() {
   /* clear interrupt flag*/
   mcp2515_bit_modify(MCP_CANINTF, 0b00000011, 0);
 
-  EICRA &= ~(1 << ISC00);
-
-  /*Set interrupt on PD0 to falling edge */
-  EICRA |= (1 << ISC01);
-
-  /*Enable interrupt  on PD0 */
-  EIMSK |= (1 << INT2);
-
-  /*Clear interrupt flag on PD0 */
-  EIFR |= (1 << INTF2);
-
+  latest_msg.id = 8;
+  latest_msg.data[0] = 8;
 }
 
 void can_send_msg(CANmsg* can_msg) {

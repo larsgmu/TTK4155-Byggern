@@ -15,7 +15,6 @@ void SRAM_write(unsigned int adr, unsigned int data) {
 
 unsigned int SRAM_read(unsigned int adr) {
     volatile char* external_ram = (char *) 0x1800;
-    //printf(external_ram[adr]);
     return external_ram[adr];
 }
 

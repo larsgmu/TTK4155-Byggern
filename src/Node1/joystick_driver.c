@@ -38,18 +38,15 @@ void analog_position(Joystick* joy){
 /*Gameboard Buttons*/
 int8_t left_button_pressed(){
   if(PINB&(1<<PB3)){
-    printf("Left Button Pressed\n\r");
     return 1;
   }
   return 0;
 }
 int8_t right_button_pressed(){
   if(PINB&(1<<PB2)){
-  //  printf("Right Button Pressed\n\r");
     return 1;
   }
   else{
-    //printf("Right button not pressed\n\r");
   }
   return 0;
 }
@@ -79,7 +76,6 @@ void send_joystick_pos(Joystick* joy){
 	joystick_msg.data[0] = (uint8_t)joy->x + 100; //X mellom 0 og 200
 	joystick_msg.data[1] = (uint8_t)joy->y + 100; // Y mellom 0 og 200
 	joystick_msg.data[2] = (uint8_t)right_button_pressed();
-	//printf("X: %d 		Y: %d \n\r", joystick_msg.data[0], joystick_msg.data[1]);
 	can_send_msg(&joystick_msg);
 }
 
