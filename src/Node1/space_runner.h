@@ -5,6 +5,7 @@
 #define SPACE_RUNNER_H
 
 #include "joystick_driver.h"
+#include <stdint.h>
 
 /*
 TODO: Free the Map. We dont need that. Instead, write directly to SRAM!
@@ -45,7 +46,6 @@ typedef struct Obstacle_list_struct {
 /*Draws empty map and ground to OLED*/
 void sr_sram_init();
 
-void sr_sram_write(uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2);
 void sr_sprite_test(sr_Runner* runner);
 
 /*

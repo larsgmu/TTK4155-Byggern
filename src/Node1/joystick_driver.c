@@ -53,7 +53,7 @@ int8_t right_button_pressed(){
 
 void analog_direction(Joystick* joy) {
   /*Threshold on 10 percent*/
-  int threshold = 10;
+  int threshold = 15;
 
   /*Calculates direction based on angle*/
   double anglerad = atan2(joy->y,joy->x);

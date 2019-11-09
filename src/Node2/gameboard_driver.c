@@ -48,6 +48,13 @@ void ir_adc_init() {
   ADCSRA &= ~(1 << ADIF);
 }
 
+void solenoid_init(){
+  /*Set output pin to enable solenoid relay */
+  DDRB |= (1 << PB5);
+
+  /* "Active low"  */
+  PORTB |= (1 << PB5);
+}
 
 uint8_t ir_adc_read() {
   /*Sample 4 times to reduce errors*/
@@ -62,12 +69,12 @@ uint8_t ir_adc_read() {
   return adc_value/IR_SAMPLE_NO;
 }
 
+void solenoid_extend(){
 
-/* ADC = (V_IN * 1024) / V_REF
-    0.5 - 3V  = Invalid
- => 102 - 615 = Invalid
-*/
-
+  PORTB &= ~(1 << PB5);
+  _delay_ms(100);
+  PORTB |= (1 << PB5);
+}
 
 void play_pingpong() {
 
@@ -78,9 +85,8 @@ void play_pingpong() {
             motor_run(get_CAN_msg().data[0]);
             servo_joystick_control(get_CAN_msg().data[1]);
             if (get_CAN_msg().data[2]){
-                printf("FIRE!\n\r");
                 solenoid_extend();
-                printf("FIRE VOL 2\n\r");
+                printf("FIRE!\n\r");
             }
         }
         if (ir_value < DEAD){
@@ -95,21 +101,6 @@ void play_pingpong() {
     printf("STOP PINGPONG SENT\n\r");
 }
 
-
-void solenoid_init(){
-
-  /*Set output pin to enable solenoid relay */
-  DDRB |= (1 << PB4);
-
-  /* "Active high"  */
-  PORTB &= ~(1 << PB4);
-}
-
-void solenoid_extend(){
-
-  PORTB |= (1 << PB4);
-  PORTB &= ~(1 << PB4);
-}
 
 ISR(ADC_vect) {
   ir_adc_interrupt_flag = 1;

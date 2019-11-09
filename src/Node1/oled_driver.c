@@ -147,8 +147,6 @@ void oled_sram_write_char(unsigned char c){
     int output = c - 32;
     for(int i = 0; i<OLED_PAGE_HEIGHT; i++){
       oled_sram_adress[oled_state.LINE*OLED_COLS + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
-
-			//I need to know how this one works exactly
     }
 }
 

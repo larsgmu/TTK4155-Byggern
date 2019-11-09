@@ -5,6 +5,7 @@
 #include	<stdio.h>
 #include  <avr/io.h>
 #include	<stdlib.h>
+#include 	<stdint.h>
 
 #define SR_MAX_Y 64	//height of OLED	: 8 chars
 #define SR_MAX_X 128	//width of OLED		:16 chars
@@ -96,12 +97,13 @@ void sr_draw_runner(sr_Runner* runner) {
 		char 		temp[1] 		= {0b00000000};	//Contains info about 8 pixels; 1 col in 1 page
 		uint8_t i 					= 0;
 
+
 		/*If runner hasnt jumped, (is on ground)*/
-		if (!sr_JUMPFLAG) {
+		if (sr_JUMPFLAG == 0) {
 			for (int p = bottom_page; p >= top_page; p--) { //start at p6, then p5
-				for (int x = 3; x < SR_RUNNER_WIDTH+3; x++) {	//x<12
+				for (int x = (runner->posx); x < SR_RUNNER_WIDTH+(runner->posx); x++) {	//x<12
 					for (int y = 0; y < OLED_PAGE_HEIGHT; y++) {	//y<8
-						if ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x-3].b == 1)) {
+						if ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x-(runner->posx)].b == 1)) {
 							temp[0] |=  (1 << (7-y));
 						}
 						else {
@@ -109,13 +111,15 @@ void sr_draw_runner(sr_Runner* runner) {
 						}
 					}
 					oled_sram_adress[p*OLED_COLS + x] = temp[0];
+					/*Clear page above Runner*/
+					oled_sram_adress[4*OLED_COLS + x] = 0x00;
 				}
 				i++;
 			}
 		}
 
 		/*If runner has jumped*/
-		else {
+		else if (sr_JUMPFLAG == 1){
 			bottom_page 	=  runner->posy / OLED_PAGE_HEIGHT ; //floors value;
 			top_page 			= (runner->posy - SR_RUNNER_HEIGHT +1 ) / OLED_PAGE_HEIGHT ;
 			temp[0] 			= 0b00000000;
@@ -123,42 +127,59 @@ void sr_draw_runner(sr_Runner* runner) {
 			//Difference between bottom of page and runner y-pos
 			uint8_t diff 	= (bottom_page+1)*OLED_PAGE_HEIGHT - runner->posy - 1;
 
-			for (int p = bottom_page; p >= top_page; p++) {
-				for (int x = 3; x < SR_RUNNER_WIDTH + 3; x++) {
+			/*Bottom range: 1<p<6 . Top range: 0<p<5 */
+			for (int p = bottom_page; p >= top_page; p--) {
+				for (int x = (runner->posx); x < SR_RUNNER_WIDTH + (runner->posx); x++) {
 					for (int y = 0; y < OLED_PAGE_HEIGHT; y++) {
 						/*If runner is perfectly within 2 pages*/
 						if ((runner->posy + 1) % 8 == 0) {
-							if ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x-3].b == 1)) {
+							if ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x-(runner->posx)].b == 1)) {
 								temp[0] |=  (1 << (7-y));	//Light up pixel
 							}
 							else {
 								temp[0] &= ~(1 << (7-y)); //Not light up pixel
 							}
+							/*Clear out page below and above runner*/
+							if (p < 5 && p > 1) {
+								oled_sram_adress[(p-1)*OLED_COLS + x] = 0x00;	//above
+								oled_sram_adress[(bottom_page+1)*OLED_COLS + x] = 0x00;	//below
+
+							}
 						}
 
 						else  { /*If runner is between 3 pages*/
+							//printf("Runner is between 3 pages\n\r");
 							if (p == bottom_page) {
-								if (runner->sprite[y][x-3].b == 1) {
+								if (runner->sprite[y][x-(runner->posx)].b == 1) {
 									temp[0] |=  (1 << (7-y-diff));
 								}
 								else {
 									temp[0] &= ~(1 << (7-y-diff));
 								}
 								temp[0] &= ~(1 << (7-diff+1));		//clearing old line below runner
+								//if (p < 5) { /*Clear page above runner*/
+								//	oled_sram_adress[(p-1)*OLED_COLS + x] = 0x00;
+								//}
 							}
 							else if (p == top_page) {
 								uint8_t ind = y + 2*OLED_PAGE_HEIGHT-diff;
-								if (ind < SR_RUNNER_HEIGHT) {
-									if (runner->sprite[ind][x-3].b == 1) {
+								if (ind < SR_RUNNER_HEIGHT) {		/*If runner sprite is actually in MAP y-pos*/
+									if (runner->sprite[ind][x-(runner->posx)].b == 1) {
 										temp[0] |=  (1 << (7-y));
 									}
 									else {
 										temp[0] &= ~(1 << (7-y));
 									}
 								}
+								else { 		/*Set 0 to the rest of page-column*/
+									temp[0] &= ~(1 << (7-y));
+								}
+								if (p >1) { /*Clear page above runner*/
+									oled_sram_adress[(p-1)*OLED_COLS + x] = 0x00;
+								}
 							}
 							else { /* If page is between top and bottom */
-								if (runner->sprite[7-diff+y][x-3].b == 1) {
+								if (runner->sprite[7-diff+y][x-(runner->posx)].b == 1) {
 									temp[0] |=  (1 << (7-y));
 								}
 								else {
@@ -168,10 +189,12 @@ void sr_draw_runner(sr_Runner* runner) {
 						}
 					}
 					oled_sram_adress[p*OLED_COLS + x] = temp[0];
+					temp[0] 			= 0b00000000;
 				}
 				i++;
 			}
 		}
+		_delay_ms(1);
 		oled_draw();
 }
 
@@ -179,14 +202,6 @@ void sr_draw_obstacle(sr_Runner* runner, sr_Obstacle_list* o_list) {
 
 }
 
-//oled_sram_adress[oled_state.LINE*128 + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
-void sr_sram_write(uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2) {
-		for (int y = y1; y < y2; y++) {
-			for (int x = x1; x < x2; x++) {
-				//write
-			}
-		}
-}
 
 void sr_sprite_test(sr_Runner* runner) {			//makes a square runner
 	for (int y = 0; y < SR_RUNNER_HEIGHT; y++) {
@@ -214,7 +229,7 @@ void sr_jump(sr_Runner* runner) {
 
 void sr_crash() {
 	/*Print message to OLED */
-	printf("score: %d", sr_SCORE);
+	//printf("score: %d", sr_SCORE);
 
 	/*Draws OLED white*/
 	for (int y = 0; y < SR_MAX_Y; y++) {
@@ -232,12 +247,14 @@ void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* o_list) {
 		/*Update score*/
 		sr_SCORE ++;
 
+
 		/* Update Y-velocity */
-		if (runner->vely != 0) { //can also check if sr_JUMPFLAG
-			runner->vely -= GRAVITY*0.5;
+		if (runner->vely != 0) {
+			runner->vely -= GRAVITY*0.1;
 			//If player hits ground
-			if (runner->posy == GROUND_LEVEL-1 && sr_JUMPFLAG) {
+			if (runner->posy >= GROUND_LEVEL-1 && sr_JUMPFLAG) {
 				runner->vely = 0;
+				runner->posy = GROUND_LEVEL-1;
 				sr_JUMPFLAG = 0;
 				/*Change back to origginal sprite*/
 			}
@@ -250,7 +267,7 @@ void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* o_list) {
 
 		/*Update Y-position*/
 		if (sr_JUMPFLAG) {
-			runner->posy = (int)(runner->posy + runner->vely);		//Values probably not right
+			runner->posy = (int)(runner->posy - runner->vely);		//Values probably not right
 		}
 
 		/*Update Ostacles' X-position*/
@@ -276,6 +293,7 @@ void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* o_list) {
 			//sr_gen_obst(o_list);
 		}
 
+		_delay_ms(10);
 		/*Update map*/
 		sr_draw_runner(runner);
 		sr_draw_obstacle(runner, o_list);
@@ -369,19 +387,34 @@ void sr_mem_to_oled() {
 }
 
 void sr_play(Joystick* joy) {
+	joystick_run(joy);
 	sr_Runner* runner; // = malloc(sizeof(Runner));
 	sr_Obstacle_list* obstacles; //= malloc(sizeof(Obstacle_list));
 	runner 		= malloc(sizeof(sr_Runner));
 	obstacles = malloc(sizeof(sr_Obstacle_list));
 
 	sr_init(runner, obstacles);
-	sr_draw_runner(runner);
+
 
 	while (!sr_GAMEOVER) {
-		printf("Playing Space Runner");
-		_delay_ms(10);
+		sr_draw_runner(runner);
+		joystick_run(joy);
 		sr_run(runner, joy, obstacles);
+
+		// if(joy->dir == UP) {
+		// 	for (int i = 0; i < 30; i++) {
+		// 		runner->posy -= 1;
+		// 		sr_draw_runner(runner);
+		// 		_delay_ms(5);
+		// 	}
+		// 	for (int j = 0; j < 30; j++) {
+		// 		runner->posy += 1;
+		// 		sr_draw_runner(runner);
+		// 		_delay_ms(5);
+		// 	}
+		// }
+		sr_GAMEOVER = 0;
 	}
-	printf("Score: %d", sr_SCORE);
-	//oled_init();
+	free(runner);
+	free(obstacles);
 }
