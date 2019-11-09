@@ -40,7 +40,7 @@ void sr_init(sr_Runner* runner, sr_Obstacle_list* o_list) {
 		/*Draws map and ground*/
 		sr_sram_init();
 
-    /*Init and draw runner*/
+    /*Init runner*/
     runner->velx 	= 2;
     runner->vely 	= 0;
     runner->posy 	= GROUND_LEVEL-1;
@@ -91,55 +91,80 @@ void sr_sram_init() {
 }
 
 void sr_draw_runner(sr_Runner* runner) {
-		/*If runner hasnt jumped, (is on ground)*/
 		uint8_t bottom_page = OLED_PAGES - 2 ;
 		uint8_t top_page 		= OLED_PAGES - 3 ;
 		char 		temp[1] 		= {0b00000000};	//Contains info about 8 pixels; 1 col in 1 page
 		uint8_t i 					= 0;
+
+		/*If runner hasnt jumped, (is on ground)*/
 		if (!sr_JUMPFLAG) {
 			for (int p = bottom_page; p >= top_page; p--) { //start at p6, then p5
-				//uint8_t col_data[8] = {0,0,0,0,0,0,0,0};
 				for (int x = 3; x < SR_RUNNER_WIDTH+3; x++) {	//x<12
 					for (int y = 0; y < OLED_PAGE_HEIGHT; y++) {	//y<8
-						//col_data[y] = runner->sprite[y + i*OLED_PAGE_HEIGHT ][x].b;
-						if ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x].b == 1)) {
+						if ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x-3].b == 1)) {
 							temp[0] |=  (1 << (7-y));
 						}
 						else {
 							temp[0] &= ~(1 << (7-y));
 						}
 					}
-					temp[0] &= ~(1 << 0x04);
 					oled_sram_adress[p*OLED_COLS + x] = temp[0];
 				}
 				i++;
 			}
 		}
-		/*If runner has jumped
-		1. Draw new runner sprite in new y-position
-		2. Clear out a row of pixels above and below*/
 
+		/*If runner has jumped*/
 		else {
-			bottom_page =  runner->posy / OLED_PAGE_HEIGHT ; //floors value;
-			top_page 		= (runner->posy - SR_RUNNER_HEIGHT +1 ) / OLED_PAGE_HEIGHT ;
-			temp[0] 		= 0b00000000;
-			i 					= 0;
+			bottom_page 	=  runner->posy / OLED_PAGE_HEIGHT ; //floors value;
+			top_page 			= (runner->posy - SR_RUNNER_HEIGHT +1 ) / OLED_PAGE_HEIGHT ;
+			temp[0] 			= 0b00000000;
+			i 						= 0;
+			//Difference between bottom of page and runner y-pos
+			uint8_t diff 	= (bottom_page+1)*OLED_PAGE_HEIGHT - runner->posy - 1;
 
 			for (int p = bottom_page; p >= top_page; p++) {
 				for (int x = 3; x < SR_RUNNER_WIDTH + 3; x++) {
 					for (int y = 0; y < OLED_PAGE_HEIGHT; y++) {
 						/*If runner is perfectly within 2 pages*/
 						if ((runner->posy + 1) % 8 == 0) {
-							if ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x].b == 1)) {
+							if ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x-3].b == 1)) {
 								temp[0] |=  (1 << (7-y));	//Light up pixel
 							}
 							else {
 								temp[0] &= ~(1 << (7-y)); //Not light up pixel
 							}
 						}
-						/*If runner is between 3 pages*/
-						else  {
 
+						else  { /*If runner is between 3 pages*/
+							if (p == bottom_page) {
+								if (runner->sprite[y][x-3].b == 1) {
+									temp[0] |=  (1 << (7-y-diff));
+								}
+								else {
+									temp[0] &= ~(1 << (7-y-diff));
+								}
+								temp[0] &= ~(1 << (7-diff+1));		//clearing old line below runner
+							}
+							else if (p == top_page) {
+								uint8_t ind = y + 2*OLED_PAGE_HEIGHT-diff;
+								if (ind < SR_RUNNER_HEIGHT) {
+									if (runner->sprite[ind][x-3].b == 1) {
+										temp[0] |=  (1 << (7-y));
+									}
+									else {
+										temp[0] &= ~(1 << (7-y));
+									}
+								}
+							}
+							else { /* If page is between top and bottom */
+								if (runner->sprite[7-diff+y][x-3].b == 1) {
+									temp[0] |=  (1 << (7-y));
+								}
+								else {
+									temp[0] &= ~(1 << (7-y));
+								}
+							}
 						}
 					}
 					oled_sram_adress[p*OLED_COLS + x] = temp[0];
@@ -248,11 +273,12 @@ void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* o_list) {
 
 		/*Randomly generates obstacles, maximum 3 at a time.*/
 		if (sr_SCORE%70 == 2 && o_list->size < SR_OBSTACLE_NO) {
-			sr_gen_obst(o_list);
+			//sr_gen_obst(o_list);
 		}
 
 		/*Update map*/
-		sr_draw_map(runner, o_list);
+		sr_draw_runner(runner);
+		sr_draw_obstacle(runner, o_list);
 }
 
 void sr_draw_map(sr_Runner* runner, sr_Obstacle_list* o_list) {
@@ -351,11 +377,11 @@ void sr_play(Joystick* joy) {
 	sr_init(runner, obstacles);
 	sr_draw_runner(runner);
 
-	// while (!sr_GAMEOVER) {
-	// 	printf("Playing Space Runner");
-	// 	_delay_ms(10);
-	// 	sr_run(runner, joy, obstacles);
-	// }
+	while (!sr_GAMEOVER) {
+		printf("Playing Space Runner");
+		_delay_ms(10);
+		sr_run(runner, joy, obstacles);
+	}
 	printf("Score: %d", sr_SCORE);
 	//oled_init();
 }

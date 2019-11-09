@@ -17,6 +17,7 @@ How:  Must have a write-function. This will have start and end adress (y/x-pos) 
 #define SR_OBSTACLE_DIM 		8
 #define SR_OBSTACLE_NO			3
 
+/*A single bit struct to save space*/
 typedef struct Bit_struct {
     unsigned b:1;
 } sr_Bit;
@@ -50,7 +51,7 @@ void sr_sprite_test(sr_Runner* runner);
 /*
 Initializes OLED to be used for this game.
 Initializes the game map and Runner
-Draws empty map with sprite and ground
+Draws empty map with ground
 */
 void sr_init(sr_Runner* runner, sr_Obstacle_list* o_list);
 
