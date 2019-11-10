@@ -23,7 +23,7 @@ typedef struct SpaceRunner_struct {
   	uint8_t		posx ;  								//X-position of leftmost pixel of sprite
   	uint8_t 	velx ; 									//Running speed		(Changes the speed of obstacles)
   	float 		vely ; 									//Jump speed vector
-  	sr_Bit		sprite[SR_RUNNER_HEIGHT][SR_RUNNER_WIDTH];	//The player is 16x12 pixels
+  	sr_Bit		sprite[SR_RUNNER_HEIGHT][SR_RUNNER_WIDTH];	//The player is 16x10 pixels
 } sr_Runner;
 
 /*Obstacle*/
@@ -83,5 +83,15 @@ void sr_play(Joystick* joy);
 
 
 
+const uint8_t obstacle_spike[8]  = {
+			0b11000000,
+			0b11100000,
+		 	0b11111100,
+		 	0b11111111,
+		 	0b11111111,
+		 	0b11111100,
+		 	0b11110000,
+		 	0b11000000;
+};
 
 #endif
