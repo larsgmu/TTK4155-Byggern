@@ -1,3 +1,7 @@
+/*!@file
+* This file cointains functions to controll the motor.
+*/
+
 #include "motor_driver.h"
 #include "TWI_Master.h"
 #include <avr/io.h>

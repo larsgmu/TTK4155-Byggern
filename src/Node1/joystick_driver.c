@@ -1,5 +1,5 @@
 /*!@file
-* Joystick interface
+* This file contains functions to use the joystick and buttons on the game controller
 */
 #include <util/delay.h>
 #include <stdlib.h>
@@ -35,6 +35,8 @@ void analog_position(Joystick* joy){
 
 }
 
+
+/*Oppdatere til bool?*/
 /*Gameboard Buttons*/
 int8_t left_button_pressed(){
   if(PINB&(1<<PB3)){
@@ -42,6 +44,8 @@ int8_t left_button_pressed(){
   }
   return 0;
 }
+
+/*Oppdatere til bool?*/
 int8_t right_button_pressed(){
   if(PINB&(1<<PB2)){
     return 1;
@@ -52,7 +56,7 @@ int8_t right_button_pressed(){
 }
 
 void analog_direction(Joystick* joy) {
-  /*Threshold on 10 percent*/
+  /*Threshold on 15 percent*/
   int threshold = 15;
 
   /*Calculates direction based on angle*/
@@ -82,5 +86,4 @@ void send_joystick_pos(Joystick* joy){
 void joystick_run(Joystick* joy) {
 	analog_position(joy);
 	analog_direction(joy);
-
 }

@@ -1,0 +1,113 @@
+\hypertarget{_node2_2can__driver_8h}{}\doxysection{src/\+Node2/can\+\_\+driver.h File Reference}
+\label{_node2_2can__driver_8h}\index{src/Node2/can\_driver.h@{src/Node2/can\_driver.h}}
+{\ttfamily \#include $<$avr/interrupt.\+h$>$}\newline
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_c_a_n__message__struct}{C\+A\+N\+\_\+message\+\_\+struct}}
+\begin{DoxyCompactList}\small\item\em Struct containing the C\+AN message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_node2_2can__driver_8h_afb847664870b7abe3b5202fab8994b3f}\label{_node2_2can__driver_8h_afb847664870b7abe3b5202fab8994b3f}} 
+\#define {\bfseries C\+A\+N\+\_\+\+M\+S\+G\+\_\+\+D\+A\+T\+A\+\_\+\+L\+E\+N\+G\+TH}~8
+\item 
+\mbox{\Hypertarget{_node2_2can__driver_8h_a81fce4f0785db665521d588096f7ad1c}\label{_node2_2can__driver_8h_a81fce4f0785db665521d588096f7ad1c}} 
+\#define {\bfseries C\+A\+N\+\_\+\+S\+H\+I\+F\+T\+\_\+\+C\+O\+N\+S\+T\+A\+NT}~5
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_node2_2can__driver_8h_abcf953177f5c4922095f6e061d378048}\label{_node2_2can__driver_8h_abcf953177f5c4922095f6e061d378048}} 
+typedef struct \mbox{\hyperlink{struct_c_a_n__message__struct}{C\+A\+N\+\_\+message\+\_\+struct}} \mbox{\hyperlink{_node2_2can__driver_8h_abcf953177f5c4922095f6e061d378048}{C\+A\+Nmsg}}
+\begin{DoxyCompactList}\small\item\em Struct containing the C\+AN message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_node2_2can__driver_8h_aa3a9a26c5c7753341a574e9e4c967f26}\label{_node2_2can__driver_8h_aa3a9a26c5c7753341a574e9e4c967f26}} 
+enum {\bfseries joystick\+\_\+dir} \{ \newline
+{\bfseries N\+E\+U\+T\+R\+AL} = 0, 
+{\bfseries UP} = 1, 
+{\bfseries D\+O\+WN} = 2, 
+{\bfseries L\+E\+FT} = 3, 
+\newline
+{\bfseries R\+I\+G\+HT} = 4, 
+{\bfseries N\+E\+U\+T\+R\+AL} = 0, 
+{\bfseries UP} = 1, 
+{\bfseries D\+O\+WN} = 2, 
+\newline
+{\bfseries L\+E\+FT} = 3, 
+{\bfseries R\+I\+G\+HT} = 4
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_node2_2can__driver_8h_a1619e4e36842ab2508b1a3c18cb60ae3}\label{_node2_2can__driver_8h_a1619e4e36842ab2508b1a3c18cb60ae3}} 
+void \mbox{\hyperlink{_node2_2can__driver_8h_a1619e4e36842ab2508b1a3c18cb60ae3}{can\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Initializes C\+AN interace with interrupt. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_node2_2can__driver_8h_aba879c67850ce31ffa33d036e332d473}{can\+\_\+send\+\_\+msg}} (\mbox{\hyperlink{_node1_2can__driver_8h_abcf953177f5c4922095f6e061d378048}{C\+A\+Nmsg}} $\ast$can\+\_\+msg)
+\begin{DoxyCompactList}\small\item\em Function to send specified C\+AN message. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_node1_2can__driver_8h_abcf953177f5c4922095f6e061d378048}{C\+A\+Nmsg}} \mbox{\hyperlink{_node2_2can__driver_8h_aaa4b13222f2b8b64a9250eb61b47bfdb}{can\+\_\+receive\+\_\+msg}} ()
+\begin{DoxyCompactList}\small\item\em Function to receive C\+AN message when interrupt is received. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_node1_2can__driver_8h_abcf953177f5c4922095f6e061d378048}{C\+A\+Nmsg}} \mbox{\hyperlink{_node2_2can__driver_8h_a55da009558094d4693e6b24686cf8190}{get\+\_\+\+C\+A\+N\+\_\+msg}} ()
+\begin{DoxyCompactList}\small\item\em Returns the latest received C\+AN message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains function to enable C\+AN communication between Node1 and Node2. Node2 uses a M\+C\+P2515 chip as a stand-\/alone C\+AN controller. The communication between atmega2560 and M\+C\+P2515 is done with S\+PI. Node2 uses a M\+C\+P2551 chip as C\+AN transceiver. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_node2_2can__driver_8h_aaa4b13222f2b8b64a9250eb61b47bfdb}\label{_node2_2can__driver_8h_aaa4b13222f2b8b64a9250eb61b47bfdb}} 
+\index{can\_driver.h@{can\_driver.h}!can\_receive\_msg@{can\_receive\_msg}}
+\index{can\_receive\_msg@{can\_receive\_msg}!can\_driver.h@{can\_driver.h}}
+\doxysubsubsection{\texorpdfstring{can\_receive\_msg()}{can\_receive\_msg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_node1_2can__driver_8h_abcf953177f5c4922095f6e061d378048}{C\+A\+Nmsg}} can\+\_\+receive\+\_\+msg (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to receive C\+AN message when interrupt is received. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily C\+A\+Nmsg} -\/$>$ The received C\+AN message. 
+\end{DoxyReturn}
+
+
+Definition at line 60 of file can\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{_node2_2can__driver_8h_aba879c67850ce31ffa33d036e332d473}\label{_node2_2can__driver_8h_aba879c67850ce31ffa33d036e332d473}} 
+\index{can\_driver.h@{can\_driver.h}!can\_send\_msg@{can\_send\_msg}}
+\index{can\_send\_msg@{can\_send\_msg}!can\_driver.h@{can\_driver.h}}
+\doxysubsubsection{\texorpdfstring{can\_send\_msg()}{can\_send\_msg()}}
+{\footnotesize\ttfamily void can\+\_\+send\+\_\+msg (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_node1_2can__driver_8h_abcf953177f5c4922095f6e061d378048}{C\+A\+Nmsg}} $\ast$}]{can\+\_\+msg }\end{DoxyParamCaption})}
+
+
+
+Function to send specified C\+AN message. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em C\+A\+Nmsg$\ast$} & can\+\_\+msg -\/$>$ Pointer to C\+AN message to send. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 47 of file can\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{_node2_2can__driver_8h_a55da009558094d4693e6b24686cf8190}\label{_node2_2can__driver_8h_a55da009558094d4693e6b24686cf8190}} 
+\index{can\_driver.h@{can\_driver.h}!get\_CAN\_msg@{get\_CAN\_msg}}
+\index{get\_CAN\_msg@{get\_CAN\_msg}!can\_driver.h@{can\_driver.h}}
+\doxysubsubsection{\texorpdfstring{get\_CAN\_msg()}{get\_CAN\_msg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_node1_2can__driver_8h_abcf953177f5c4922095f6e061d378048}{C\+A\+Nmsg}} get\+\_\+\+C\+A\+N\+\_\+msg (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the latest received C\+AN message. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily C\+A\+Nmsg} -\/$>$ Latest received C\+AN message. 
+\end{DoxyReturn}
+
+
+Definition at line 71 of file can\+\_\+driver.\+c.
+

@@ -1,0 +1,113 @@
+\hypertarget{space__runner_8h}{}\doxysection{src/\+Node1/space\+\_\+runner.h File Reference}
+\label{space__runner_8h}\index{src/Node1/space\_runner.h@{src/Node1/space\_runner.h}}
+{\ttfamily \#include \char`\"{}joystick\+\_\+driver.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_bit__struct}{Bit\+\_\+struct}}
+\item 
+struct \mbox{\hyperlink{struct_space_runner__struct}{Space\+Runner\+\_\+struct}}
+\item 
+struct \mbox{\hyperlink{struct_obstacle__struct}{Obstacle\+\_\+struct}}
+\item 
+struct \mbox{\hyperlink{struct_obstacle__list__struct}{Obstacle\+\_\+list\+\_\+struct}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{space__runner_8h_afab3280334ee4773c496ed026ad2b032}\label{space__runner_8h_afab3280334ee4773c496ed026ad2b032}} 
+\#define {\bfseries S\+R\+\_\+\+R\+U\+N\+N\+E\+R\+\_\+\+W\+I\+D\+TH}~10
+\item 
+\mbox{\Hypertarget{space__runner_8h_abedf5080258c05879e6faf4f7b3ba8f3}\label{space__runner_8h_abedf5080258c05879e6faf4f7b3ba8f3}} 
+\#define {\bfseries S\+R\+\_\+\+R\+U\+N\+N\+E\+R\+\_\+\+H\+E\+I\+G\+HT}~16
+\item 
+\mbox{\Hypertarget{space__runner_8h_afc35c465faf59a69c8d00b087eeccbf9}\label{space__runner_8h_afc35c465faf59a69c8d00b087eeccbf9}} 
+\#define {\bfseries S\+R\+\_\+\+O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+D\+IM}~8
+\item 
+\mbox{\Hypertarget{space__runner_8h_abda9a06d909992dfc6cfdbcc4d848539}\label{space__runner_8h_abda9a06d909992dfc6cfdbcc4d848539}} 
+\#define {\bfseries S\+R\+\_\+\+O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+NO}~3
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{space__runner_8h_af31e801593067ef48f69152e21ee225e}\label{space__runner_8h_af31e801593067ef48f69152e21ee225e}} 
+typedef struct \mbox{\hyperlink{struct_bit__struct}{Bit\+\_\+struct}} {\bfseries sr\+\_\+\+Bit}
+\item 
+\mbox{\Hypertarget{space__runner_8h_adbd6221e5dca1182dc1c1964ffc05b49}\label{space__runner_8h_adbd6221e5dca1182dc1c1964ffc05b49}} 
+typedef struct \mbox{\hyperlink{struct_space_runner__struct}{Space\+Runner\+\_\+struct}} {\bfseries sr\+\_\+\+Runner}
+\item 
+\mbox{\Hypertarget{space__runner_8h_aad3058377a9ab10b7b1b159130237531}\label{space__runner_8h_aad3058377a9ab10b7b1b159130237531}} 
+typedef struct \mbox{\hyperlink{struct_obstacle__struct}{Obstacle\+\_\+struct}} {\bfseries sr\+\_\+\+Obstacle}
+\item 
+\mbox{\Hypertarget{space__runner_8h_a9243178cd7335c32eda456e3c37dfcb8}\label{space__runner_8h_a9243178cd7335c32eda456e3c37dfcb8}} 
+typedef struct \mbox{\hyperlink{struct_obstacle__list__struct}{Obstacle\+\_\+list\+\_\+struct}} {\bfseries sr\+\_\+\+Obstacle\+\_\+list}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{space__runner_8h_af00a35ed79e43d7157bc3a0ccc9e4943}\label{space__runner_8h_af00a35ed79e43d7157bc3a0ccc9e4943}} 
+void {\bfseries sr\+\_\+sram\+\_\+init} ()
+\item 
+\mbox{\Hypertarget{space__runner_8h_a4ea7439caac81a2d88d8867515df3a4b}\label{space__runner_8h_a4ea7439caac81a2d88d8867515df3a4b}} 
+void {\bfseries sr\+\_\+sprite\+\_\+test} (\mbox{\hyperlink{struct_space_runner__struct}{sr\+\_\+\+Runner}} $\ast$runner)
+\item 
+\mbox{\Hypertarget{space__runner_8h_aca9d9def56413d7fd2f13512e7adfad0}\label{space__runner_8h_aca9d9def56413d7fd2f13512e7adfad0}} 
+void {\bfseries sr\+\_\+init} (\mbox{\hyperlink{struct_space_runner__struct}{sr\+\_\+\+Runner}} $\ast$runner, \mbox{\hyperlink{struct_obstacle__list__struct}{sr\+\_\+\+Obstacle\+\_\+list}} $\ast$o\+\_\+list)
+\item 
+\mbox{\Hypertarget{space__runner_8h_a79cd72934f87dcf86f281f6d6ffc25dc}\label{space__runner_8h_a79cd72934f87dcf86f281f6d6ffc25dc}} 
+void {\bfseries sr\+\_\+draw\+\_\+runner} (\mbox{\hyperlink{struct_space_runner__struct}{sr\+\_\+\+Runner}} $\ast$runner)
+\item 
+\mbox{\Hypertarget{space__runner_8h_a29a94ab1f6cdd4cd972702232a7b901e}\label{space__runner_8h_a29a94ab1f6cdd4cd972702232a7b901e}} 
+void {\bfseries sr\+\_\+draw\+\_\+obstacle} (\mbox{\hyperlink{struct_space_runner__struct}{sr\+\_\+\+Runner}} $\ast$runner, \mbox{\hyperlink{struct_obstacle__list__struct}{sr\+\_\+\+Obstacle\+\_\+list}} $\ast$o\+\_\+list)
+\item 
+\mbox{\Hypertarget{space__runner_8h_a118cc03c0ffd3d42f9ee7a757814ef22}\label{space__runner_8h_a118cc03c0ffd3d42f9ee7a757814ef22}} 
+void {\bfseries sr\+\_\+gen\+\_\+obst} (\mbox{\hyperlink{struct_obstacle__list__struct}{sr\+\_\+\+Obstacle\+\_\+list}} $\ast$o\+\_\+list)
+\item 
+\mbox{\Hypertarget{space__runner_8h_a2de193f83bc5d0f9d4960e3e9c78b935}\label{space__runner_8h_a2de193f83bc5d0f9d4960e3e9c78b935}} 
+void {\bfseries sr\+\_\+jump} (\mbox{\hyperlink{struct_space_runner__struct}{sr\+\_\+\+Runner}} $\ast$runner)
+\item 
+\mbox{\Hypertarget{space__runner_8h_ab337eb8d62eddcdfaec8eab7e7effb62}\label{space__runner_8h_ab337eb8d62eddcdfaec8eab7e7effb62}} 
+void {\bfseries sr\+\_\+crash} ()
+\item 
+\mbox{\Hypertarget{space__runner_8h_ac1031d79c98dd57f07dda08067e03899}\label{space__runner_8h_ac1031d79c98dd57f07dda08067e03899}} 
+void {\bfseries sr\+\_\+run} (\mbox{\hyperlink{struct_space_runner__struct}{sr\+\_\+\+Runner}} $\ast$runner, \mbox{\hyperlink{joystick__driver_8h_ad428d3a60096dde6d3d6ba80fc363085}{Joystick}} $\ast$joy, \mbox{\hyperlink{struct_obstacle__list__struct}{sr\+\_\+\+Obstacle\+\_\+list}} $\ast$o\+\_\+list)
+\item 
+\mbox{\Hypertarget{space__runner_8h_af505675491498ab4ec4676ba46c00552}\label{space__runner_8h_af505675491498ab4ec4676ba46c00552}} 
+void {\bfseries sr\+\_\+play} (\mbox{\hyperlink{joystick__driver_8h_ad428d3a60096dde6d3d6ba80fc363085}{Joystick}} $\ast$joy)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const uint8\+\_\+t {\bfseries obstacle\+\_\+spike} \mbox{[}8\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Space Runner 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{space__runner_8h_ad42dfcbba5ab113b5fda870d3d147777}\label{space__runner_8h_ad42dfcbba5ab113b5fda870d3d147777}} 
+\index{space\_runner.h@{space\_runner.h}!obstacle\_spike@{obstacle\_spike}}
+\index{obstacle\_spike@{obstacle\_spike}!space\_runner.h@{space\_runner.h}}
+\doxysubsubsection{\texorpdfstring{obstacle\_spike}{obstacle\_spike}}
+{\footnotesize\ttfamily const uint8\+\_\+t obstacle\+\_\+spike\mbox{[}8\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{            0b11000000,}
+\DoxyCodeLine{            0b11100000,}
+\DoxyCodeLine{            0b11111100,}
+\DoxyCodeLine{            0b11111111,}
+\DoxyCodeLine{            0b11111111,}
+\DoxyCodeLine{            0b11111100,}
+\DoxyCodeLine{            0b11110000,}
+\DoxyCodeLine{            0b11000000;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line 86 of file space\+\_\+runner.\+h.
+

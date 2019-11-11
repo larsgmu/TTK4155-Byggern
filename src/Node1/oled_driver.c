@@ -1,5 +1,5 @@
 /*!@file
-* OLED interface
+* This file contains functions to display data on the game controller OLED screen.
 */
 #include <string.h>
 #include <avr/pgmspace.h>

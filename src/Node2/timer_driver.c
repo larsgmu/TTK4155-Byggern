@@ -1,3 +1,7 @@
+/*!@file
+* This file contains functions to use fastPWM for the servo.
+*/
+
 #include <avr/io.h>
 #include "timer_driver.h"
 #include <avr/interrupt.h>

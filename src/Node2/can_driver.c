@@ -1,6 +1,10 @@
 /*!@file
-* CAN interface Node 2
+* This file contains function to enable CAN communication between Node1 and Node2.
+* Node2 uses a MCP2515 chip as a stand-alone CAN controller.
+* The communication between atmega2560 and MCP2515 is done with SPI.
+* Node2 uses a MCP2551 chip as CAN transceiver.
 */
+
 #include "can_driver.h"
 #include "mcp2515_driver.h"
 #include "MCP2515.h"

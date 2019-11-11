@@ -1,3 +1,7 @@
+/*!@file
+* This file contains the different games to play.
+*/
+
 #include "games.h"
 #include "oled_driver.h"
 #include "can_driver.h"
@@ -32,15 +36,17 @@ void pingpong_score(){
 }
 
 void play_pingpong(char* player, Joystick* joy) {
-
+    /*Update current player and reset score*/
   game.player_name = player;
   game.score = 0;
 
+  /*Create start pingpong CAN message*/
   CANmsg start_pingpong;
   start_pingpong.id = 0;
   start_pingpong.length = 1;
   start_pingpong.data[0] = 1;
 
+  /*Update OLED and send start pingpong message*/
   oled_sram_reset();
   oled_goto_line(3);
   oled_sram_write_string("GET READY!");
@@ -55,6 +61,7 @@ void play_pingpong(char* player, Joystick* joy) {
   oled_sram_write_string("PINGPONG");
   oled_draw();
 
+  /*Play game until stop pingpong message is received from Node2*/
   while(1) {
 
     joystick_run(joy);

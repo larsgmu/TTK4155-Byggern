@@ -1,0 +1,124 @@
+\hypertarget{_node2_2mcp2515__driver_8c}{}\doxysection{src/\+Node2/mcp2515\+\_\+driver.c File Reference}
+\label{_node2_2mcp2515__driver_8c}\index{src/Node2/mcp2515\_driver.c@{src/Node2/mcp2515\_driver.c}}
+{\ttfamily \#include \char`\"{}mcp2515\+\_\+driver.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}M\+C\+P2515.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}spi\+\_\+driver.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_node2_2mcp2515__driver_8c_a88ec4f5c17c38facc648c1645e32531f}\label{_node2_2mcp2515__driver_8c_a88ec4f5c17c38facc648c1645e32531f}} 
+void \mbox{\hyperlink{_node2_2mcp2515__driver_8c_a88ec4f5c17c38facc648c1645e32531f}{mcp2515\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Resets the M\+C\+P2515 and configures it to use normal mode. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{_node2_2mcp2515__driver_8c_a8b50a361e54ae1567c2d797c01a274a6}{mcp2515\+\_\+read}} (uint8\+\_\+t address)
+\begin{DoxyCompactList}\small\item\em Reads the data sent from the M\+C\+P2515 at the specified address. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_node2_2mcp2515__driver_8c_a8e07147cbb9d2ac72b0003f27fcbdbe8}{mcp2515\+\_\+write}} (uint8\+\_\+t address, uint8\+\_\+t data)
+\begin{DoxyCompactList}\small\item\em Writes the given data to the specified address. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_node2_2mcp2515__driver_8c_aa7b83d9d5df4be9fa63f77add11ab625}{mcp2515\+\_\+request\+\_\+send}} (uint8\+\_\+t pin)
+\begin{DoxyCompactList}\small\item\em Sends a request to send on specified M\+C\+P2515 pin. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{_node2_2mcp2515__driver_8c_ab997c2db10d764d8581e416146e57a7a}{mcp2515\+\_\+read\+\_\+status}} ()
+\begin{DoxyCompactList}\small\item\em Reads the current status of the M\+C\+P2515. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_node2_2mcp2515__driver_8c_afe162e26baee5181db3a7883932c83de}{mcp2515\+\_\+bit\+\_\+modify}} (uint8\+\_\+t address, uint8\+\_\+t mask, uint8\+\_\+t data)
+\begin{DoxyCompactList}\small\item\em Modifies specified bits at specified adress with specified data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_node2_2mcp2515__driver_8c_ae5bb16b0c928ff03914f4022b56ef15a}\label{_node2_2mcp2515__driver_8c_ae5bb16b0c928ff03914f4022b56ef15a}} 
+void \mbox{\hyperlink{_node2_2mcp2515__driver_8c_ae5bb16b0c928ff03914f4022b56ef15a}{mcp2515\+\_\+reset}} ()
+\begin{DoxyCompactList}\small\item\em Resets the M\+C\+P2515. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains functions to use the M\+C\+P2515 chip as a stand-\/alone C\+AN controller on Node2. The communication between atmega2560 and M\+C\+P2515 is done with S\+PI. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_node2_2mcp2515__driver_8c_afe162e26baee5181db3a7883932c83de}\label{_node2_2mcp2515__driver_8c_afe162e26baee5181db3a7883932c83de}} 
+\index{mcp2515\_driver.c@{mcp2515\_driver.c}!mcp2515\_bit\_modify@{mcp2515\_bit\_modify}}
+\index{mcp2515\_bit\_modify@{mcp2515\_bit\_modify}!mcp2515\_driver.c@{mcp2515\_driver.c}}
+\doxysubsubsection{\texorpdfstring{mcp2515\_bit\_modify()}{mcp2515\_bit\_modify()}}
+{\footnotesize\ttfamily void mcp2515\+\_\+bit\+\_\+modify (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{address,  }\item[{uint8\+\_\+t}]{mask,  }\item[{uint8\+\_\+t}]{data }\end{DoxyParamCaption})}
+
+
+
+Modifies specified bits at specified adress with specified data. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 78 of file mcp2515\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{_node2_2mcp2515__driver_8c_a8b50a361e54ae1567c2d797c01a274a6}\label{_node2_2mcp2515__driver_8c_a8b50a361e54ae1567c2d797c01a274a6}} 
+\index{mcp2515\_driver.c@{mcp2515\_driver.c}!mcp2515\_read@{mcp2515\_read}}
+\index{mcp2515\_read@{mcp2515\_read}!mcp2515\_driver.c@{mcp2515\_driver.c}}
+\doxysubsubsection{\texorpdfstring{mcp2515\_read()}{mcp2515\_read()}}
+{\footnotesize\ttfamily uint8\+\_\+t mcp2515\+\_\+read (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{address }\end{DoxyParamCaption})}
+
+
+
+Reads the data sent from the M\+C\+P2515 at the specified address. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 18 of file mcp2515\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{_node2_2mcp2515__driver_8c_ab997c2db10d764d8581e416146e57a7a}\label{_node2_2mcp2515__driver_8c_ab997c2db10d764d8581e416146e57a7a}} 
+\index{mcp2515\_driver.c@{mcp2515\_driver.c}!mcp2515\_read\_status@{mcp2515\_read\_status}}
+\index{mcp2515\_read\_status@{mcp2515\_read\_status}!mcp2515\_driver.c@{mcp2515\_driver.c}}
+\doxysubsubsection{\texorpdfstring{mcp2515\_read\_status()}{mcp2515\_read\_status()}}
+{\footnotesize\ttfamily uint8\+\_\+t mcp2515\+\_\+read\+\_\+status (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reads the current status of the M\+C\+P2515. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily uint8\+\_\+t} -\/$>$ Current status. 
+\end{DoxyReturn}
+
+
+Definition at line 74 of file mcp2515\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{_node2_2mcp2515__driver_8c_aa7b83d9d5df4be9fa63f77add11ab625}\label{_node2_2mcp2515__driver_8c_aa7b83d9d5df4be9fa63f77add11ab625}} 
+\index{mcp2515\_driver.c@{mcp2515\_driver.c}!mcp2515\_request\_send@{mcp2515\_request\_send}}
+\index{mcp2515\_request\_send@{mcp2515\_request\_send}!mcp2515\_driver.c@{mcp2515\_driver.c}}
+\doxysubsubsection{\texorpdfstring{mcp2515\_request\_send()}{mcp2515\_request\_send()}}
+{\footnotesize\ttfamily void mcp2515\+\_\+request\+\_\+send (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{pin }\end{DoxyParamCaption})}
+
+
+
+Sends a request to send on specified M\+C\+P2515 pin. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 50 of file mcp2515\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{_node2_2mcp2515__driver_8c_a8e07147cbb9d2ac72b0003f27fcbdbe8}\label{_node2_2mcp2515__driver_8c_a8e07147cbb9d2ac72b0003f27fcbdbe8}} 
+\index{mcp2515\_driver.c@{mcp2515\_driver.c}!mcp2515\_write@{mcp2515\_write}}
+\index{mcp2515\_write@{mcp2515\_write}!mcp2515\_driver.c@{mcp2515\_driver.c}}
+\doxysubsubsection{\texorpdfstring{mcp2515\_write()}{mcp2515\_write()}}
+{\footnotesize\ttfamily void mcp2515\+\_\+write (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{address,  }\item[{uint8\+\_\+t}]{data }\end{DoxyParamCaption})}
+
+
+
+Writes the given data to the specified address. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 37 of file mcp2515\+\_\+driver.\+c.
+

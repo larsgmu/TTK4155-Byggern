@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['send_5fjoystick_5fpos_99',['send_joystick_pos',['../joystick__driver_8c.html#a10fee319b6e543bb7b5b369242c9f466',1,'send_joystick_pos(Joystick *joy):&#160;joystick_driver.c'],['../joystick__driver_8h.html#a10fee319b6e543bb7b5b369242c9f466',1,'send_joystick_pos(Joystick *joy):&#160;joystick_driver.c']]],
+  ['servo_5fjoystick_5fcontrol_100',['servo_joystick_control',['../gameboard__driver_8c.html#a880fd292a981b2acf491f78cd948bb23',1,'servo_joystick_control(uint8_t pos_msg):&#160;gameboard_driver.c'],['../gameboard__driver_8h.html#a880fd292a981b2acf491f78cd948bb23',1,'servo_joystick_control(uint8_t pos_msg):&#160;gameboard_driver.c']]],
+  ['set_5fduty_5fcycle_101',['set_duty_cycle',['../timer__driver_8c.html#a4f1f026e4ebc52710f10b50f8c7ff1f5',1,'set_duty_cycle(uint16_t cycle):&#160;timer_driver.c'],['../timer__driver_8h.html#a4f1f026e4ebc52710f10b50f8c7ff1f5',1,'set_duty_cycle(uint16_t cycle):&#160;timer_driver.c']]],
+  ['slider_5fdriver_2ec_102',['slider_driver.c',['../slider__driver_8c.html',1,'']]],
+  ['slider_5fdriver_2eh_103',['slider_driver.h',['../slider__driver_8h.html',1,'']]],
+  ['slider_5fstruct_104',['Slider_struct',['../struct_slider__struct.html',1,'']]],
+  ['solenoid_5fextend_105',['solenoid_extend',['../gameboard__driver_8c.html#aec4907bd4c275bdb9821cf12e81f5730',1,'solenoid_extend():&#160;gameboard_driver.c'],['../gameboard__driver_8h.html#aec4907bd4c275bdb9821cf12e81f5730',1,'solenoid_extend():&#160;gameboard_driver.c']]],
+  ['solenoid_5finit_106',['solenoid_init',['../gameboard__driver_8c.html#a05736227e6f452fb1ceb65c417ebd8c9',1,'solenoid_init():&#160;gameboard_driver.c'],['../gameboard__driver_8h.html#a05736227e6f452fb1ceb65c417ebd8c9',1,'solenoid_init():&#160;gameboard_driver.c']]],
+  ['space_5frunner_2eh_107',['space_runner.h',['../space__runner_8h.html',1,'']]],
+  ['spacerunner_5fstruct_108',['SpaceRunner_struct',['../struct_space_runner__struct.html',1,'']]],
+  ['spi_5fdriver_2ec_109',['spi_driver.c',['../_node1_2spi__driver_8c.html',1,'(Global Namespace)'],['../_node2_2spi__driver_8c.html',1,'(Global Namespace)']]],
+  ['spi_5fdriver_2eh_110',['spi_driver.h',['../_node1_2spi__driver_8h.html',1,'(Global Namespace)'],['../_node2_2spi__driver_8h.html',1,'(Global Namespace)']]],
+  ['spi_5fmaster_5finit_111',['spi_master_init',['../_node1_2spi__driver_8c.html#a2410ec35908a8255a1c4db6cd6b6e6be',1,'spi_master_init():&#160;spi_driver.c'],['../_node1_2spi__driver_8h.html#a2410ec35908a8255a1c4db6cd6b6e6be',1,'spi_master_init():&#160;spi_driver.c'],['../_node2_2spi__driver_8c.html#a2410ec35908a8255a1c4db6cd6b6e6be',1,'spi_master_init():&#160;spi_driver.c'],['../_node2_2spi__driver_8h.html#a2410ec35908a8255a1c4db6cd6b6e6be',1,'spi_master_init():&#160;spi_driver.c']]],
+  ['spi_5fmaster_5ftransceive_112',['spi_master_transceive',['../_node1_2spi__driver_8c.html#ade25e5063f1a500fc598dd27035d91f1',1,'spi_master_transceive(char c):&#160;spi_driver.c'],['../_node1_2spi__driver_8h.html#ade25e5063f1a500fc598dd27035d91f1',1,'spi_master_transceive(char c):&#160;spi_driver.c'],['../_node2_2spi__driver_8c.html#ade25e5063f1a500fc598dd27035d91f1',1,'spi_master_transceive(char c):&#160;spi_driver.c'],['../_node2_2spi__driver_8h.html#ade25e5063f1a500fc598dd27035d91f1',1,'spi_master_transceive(char c):&#160;spi_driver.c']]],
+  ['sram_5fdriver_2ec_113',['sram_driver.c',['../sram__driver_8c.html',1,'']]],
+  ['sram_5fdriver_2eh_114',['sram_driver.h',['../sram__driver_8h.html',1,'']]],
+  ['sram_5finit_115',['SRAM_init',['../sram__driver_8c.html#a1bf1bf1630e1f5d89051d4110f75c77e',1,'SRAM_init():&#160;sram_driver.c'],['../sram__driver_8h.html#a1bf1bf1630e1f5d89051d4110f75c77e',1,'SRAM_init():&#160;sram_driver.c']]],
+  ['sram_5fread_116',['SRAM_read',['../sram__driver_8c.html#ae020888f70ee646880565b50c14228ca',1,'SRAM_read(unsigned int adr):&#160;sram_driver.c'],['../sram__driver_8h.html#ae020888f70ee646880565b50c14228ca',1,'SRAM_read(unsigned int adr):&#160;sram_driver.c']]],
+  ['sram_5ftest_117',['SRAM_test',['../sram__driver_8c.html#a2e2934cf8f43363e11e4fd6c60db1666',1,'SRAM_test(void):&#160;sram_driver.c'],['../sram__driver_8h.html#a2e2934cf8f43363e11e4fd6c60db1666',1,'SRAM_test(void):&#160;sram_driver.c']]],
+  ['sram_5fwrite_118',['SRAM_write',['../sram__driver_8c.html#a33450bcbaee50ad81a125f907e3f64f6',1,'SRAM_write(unsigned int adr, unsigned int data):&#160;sram_driver.c'],['../sram__driver_8h.html#a33450bcbaee50ad81a125f907e3f64f6',1,'SRAM_write(unsigned int adr, unsigned int data):&#160;sram_driver.c']]],
+  ['string_5finit_119',['string_init',['../_node1_2usart__driver_8c.html#a62cedd4a6735747abd13dfa0f8602402',1,'string_init():&#160;usart_driver.c'],['../_node1_2usart__driver_8h.html#a62cedd4a6735747abd13dfa0f8602402',1,'string_init():&#160;usart_driver.c'],['../_node2_2usart__driver_8c.html#a62cedd4a6735747abd13dfa0f8602402',1,'string_init():&#160;usart_driver.c'],['../_node2_2usart__driver_8h.html#a62cedd4a6735747abd13dfa0f8602402',1,'string_init():&#160;usart_driver.c']]],
+  ['sub_5fmenu_120',['sub_menu',['../struct_menu__struct.html#a799fca9829e275817fc3a16809f6709a',1,'Menu_struct']]]
+];

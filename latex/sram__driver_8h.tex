@@ -1,27 +1,61 @@
-\hypertarget{sram__driver_8h}{}\section{src/\+Node1/sram\+\_\+driver.h File Reference}
-\label{sram__driver_8h}\index{src/\+Node1/sram\+\_\+driver.\+h@{src/\+Node1/sram\+\_\+driver.\+h}}
-{\ttfamily \#include $<$stdlib.\+h$>$}\\*
-{\ttfamily \#include $<$stdint.\+h$>$}\\*
-Include dependency graph for sram\+\_\+driver.\+h\+:
-% FIG 0
-This graph shows which files directly or indirectly include this file\+:
-% FIG 1
-\subsection*{Functions}
+\hypertarget{sram__driver_8h}{}\doxysection{src/\+Node1/sram\+\_\+driver.h File Reference}
+\label{sram__driver_8h}\index{src/Node1/sram\_driver.h@{src/Node1/sram\_driver.h}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void {\bfseries S\+R\+A\+M\+\_\+init} ()\hypertarget{sram__driver_8h_a1bf1bf1630e1f5d89051d4110f75c77e}{}\label{sram__driver_8h_a1bf1bf1630e1f5d89051d4110f75c77e}
-
-\item 
-void {\bfseries S\+R\+A\+M\+\_\+write} (unsigned int adr, unsigned int data)\hypertarget{sram__driver_8h_a33450bcbaee50ad81a125f907e3f64f6}{}\label{sram__driver_8h_a33450bcbaee50ad81a125f907e3f64f6}
-
-\item 
-unsigned int {\bfseries S\+R\+A\+M\+\_\+read} (unsigned int adr)\hypertarget{sram__driver_8h_ae020888f70ee646880565b50c14228ca}{}\label{sram__driver_8h_ae020888f70ee646880565b50c14228ca}
-
-\item 
-void {\bfseries S\+R\+A\+M\+\_\+test} (void)\hypertarget{sram__driver_8h_a2e2934cf8f43363e11e4fd6c60db1666}{}\label{sram__driver_8h_a2e2934cf8f43363e11e4fd6c60db1666}
-
-\end{DoxyCompactItemize}
+\mbox{\Hypertarget{sram__driver_8h_a1bf1bf1630e1f5d89051d4110f75c77e}\label{sram__driver_8h_a1bf1bf1630e1f5d89051d4110f75c77e}} 
+void \mbox{\hyperlink{sram__driver_8h_a1bf1bf1630e1f5d89051d4110f75c77e}{S\+R\+A\+M\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Enables the external memory interface, and releases P\+C7 -\/ P\+C4. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sram__driver_8h_a33450bcbaee50ad81a125f907e3f64f6}{S\+R\+A\+M\+\_\+write}} (unsigned int adr, unsigned int data)
+\begin{DoxyCompactList}\small\item\em Writes specified data to given address. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{sram__driver_8h_ae020888f70ee646880565b50c14228ca}{S\+R\+A\+M\+\_\+read}} (unsigned int adr)
+\begin{DoxyCompactList}\small\item\em Read data from specified address. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sram__driver_8h_a2e2934cf8f43363e11e4fd6c60db1666}\label{sram__driver_8h_a2e2934cf8f43363e11e4fd6c60db1666}} 
+void \mbox{\hyperlink{sram__driver_8h_a2e2934cf8f43363e11e4fd6c60db1666}{S\+R\+A\+M\+\_\+test}} (void)
+\begin{DoxyCompactList}\small\item\em S\+R\+AM test. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
-S\+R\+AM interface 
+\doxysubsection{Detailed Description}
+This file contains functions to use the I\+D\+T\+\_\+7164\+SL chip as external S\+R\+AM for the atmega162. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sram__driver_8h_ae020888f70ee646880565b50c14228ca}\label{sram__driver_8h_ae020888f70ee646880565b50c14228ca}} 
+\index{sram\_driver.h@{sram\_driver.h}!SRAM\_read@{SRAM\_read}}
+\index{SRAM\_read@{SRAM\_read}!sram\_driver.h@{sram\_driver.h}}
+\doxysubsubsection{\texorpdfstring{SRAM\_read()}{SRAM\_read()}}
+{\footnotesize\ttfamily unsigned int S\+R\+A\+M\+\_\+read (\begin{DoxyParamCaption}\item[{unsigned int}]{adr }\end{DoxyParamCaption})}
+
+
+
+Read data from specified address. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 19 of file sram\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{sram__driver_8h_a33450bcbaee50ad81a125f907e3f64f6}\label{sram__driver_8h_a33450bcbaee50ad81a125f907e3f64f6}} 
+\index{sram\_driver.h@{sram\_driver.h}!SRAM\_write@{SRAM\_write}}
+\index{SRAM\_write@{SRAM\_write}!sram\_driver.h@{sram\_driver.h}}
+\doxysubsubsection{\texorpdfstring{SRAM\_write()}{SRAM\_write()}}
+{\footnotesize\ttfamily void S\+R\+A\+M\+\_\+write (\begin{DoxyParamCaption}\item[{unsigned int}]{adr,  }\item[{unsigned int}]{data }\end{DoxyParamCaption})}
+
+
+
+Writes specified data to given address. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 14 of file sram\+\_\+driver.\+c.
+

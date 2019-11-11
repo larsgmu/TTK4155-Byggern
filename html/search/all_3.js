@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['joystick_5fdriver_2ec',['joystick_driver.c',['../joystick__driver_8c.html',1,'']]],
-  ['joystick_5fdriver_2eh',['joystick_driver.h',['../joystick__driver_8h.html',1,'']]],
-  ['joystick_5fstruct',['Joystick_struct',['../structJoystick__struct.html',1,'']]]
+  ['encoder_5fread_18',['encoder_read',['../motor__driver_8c.html#a45fa7734490b15dd4d47d3319b4c4ec0',1,'encoder_read():&#160;motor_driver.c'],['../motor__driver_8h.html#a45fa7734490b15dd4d47d3319b4c4ec0',1,'encoder_read():&#160;motor_driver.c']]]
 ];

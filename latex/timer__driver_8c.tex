@@ -1,0 +1,50 @@
+\hypertarget{timer__driver_8c}{}\doxysection{src/\+Node2/timer\+\_\+driver.c File Reference}
+\label{timer__driver_8c}\index{src/Node2/timer\_driver.c@{src/Node2/timer\_driver.c}}
+{\ttfamily \#include $<$avr/io.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}timer\+\_\+driver.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$avr/interrupt.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{timer__driver_8c_aacf65b3cf95b653b478c72dedbec37de}\label{timer__driver_8c_aacf65b3cf95b653b478c72dedbec37de}} 
+\#define {\bfseries min\+P\+WM}~1800
+\item 
+\mbox{\Hypertarget{timer__driver_8c_a8c29fcb7072114815272df56dc3ad2a6}\label{timer__driver_8c_a8c29fcb7072114815272df56dc3ad2a6}} 
+\#define {\bfseries max\+P\+WM}~4200
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{timer__driver_8c_a896a4c37c6ecf8868ef0dc758e5a598c}\label{timer__driver_8c_a896a4c37c6ecf8868ef0dc758e5a598c}} 
+void \mbox{\hyperlink{timer__driver_8c_a896a4c37c6ecf8868ef0dc758e5a598c}{timer\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Enables fast\+P\+WM, interrupts and configures atmega2560 pins. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{timer__driver_8c_a4f1f026e4ebc52710f10b50f8c7ff1f5}{set\+\_\+duty\+\_\+cycle}} (uint16\+\_\+t cycle)
+\begin{DoxyCompactList}\small\item\em Sets the dutycycle of the pwm signal that goes to the servo. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{timer__driver_8c_ad39420cdd896dd12c68e36313139d0a5}\label{timer__driver_8c_ad39420cdd896dd12c68e36313139d0a5}} 
+{\bfseries I\+SR} (T\+I\+M\+E\+R1\+\_\+\+C\+O\+M\+P\+A\+\_\+vect)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains functions to use fast\+P\+WM for the servo. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{timer__driver_8c_a4f1f026e4ebc52710f10b50f8c7ff1f5}\label{timer__driver_8c_a4f1f026e4ebc52710f10b50f8c7ff1f5}} 
+\index{timer\_driver.c@{timer\_driver.c}!set\_duty\_cycle@{set\_duty\_cycle}}
+\index{set\_duty\_cycle@{set\_duty\_cycle}!timer\_driver.c@{timer\_driver.c}}
+\doxysubsubsection{\texorpdfstring{set\_duty\_cycle()}{set\_duty\_cycle()}}
+{\footnotesize\ttfamily void set\+\_\+duty\+\_\+cycle (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{cycle }\end{DoxyParamCaption})}
+
+
+
+Sets the dutycycle of the pwm signal that goes to the servo. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 34 of file timer\+\_\+driver.\+c.
+

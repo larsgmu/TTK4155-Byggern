@@ -1,44 +1,93 @@
-\hypertarget{adc__driver_8h}{}\section{src/\+Node1/adc\+\_\+driver.h File Reference}
-\label{adc__driver_8h}\index{src/\+Node1/adc\+\_\+driver.\+h@{src/\+Node1/adc\+\_\+driver.\+h}}
-{\ttfamily \#include $<$avr/io.\+h$>$}\\*
-{\ttfamily \#include $<$avr/interrupt.\+h$>$}\\*
-{\ttfamily \#include $<$stdio.\+h$>$}\\*
-{\ttfamily \#include $<$stdbool.\+h$>$}\\*
-{\ttfamily \#include $<$stdint.\+h$>$}\\*
-{\ttfamily \#include $<$util/delay.\+h$>$}\\*
-Include dependency graph for adc\+\_\+driver.\+h\+:
-% FIG 0
-This graph shows which files directly or indirectly include this file\+:
-% FIG 1
-\subsection*{Enumerations}
+\hypertarget{adc__driver_8h}{}\doxysection{src/\+Node1/adc\+\_\+driver.h File Reference}
+\label{adc__driver_8h}\index{src/Node1/adc\_driver.h@{src/Node1/adc\_driver.h}}
+{\ttfamily \#include $<$avr/io.\+h$>$}\newline
+{\ttfamily \#include $<$avr/interrupt.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$util/delay.\+h$>$}\newline
+\doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
-enum {\bfseries channel\+\_\+type} \{ {\bfseries Y\+\_\+axis} = 4, 
-{\bfseries X\+\_\+axis} = 5, 
+enum \mbox{\hyperlink{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}{channel\+\_\+type}} \{ \mbox{\hyperlink{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1dad60226bb1ee0c28c2ce070a6e9d3c1ec}{Y\+\_\+axis}} = 4, 
+\mbox{\hyperlink{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1da68f978058e40fd8dbe00d08a7a243ae5}{X\+\_\+axis}} = 5, 
 {\bfseries Left\+\_\+slider} = 6, 
 {\bfseries Right\+\_\+slider} = 7
- \}\hypertarget{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}{}\label{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}
-
-\end{DoxyCompactItemize}
-\subsection*{Functions}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum cointaining the different analog inputs from the game controller. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{adc__driver_8h_a2b815e6730e8723a6d1d06d9ef8f31c0}{adc\+\_\+init} (void)
-\item 
-uint8\+\_\+t {\bfseries adc\+\_\+read} (enum channel\+\_\+type channel)\hypertarget{adc__driver_8h_a17c6244e26388b37bab7ff5757205cfe}{}\label{adc__driver_8h_a17c6244e26388b37bab7ff5757205cfe}
+void \mbox{\hyperlink{adc__driver_8h_a2b815e6730e8723a6d1d06d9ef8f31c0}{adc\+\_\+init}} (void)
+\begin{DoxyCompactList}\small\item\em Initializes A\+DC interface. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{adc__driver_8h_a17c6244e26388b37bab7ff5757205cfe}{adc\+\_\+read}} (enum \mbox{\hyperlink{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}{channel\+\_\+type}} channel)
+\begin{DoxyCompactList}\small\item\em Reads the converted signal from specified channel. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
-\end{DoxyCompactItemize}
+
+\doxysubsection{Detailed Description}
+This file contains functions to convert analog signals from the game controller to digital values for the atmega162. The conversion is done by an A\+D\+C0844\+C\+CN chip. 
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}\label{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}} 
+\index{adc\_driver.h@{adc\_driver.h}!channel\_type@{channel\_type}}
+\index{channel\_type@{channel\_type}!adc\_driver.h@{adc\_driver.h}}
+\doxysubsubsection{\texorpdfstring{channel\_type}{channel\_type}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}{channel\+\_\+type}}}
 
 
-\subsection{Detailed Description}
-A\+DC interface 
 
-\subsection{Function Documentation}
-\index{adc\+\_\+driver.\+h@{adc\+\_\+driver.\+h}!adc\+\_\+init@{adc\+\_\+init}}
-\index{adc\+\_\+init@{adc\+\_\+init}!adc\+\_\+driver.\+h@{adc\+\_\+driver.\+h}}
-\subsubsection[{\texorpdfstring{adc\+\_\+init(void)}{adc_init(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void adc\+\_\+init (
-\begin{DoxyParamCaption}
-\item[{void}]{}
-\end{DoxyParamCaption}
-)}\hypertarget{adc__driver_8h_a2b815e6730e8723a6d1d06d9ef8f31c0}{}\label{adc__driver_8h_a2b815e6730e8723a6d1d06d9ef8f31c0}
-Initialize A\+DC interface 
+Enum cointaining the different analog inputs from the game controller. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Y\_axis@{Y\_axis}!adc\_driver.h@{adc\_driver.h}}\index{adc\_driver.h@{adc\_driver.h}!Y\_axis@{Y\_axis}}}\mbox{\Hypertarget{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1dad60226bb1ee0c28c2ce070a6e9d3c1ec}\label{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1dad60226bb1ee0c28c2ce070a6e9d3c1ec}} 
+Y\+\_\+axis&Y-\/axis of joystick, corresponding to U\+P/\+D\+O\+WN movement \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{X\_axis@{X\_axis}!adc\_driver.h@{adc\_driver.h}}\index{adc\_driver.h@{adc\_driver.h}!X\_axis@{X\_axis}}}\mbox{\Hypertarget{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1da68f978058e40fd8dbe00d08a7a243ae5}\label{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1da68f978058e40fd8dbe00d08a7a243ae5}} 
+X\+\_\+axis&X-\/axis of joystick, corresponding to L\+E\+F\+T/\+R\+I\+GH movement \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 18 of file adc\+\_\+driver.\+h.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{adc__driver_8h_a2b815e6730e8723a6d1d06d9ef8f31c0}\label{adc__driver_8h_a2b815e6730e8723a6d1d06d9ef8f31c0}} 
+\index{adc\_driver.h@{adc\_driver.h}!adc\_init@{adc\_init}}
+\index{adc\_init@{adc\_init}!adc\_driver.h@{adc\_driver.h}}
+\doxysubsubsection{\texorpdfstring{adc\_init()}{adc\_init()}}
+{\footnotesize\ttfamily void adc\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initializes A\+DC interface. 
+
+Initializes A\+DC interface with interrupts in P\+E0 (I\+N\+T2) 
+
+Definition at line 13 of file adc\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{adc__driver_8h_a17c6244e26388b37bab7ff5757205cfe}\label{adc__driver_8h_a17c6244e26388b37bab7ff5757205cfe}} 
+\index{adc\_driver.h@{adc\_driver.h}!adc\_read@{adc\_read}}
+\index{adc\_read@{adc\_read}!adc\_driver.h@{adc\_driver.h}}
+\doxysubsubsection{\texorpdfstring{adc\_read()}{adc\_read()}}
+{\footnotesize\ttfamily uint8\+\_\+t adc\+\_\+read (\begin{DoxyParamCaption}\item[{enum \mbox{\hyperlink{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}{channel\+\_\+type}}}]{channel }\end{DoxyParamCaption})}
+
+
+
+Reads the converted signal from specified channel. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em enum} & channel\+\_\+type channel -\/$>$ Channel to read from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily uint8\+\_\+t} -\/$>$ Digital value 
+\end{DoxyReturn}
+
+
+Definition at line 36 of file adc\+\_\+driver.\+c.
+

@@ -1,10 +1,13 @@
 /*!@file
-* SRAM interface
+* This file contains functions to use the IDT_7164SL chip as external SRAM for the atmega162.
 */
 #include "sram_driver.h"
 #include <avr/io.h>
 void SRAM_init(){
+    /*Enable external SRAM*/
     MCUCR |= (1 << SRE);
+
+    /*USE PC7-PC4 as normal*/
     SFIOR |= (1 << XMM2);
 }
 

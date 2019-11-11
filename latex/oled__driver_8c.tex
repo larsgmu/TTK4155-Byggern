@@ -1,72 +1,267 @@
-\hypertarget{oled__driver_8c}{}\section{src/\+Node1/oled\+\_\+driver.c File Reference}
-\label{oled__driver_8c}\index{src/\+Node1/oled\+\_\+driver.\+c@{src/\+Node1/oled\+\_\+driver.\+c}}
-{\ttfamily \#include $<$string.\+h$>$}\\*
-{\ttfamily \#include $<$avr/pgmspace.\+h$>$}\\*
-{\ttfamily \#include $<$avr/interrupt.\+h$>$}\\*
-{\ttfamily \#include $<$math.\+h$>$}\\*
-{\ttfamily \#include \char`\"{}fonts.\+h\char`\"{}}\\*
-{\ttfamily \#include \char`\"{}oled\+\_\+driver.\+h\char`\"{}}\\*
-{\ttfamily \#include \char`\"{}adc\+\_\+driver.\+h\char`\"{}}\\*
-{\ttfamily \#include \char`\"{}sram\+\_\+driver.\+h\char`\"{}}\\*
-Include dependency graph for oled\+\_\+driver.\+c\+:
-% FIG 0
-\subsection*{Classes}
+\hypertarget{oled__driver_8c}{}\doxysection{src/\+Node1/oled\+\_\+driver.c File Reference}
+\label{oled__driver_8c}\index{src/Node1/oled\_driver.c@{src/Node1/oled\_driver.c}}
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$avr/pgmspace.\+h$>$}\newline
+{\ttfamily \#include $<$avr/interrupt.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}fonts.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}oled\+\_\+driver.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}adc\+\_\+driver.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sram\+\_\+driver.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-struct \hyperlink{structoled__data__marker__struct}{oled\+\_\+data\+\_\+marker\+\_\+struct}
-\end{DoxyCompactItemize}
-\subsection*{Functions}
-\begin{DoxyCompactItemize}
+\mbox{\Hypertarget{oled__driver_8c_a8c50659733df2acac1580d209db8e97f}\label{oled__driver_8c_a8c50659733df2acac1580d209db8e97f}} 
+void \mbox{\hyperlink{oled__driver_8c_a8c50659733df2acac1580d209db8e97f}{oled\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Initializes the O\+L\+ED screen. Configure O\+L\+ED screen to horizontal addressing mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{oled__driver_8c_ab16889ae984b9b798989a0d239283cac}\label{oled__driver_8c_ab16889ae984b9b798989a0d239283cac}} 
+{\bfseries I\+SR} (T\+I\+M\+E\+R1\+\_\+\+O\+V\+F\+\_\+vect)
 \item 
-void {\bfseries oled\+\_\+init} ()\hypertarget{oled__driver_8c_a8c50659733df2acac1580d209db8e97f}{}\label{oled__driver_8c_a8c50659733df2acac1580d209db8e97f}
-
-\item 
-{\bfseries I\+SR} (T\+I\+M\+E\+R1\+\_\+\+O\+V\+F\+\_\+vect)\hypertarget{oled__driver_8c_ab16889ae984b9b798989a0d239283cac}{}\label{oled__driver_8c_ab16889ae984b9b798989a0d239283cac}
-
-\item 
-void {\bfseries oled\+\_\+write\+\_\+c} (uint8\+\_\+t command)\hypertarget{oled__driver_8c_a3bdff21231b9e197c5e2ad7233ab4734}{}\label{oled__driver_8c_a3bdff21231b9e197c5e2ad7233ab4734}
-
-\item 
-void {\bfseries oled\+\_\+write\+\_\+d} (uint8\+\_\+t data)\hypertarget{oled__driver_8c_a5e7e7b79e791ab381ade9cf8b704bb21}{}\label{oled__driver_8c_a5e7e7b79e791ab381ade9cf8b704bb21}
-
-\item 
-void {\bfseries oled\+\_\+goto\+\_\+line} (int line)\hypertarget{oled__driver_8c_a92b72a426516bed15ec9ed3e7745e03f}{}\label{oled__driver_8c_a92b72a426516bed15ec9ed3e7745e03f}
-
-\item 
-void {\bfseries oled\+\_\+goto\+\_\+column} (int column)\hypertarget{oled__driver_8c_a95e197851798fefbc941053c410e7eca}{}\label{oled__driver_8c_a95e197851798fefbc941053c410e7eca}
-
-\item 
-void {\bfseries oled\+\_\+home} (void)\hypertarget{oled__driver_8c_ac3d3bd3760c4da609cc310cba9887a55}{}\label{oled__driver_8c_ac3d3bd3760c4da609cc310cba9887a55}
-
-\item 
-void {\bfseries oled\+\_\+pos} (int row, int column)\hypertarget{oled__driver_8c_a7751191db1ed964fd6f77f5a3c1aedaa}{}\label{oled__driver_8c_a7751191db1ed964fd6f77f5a3c1aedaa}
-
-\item 
-void {\bfseries oled\+\_\+sram\+\_\+write\+\_\+d} (uint8\+\_\+t adr, uint8\+\_\+t data)\hypertarget{oled__driver_8c_a95745a000e1e42d06efdcecc4b52cc2c}{}\label{oled__driver_8c_a95745a000e1e42d06efdcecc4b52cc2c}
-
-\item 
-void {\bfseries oled\+\_\+sram\+\_\+write\+\_\+char} (unsigned char c)\hypertarget{oled__driver_8c_afe3f1ecc6e620de0fa1594a19e7ea079}{}\label{oled__driver_8c_afe3f1ecc6e620de0fa1594a19e7ea079}
-
-\item 
-void {\bfseries oled\+\_\+sram\+\_\+write\+\_\+string} (char $\ast$str)\hypertarget{oled__driver_8c_aacb510760da32302b36494c1e75af9bd}{}\label{oled__driver_8c_aacb510760da32302b36494c1e75af9bd}
-
-\item 
-void {\bfseries oled\+\_\+sram\+\_\+reset} (void)\hypertarget{oled__driver_8c_ab80f9b64aeb82d40b666fdb98b11966e}{}\label{oled__driver_8c_ab80f9b64aeb82d40b666fdb98b11966e}
-
-\item 
-void {\bfseries oled\+\_\+sram\+\_\+clear\+\_\+line} (int line)\hypertarget{oled__driver_8c_ad28fd1dbcfff39993dba1e1e522784e3}{}\label{oled__driver_8c_ad28fd1dbcfff39993dba1e1e522784e3}
-
-\item 
-void {\bfseries oled\+\_\+sram\+\_\+menu} (\hyperlink{structMenu__struct}{Menu} $\ast$menu)\hypertarget{oled__driver_8c_a36a821094e8ebb049d660bcd5ecaed42}{}\label{oled__driver_8c_a36a821094e8ebb049d660bcd5ecaed42}
-
-\item 
-void {\bfseries oled\+\_\+sram\+\_\+arrow} (uint8\+\_\+t line)\hypertarget{oled__driver_8c_abbe1d8f76dbea53a76f4d82899f0023e}{}\label{oled__driver_8c_abbe1d8f76dbea53a76f4d82899f0023e}
-
-\item 
-void {\bfseries oled\+\_\+draw} ()\hypertarget{oled__driver_8c_aaa61c201931f21da6524049dc0085b8a}{}\label{oled__driver_8c_aaa61c201931f21da6524049dc0085b8a}
-
-\end{DoxyCompactItemize}
+void \mbox{\hyperlink{oled__driver_8c_a3bdff21231b9e197c5e2ad7233ab4734}{oled\+\_\+write\+\_\+c}} (uint8\+\_\+t command)
+\begin{DoxyCompactList}\small\item\em Chooses specified O\+L\+ED command to execute. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{oled__driver_8c_a5e7e7b79e791ab381ade9cf8b704bb21}{oled\+\_\+write\+\_\+d}} (uint8\+\_\+t data)
+\begin{DoxyCompactList}\small\item\em Writes data to O\+L\+ED. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{oled__driver_8c_a92b72a426516bed15ec9ed3e7745e03f}{oled\+\_\+goto\+\_\+line}} (int line)
+\begin{DoxyCompactList}\small\item\em Updates current state struct and chooses specified page. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{oled__driver_8c_a95e197851798fefbc941053c410e7eca}{oled\+\_\+goto\+\_\+column}} (int column)
+\begin{DoxyCompactList}\small\item\em Updates current state struct and chooses specified column. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{oled__driver_8c_ac3d3bd3760c4da609cc310cba9887a55}\label{oled__driver_8c_ac3d3bd3760c4da609cc310cba9887a55}} 
+void \mbox{\hyperlink{oled__driver_8c_ac3d3bd3760c4da609cc310cba9887a55}{oled\+\_\+home}} (void)
+\begin{DoxyCompactList}\small\item\em Updates current state struct goes to top page and left most column. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{oled__driver_8c_a7751191db1ed964fd6f77f5a3c1aedaa}{oled\+\_\+pos}} (int row, int column)
+\begin{DoxyCompactList}\small\item\em Updates current state struct and goes to specified page and column. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{oled__driver_8c_a95745a000e1e42d06efdcecc4b52cc2c}{oled\+\_\+sram\+\_\+write\+\_\+d}} (uint8\+\_\+t adr, uint8\+\_\+t data)
+\begin{DoxyCompactList}\small\item\em Updates current state and writes specified data to given adress. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{oled__driver_8c_afe3f1ecc6e620de0fa1594a19e7ea079}{oled\+\_\+sram\+\_\+write\+\_\+char}} (unsigned char c)
+\begin{DoxyCompactList}\small\item\em Updates current state and writes a character to O\+L\+E\+D-\/\+S\+R\+AM. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{oled__driver_8c_aacb510760da32302b36494c1e75af9bd}{oled\+\_\+sram\+\_\+write\+\_\+string}} (char $\ast$str)
+\begin{DoxyCompactList}\small\item\em Updates current state and writes a char string to O\+L\+E\+D-\/\+S\+R\+AM. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{oled__driver_8c_ab80f9b64aeb82d40b666fdb98b11966e}\label{oled__driver_8c_ab80f9b64aeb82d40b666fdb98b11966e}} 
+void \mbox{\hyperlink{oled__driver_8c_ab80f9b64aeb82d40b666fdb98b11966e}{oled\+\_\+sram\+\_\+reset}} (void)
+\begin{DoxyCompactList}\small\item\em Resets the entire O\+L\+E\+D-\/\+S\+R\+AM. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{oled__driver_8c_ad28fd1dbcfff39993dba1e1e522784e3}{oled\+\_\+sram\+\_\+clear\+\_\+line}} (int line)
+\begin{DoxyCompactList}\small\item\em Resets the specified page of the O\+L\+E\+D-\/\+S\+R\+AM. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{oled__driver_8c_a36a821094e8ebb049d660bcd5ecaed42}{oled\+\_\+sram\+\_\+menu}} (\mbox{\hyperlink{menu_8h_a18125cb034180320953ebf9b1372c839}{Menu}} $\ast$menu)
+\begin{DoxyCompactList}\small\item\em Writes the specified menu to O\+L\+E\+D-\/\+S\+R\+AM. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{oled__driver_8c_abbe1d8f76dbea53a76f4d82899f0023e}{oled\+\_\+sram\+\_\+arrow}} (uint8\+\_\+t line)
+\begin{DoxyCompactList}\small\item\em Writes the cursor to O\+L\+E\+D-\/\+S\+R\+AM. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{oled__driver_8c_aaa61c201931f21da6524049dc0085b8a}\label{oled__driver_8c_aaa61c201931f21da6524049dc0085b8a}} 
+void \mbox{\hyperlink{oled__driver_8c_aaa61c201931f21da6524049dc0085b8a}{oled\+\_\+draw}} ()
+\begin{DoxyCompactList}\small\item\em Draws the entire O\+L\+ED screen from the data in O\+L\+E\+D-\/\+S\+R\+AM. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
-O\+L\+ED interface 
+\doxysubsection{Detailed Description}
+This file contains functions to display data on the game controller O\+L\+ED screen. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{oled__driver_8c_a95e197851798fefbc941053c410e7eca}\label{oled__driver_8c_a95e197851798fefbc941053c410e7eca}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_goto\_column@{oled\_goto\_column}}
+\index{oled\_goto\_column@{oled\_goto\_column}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_goto\_column()}{oled\_goto\_column()}}
+{\footnotesize\ttfamily void oled\+\_\+goto\+\_\+column (\begin{DoxyParamCaption}\item[{int}]{column }\end{DoxyParamCaption})}
+
+
+
+Updates current state struct and chooses specified column. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 103 of file oled\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{oled__driver_8c_a92b72a426516bed15ec9ed3e7745e03f}\label{oled__driver_8c_a92b72a426516bed15ec9ed3e7745e03f}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_goto\_line@{oled\_goto\_line}}
+\index{oled\_goto\_line@{oled\_goto\_line}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_goto\_line()}{oled\_goto\_line()}}
+{\footnotesize\ttfamily void oled\+\_\+goto\+\_\+line (\begin{DoxyParamCaption}\item[{int}]{line }\end{DoxyParamCaption})}
+
+
+
+Updates current state struct and chooses specified page. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 90 of file oled\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{oled__driver_8c_a7751191db1ed964fd6f77f5a3c1aedaa}\label{oled__driver_8c_a7751191db1ed964fd6f77f5a3c1aedaa}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_pos@{oled\_pos}}
+\index{oled\_pos@{oled\_pos}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_pos()}{oled\_pos()}}
+{\footnotesize\ttfamily void oled\+\_\+pos (\begin{DoxyParamCaption}\item[{int}]{row,  }\item[{int}]{column }\end{DoxyParamCaption})}
+
+
+
+Updates current state struct and goes to specified page and column. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em int} & row -\/$>$ Page to go to. \\
+\hline
+\mbox{\texttt{ in}}  & {\em int} & Column -\/$>$ Column to go to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 126 of file oled\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{oled__driver_8c_abbe1d8f76dbea53a76f4d82899f0023e}\label{oled__driver_8c_abbe1d8f76dbea53a76f4d82899f0023e}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_sram\_arrow@{oled\_sram\_arrow}}
+\index{oled\_sram\_arrow@{oled\_sram\_arrow}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_sram\_arrow()}{oled\_sram\_arrow()}}
+{\footnotesize\ttfamily void oled\+\_\+sram\+\_\+arrow (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{line }\end{DoxyParamCaption})}
+
+
+
+Writes the cursor to O\+L\+E\+D-\/\+S\+R\+AM. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 206 of file oled\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{oled__driver_8c_ad28fd1dbcfff39993dba1e1e522784e3}\label{oled__driver_8c_ad28fd1dbcfff39993dba1e1e522784e3}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_sram\_clear\_line@{oled\_sram\_clear\_line}}
+\index{oled\_sram\_clear\_line@{oled\_sram\_clear\_line}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_sram\_clear\_line()}{oled\_sram\_clear\_line()}}
+{\footnotesize\ttfamily void oled\+\_\+sram\+\_\+clear\+\_\+line (\begin{DoxyParamCaption}\item[{int}]{line }\end{DoxyParamCaption})}
+
+
+
+Resets the specified page of the O\+L\+E\+D-\/\+S\+R\+AM. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 175 of file oled\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{oled__driver_8c_a36a821094e8ebb049d660bcd5ecaed42}\label{oled__driver_8c_a36a821094e8ebb049d660bcd5ecaed42}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_sram\_menu@{oled\_sram\_menu}}
+\index{oled\_sram\_menu@{oled\_sram\_menu}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_sram\_menu()}{oled\_sram\_menu()}}
+{\footnotesize\ttfamily void oled\+\_\+sram\+\_\+menu (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{menu_8h_a18125cb034180320953ebf9b1372c839}{Menu}} $\ast$}]{menu }\end{DoxyParamCaption})}
+
+
+
+Writes the specified menu to O\+L\+E\+D-\/\+S\+R\+AM. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 186 of file oled\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{oled__driver_8c_afe3f1ecc6e620de0fa1594a19e7ea079}\label{oled__driver_8c_afe3f1ecc6e620de0fa1594a19e7ea079}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_sram\_write\_char@{oled\_sram\_write\_char}}
+\index{oled\_sram\_write\_char@{oled\_sram\_write\_char}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_sram\_write\_char()}{oled\_sram\_write\_char()}}
+{\footnotesize\ttfamily void oled\+\_\+sram\+\_\+write\+\_\+char (\begin{DoxyParamCaption}\item[{unsigned char}]{c }\end{DoxyParamCaption})}
+
+
+
+Updates current state and writes a character to O\+L\+E\+D-\/\+S\+R\+AM. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 145 of file oled\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{oled__driver_8c_a95745a000e1e42d06efdcecc4b52cc2c}\label{oled__driver_8c_a95745a000e1e42d06efdcecc4b52cc2c}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_sram\_write\_d@{oled\_sram\_write\_d}}
+\index{oled\_sram\_write\_d@{oled\_sram\_write\_d}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_sram\_write\_d()}{oled\_sram\_write\_d()}}
+{\footnotesize\ttfamily void oled\+\_\+sram\+\_\+write\+\_\+d (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{adr,  }\item[{uint8\+\_\+t}]{data }\end{DoxyParamCaption})}
+
+
+
+Updates current state and writes specified data to given adress. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 140 of file oled\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{oled__driver_8c_aacb510760da32302b36494c1e75af9bd}\label{oled__driver_8c_aacb510760da32302b36494c1e75af9bd}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_sram\_write\_string@{oled\_sram\_write\_string}}
+\index{oled\_sram\_write\_string@{oled\_sram\_write\_string}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_sram\_write\_string()}{oled\_sram\_write\_string()}}
+{\footnotesize\ttfamily void oled\+\_\+sram\+\_\+write\+\_\+string (\begin{DoxyParamCaption}\item[{char $\ast$}]{str }\end{DoxyParamCaption})}
+
+
+
+Updates current state and writes a char string to O\+L\+E\+D-\/\+S\+R\+AM. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 153 of file oled\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{oled__driver_8c_a3bdff21231b9e197c5e2ad7233ab4734}\label{oled__driver_8c_a3bdff21231b9e197c5e2ad7233ab4734}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_write\_c@{oled\_write\_c}}
+\index{oled\_write\_c@{oled\_write\_c}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_write\_c()}{oled\_write\_c()}}
+{\footnotesize\ttfamily void oled\+\_\+write\+\_\+c (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{command }\end{DoxyParamCaption})}
+
+
+
+Chooses specified O\+L\+ED command to execute. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 82 of file oled\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{oled__driver_8c_a5e7e7b79e791ab381ade9cf8b704bb21}\label{oled__driver_8c_a5e7e7b79e791ab381ade9cf8b704bb21}} 
+\index{oled\_driver.c@{oled\_driver.c}!oled\_write\_d@{oled\_write\_d}}
+\index{oled\_write\_d@{oled\_write\_d}!oled\_driver.c@{oled\_driver.c}}
+\doxysubsubsection{\texorpdfstring{oled\_write\_d()}{oled\_write\_d()}}
+{\footnotesize\ttfamily void oled\+\_\+write\+\_\+d (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{data }\end{DoxyParamCaption})}
+
+
+
+Writes data to O\+L\+ED. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 86 of file oled\+\_\+driver.\+c.
+

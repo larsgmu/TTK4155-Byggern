@@ -1,0 +1,36 @@
+\hypertarget{timer__driver_8h}{}\doxysection{src/\+Node2/timer\+\_\+driver.h File Reference}
+\label{timer__driver_8h}\index{src/Node2/timer\_driver.h@{src/Node2/timer\_driver.h}}
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{timer__driver_8h_a896a4c37c6ecf8868ef0dc758e5a598c}\label{timer__driver_8h_a896a4c37c6ecf8868ef0dc758e5a598c}} 
+void \mbox{\hyperlink{timer__driver_8h_a896a4c37c6ecf8868ef0dc758e5a598c}{timer\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Enables fast\+P\+WM, interrupts and configures atmega2560 pins. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{timer__driver_8h_a4f1f026e4ebc52710f10b50f8c7ff1f5}{set\+\_\+duty\+\_\+cycle}} (uint16\+\_\+t cycle)
+\begin{DoxyCompactList}\small\item\em Sets the dutycycle of the pwm signal that goes to the servo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains functions to use fast\+P\+WM for the servo. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{timer__driver_8h_a4f1f026e4ebc52710f10b50f8c7ff1f5}\label{timer__driver_8h_a4f1f026e4ebc52710f10b50f8c7ff1f5}} 
+\index{timer\_driver.h@{timer\_driver.h}!set\_duty\_cycle@{set\_duty\_cycle}}
+\index{set\_duty\_cycle@{set\_duty\_cycle}!timer\_driver.h@{timer\_driver.h}}
+\doxysubsubsection{\texorpdfstring{set\_duty\_cycle()}{set\_duty\_cycle()}}
+{\footnotesize\ttfamily void set\+\_\+duty\+\_\+cycle (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{cycle }\end{DoxyParamCaption})}
+
+
+
+Sets the dutycycle of the pwm signal that goes to the servo. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 34 of file timer\+\_\+driver.\+c.
+

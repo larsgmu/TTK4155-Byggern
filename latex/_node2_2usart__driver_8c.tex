@@ -1,0 +1,90 @@
+\hypertarget{_node2_2usart__driver_8c}{}\doxysection{src/\+Node2/usart\+\_\+driver.c File Reference}
+\label{_node2_2usart__driver_8c}\index{src/Node2/usart\_driver.c@{src/Node2/usart\_driver.c}}
+{\ttfamily \#include \char`\"{}usart\+\_\+driver.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$avr/io.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_node2_2usart__driver_8c_a802b2b582b121e4632aa9a491d503720}\label{_node2_2usart__driver_8c_a802b2b582b121e4632aa9a491d503720}} 
+\#define {\bfseries F\+O\+SC}~16000000
+\item 
+\mbox{\Hypertarget{_node2_2usart__driver_8c_a62634036639f88eece6fbf226b45f84b}\label{_node2_2usart__driver_8c_a62634036639f88eece6fbf226b45f84b}} 
+\#define {\bfseries B\+A\+UD}~9600
+\item 
+\mbox{\Hypertarget{_node2_2usart__driver_8c_a711e9130c825a7269c8c87dbb57a85e0}\label{_node2_2usart__driver_8c_a711e9130c825a7269c8c87dbb57a85e0}} 
+\#define {\bfseries M\+Y\+U\+B\+RR}~103
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_node2_2usart__driver_8c_ab567886523c8a226f508cfeb9073c400}{usart\+\_\+init}} (unsigned int ubrr)
+\begin{DoxyCompactList}\small\item\em Sets the baudrate, enables receiver and transmitter. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_node2_2usart__driver_8c_a13709e595d2865a277d3ce822b504f07}{usart\+\_\+transmit}} (unsigned char data)
+\begin{DoxyCompactList}\small\item\em Sends specified data. \end{DoxyCompactList}\item 
+unsigned char \mbox{\hyperlink{_node2_2usart__driver_8c_ac5e38bc74b5e36f22f80f9050d3b39f1}{usart\+\_\+receive}} (void)
+\begin{DoxyCompactList}\small\item\em Receives data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_node2_2usart__driver_8c_a62cedd4a6735747abd13dfa0f8602402}\label{_node2_2usart__driver_8c_a62cedd4a6735747abd13dfa0f8602402}} 
+void \mbox{\hyperlink{_node2_2usart__driver_8c_a62cedd4a6735747abd13dfa0f8602402}{string\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Enables the use of printf(). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file include functions to communicate with U\+S\+A\+RT between the atmega2560and a computer. The communication is done via a R\+S232 chip. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_node2_2usart__driver_8c_ab567886523c8a226f508cfeb9073c400}\label{_node2_2usart__driver_8c_ab567886523c8a226f508cfeb9073c400}} 
+\index{usart\_driver.c@{usart\_driver.c}!usart\_init@{usart\_init}}
+\index{usart\_init@{usart\_init}!usart\_driver.c@{usart\_driver.c}}
+\doxysubsubsection{\texorpdfstring{usart\_init()}{usart\_init()}}
+{\footnotesize\ttfamily void usart\+\_\+init (\begin{DoxyParamCaption}\item[{unsigned int}]{ubrr }\end{DoxyParamCaption})}
+
+
+
+Sets the baudrate, enables receiver and transmitter. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 16 of file usart\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{_node2_2usart__driver_8c_ac5e38bc74b5e36f22f80f9050d3b39f1}\label{_node2_2usart__driver_8c_ac5e38bc74b5e36f22f80f9050d3b39f1}} 
+\index{usart\_driver.c@{usart\_driver.c}!usart\_receive@{usart\_receive}}
+\index{usart\_receive@{usart\_receive}!usart\_driver.c@{usart\_driver.c}}
+\doxysubsubsection{\texorpdfstring{usart\_receive()}{usart\_receive()}}
+{\footnotesize\ttfamily unsigned char usart\+\_\+receive (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Receives data. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily unsigned} char -\/$>$ Data received. 
+\end{DoxyReturn}
+
+
+Definition at line 35 of file usart\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{_node2_2usart__driver_8c_a13709e595d2865a277d3ce822b504f07}\label{_node2_2usart__driver_8c_a13709e595d2865a277d3ce822b504f07}} 
+\index{usart\_driver.c@{usart\_driver.c}!usart\_transmit@{usart\_transmit}}
+\index{usart\_transmit@{usart\_transmit}!usart\_driver.c@{usart\_driver.c}}
+\doxysubsubsection{\texorpdfstring{usart\_transmit()}{usart\_transmit()}}
+{\footnotesize\ttfamily void usart\+\_\+transmit (\begin{DoxyParamCaption}\item[{unsigned char}]{data }\end{DoxyParamCaption})}
+
+
+
+Sends specified data. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 27 of file usart\+\_\+driver.\+c.
+

@@ -1,5 +1,5 @@
 /*!@file
-* OLED menu
+* This file contains functions to create and run the OLED menu.
 */
 #include "menu.h"
 #include "joystick_driver.h"

@@ -1,3 +1,7 @@
+/*!@file
+* This file cointains functions to use a PID position/speed controller on the motor.
+*/
+
 #include "pid.h"
 
 void pid_init() {

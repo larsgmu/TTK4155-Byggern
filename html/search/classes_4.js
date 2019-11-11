@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['oled_5fdata_5fmarker_5fstruct',['oled_data_marker_struct',['../structoled__data__marker__struct.html',1,'']]]
+  ['joystick_5fstruct_136',['Joystick_struct',['../struct_joystick__struct.html',1,'']]]
 ];

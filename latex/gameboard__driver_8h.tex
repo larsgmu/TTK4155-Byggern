@@ -1,0 +1,65 @@
+\hypertarget{gameboard__driver_8h}{}\doxysection{src/\+Node2/gameboard\+\_\+driver.h File Reference}
+\label{gameboard__driver_8h}\index{src/Node2/gameboard\_driver.h@{src/Node2/gameboard\_driver.h}}
+{\ttfamily \#include \char`\"{}can\+\_\+driver.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{gameboard__driver_8h_a880fd292a981b2acf491f78cd948bb23}{servo\+\_\+joystick\+\_\+control}} (uint8\+\_\+t pos\+\_\+msg)
+\begin{DoxyCompactList}\small\item\em Sets the servo dutycycle from joystick input. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{gameboard__driver_8h_a6a9a45c2f29f12ec8bcc43c88d33cf77}\label{gameboard__driver_8h_a6a9a45c2f29f12ec8bcc43c88d33cf77}} 
+void \mbox{\hyperlink{gameboard__driver_8h_a6a9a45c2f29f12ec8bcc43c88d33cf77}{ir\+\_\+adc\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Enables A\+DC on the atmega2560, interrupts and configuers pins. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{gameboard__driver_8h_ac85836cdf9c9b916c36efc1b433d45ca}{ir\+\_\+adc\+\_\+read}} ()
+\begin{DoxyCompactList}\small\item\em Reads the IR sensor with digital filtering. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{gameboard__driver_8h_af51c3cdc05a79d6aa9f297cefdc433b2}\label{gameboard__driver_8h_af51c3cdc05a79d6aa9f297cefdc433b2}} 
+void \mbox{\hyperlink{gameboard__driver_8h_af51c3cdc05a79d6aa9f297cefdc433b2}{play\+\_\+pingpong}} ()
+\begin{DoxyCompactList}\small\item\em Controls the servo, motor and solenoid from joystick C\+AN message from Node 1. Sends a stop pingpong C\+AN message when the ball crosses the line. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{gameboard__driver_8h_a05736227e6f452fb1ceb65c417ebd8c9}\label{gameboard__driver_8h_a05736227e6f452fb1ceb65c417ebd8c9}} 
+void \mbox{\hyperlink{gameboard__driver_8h_a05736227e6f452fb1ceb65c417ebd8c9}{solenoid\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Configures the atmega2560 pins. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{gameboard__driver_8h_aec4907bd4c275bdb9821cf12e81f5730}\label{gameboard__driver_8h_aec4907bd4c275bdb9821cf12e81f5730}} 
+void \mbox{\hyperlink{gameboard__driver_8h_aec4907bd4c275bdb9821cf12e81f5730}{solenoid\+\_\+extend}} ()
+\begin{DoxyCompactList}\small\item\em Extends the solenoid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains functions to play the pingpong game including the I\+R-\/sensor. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{gameboard__driver_8h_ac85836cdf9c9b916c36efc1b433d45ca}\label{gameboard__driver_8h_ac85836cdf9c9b916c36efc1b433d45ca}} 
+\index{gameboard\_driver.h@{gameboard\_driver.h}!ir\_adc\_read@{ir\_adc\_read}}
+\index{ir\_adc\_read@{ir\_adc\_read}!gameboard\_driver.h@{gameboard\_driver.h}}
+\doxysubsubsection{\texorpdfstring{ir\_adc\_read()}{ir\_adc\_read()}}
+{\footnotesize\ttfamily uint16\+\_\+t ir\+\_\+adc\+\_\+read (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reads the IR sensor with digital filtering. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily uint16\+\_\+t} -\/$>$ Digital I\+R-\/sensor value. 
+\end{DoxyReturn}
+
+
+Definition at line 63 of file gameboard\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{gameboard__driver_8h_a880fd292a981b2acf491f78cd948bb23}\label{gameboard__driver_8h_a880fd292a981b2acf491f78cd948bb23}} 
+\index{gameboard\_driver.h@{gameboard\_driver.h}!servo\_joystick\_control@{servo\_joystick\_control}}
+\index{servo\_joystick\_control@{servo\_joystick\_control}!gameboard\_driver.h@{gameboard\_driver.h}}
+\doxysubsubsection{\texorpdfstring{servo\_joystick\_control()}{servo\_joystick\_control()}}
+{\footnotesize\ttfamily void servo\+\_\+joystick\+\_\+control (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{pos\+\_\+msg }\end{DoxyParamCaption})}
+
+
+
+Sets the servo dutycycle from joystick input. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 25 of file gameboard\+\_\+driver.\+c.
+

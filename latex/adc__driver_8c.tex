@@ -1,4 +1,61 @@
-\hypertarget{adc__driver_8c}{}\section{src/\+Node1/adc\+\_\+driver.c File Reference}
-\label{adc__driver_8c}\index{src/\+Node1/adc\+\_\+driver.\+c@{src/\+Node1/adc\+\_\+driver.\+c}}
-{\ttfamily \#include \char`\"{}adc\+\_\+driver.\+h\char`\"{}}\\*
-Include dependency graph for adc\+\_\+driver.\+c\+:
+\hypertarget{adc__driver_8c}{}\doxysection{src/\+Node1/adc\+\_\+driver.c File Reference}
+\label{adc__driver_8c}\index{src/Node1/adc\_driver.c@{src/Node1/adc\_driver.c}}
+{\ttfamily \#include \char`\"{}adc\+\_\+driver.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{adc__driver_8c_a2b815e6730e8723a6d1d06d9ef8f31c0}{adc\+\_\+init}} (void)
+\begin{DoxyCompactList}\small\item\em Initializes A\+DC interface. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{adc__driver_8c_a17c6244e26388b37bab7ff5757205cfe}{adc\+\_\+read}} (enum \mbox{\hyperlink{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}{channel\+\_\+type}} channel)
+\begin{DoxyCompactList}\small\item\em Reads the converted signal from specified channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{adc__driver_8c_a30a0ad88a89a84c0161cf09eace108e8}\label{adc__driver_8c_a30a0ad88a89a84c0161cf09eace108e8}} 
+{\bfseries I\+SR} (I\+N\+T2\+\_\+vect)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{adc__driver_8c_a40b594e188974ded85fc4ac14a181a2e}\label{adc__driver_8c_a40b594e188974ded85fc4ac14a181a2e}} 
+volatile bool {\bfseries adc\+\_\+interrupt\+\_\+flag} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains functions to convert analog signals from the game controller to digital values for the atmega162. The conversion is done by an A\+D\+C0844\+C\+CN chip. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{adc__driver_8c_a2b815e6730e8723a6d1d06d9ef8f31c0}\label{adc__driver_8c_a2b815e6730e8723a6d1d06d9ef8f31c0}} 
+\index{adc\_driver.c@{adc\_driver.c}!adc\_init@{adc\_init}}
+\index{adc\_init@{adc\_init}!adc\_driver.c@{adc\_driver.c}}
+\doxysubsubsection{\texorpdfstring{adc\_init()}{adc\_init()}}
+{\footnotesize\ttfamily void adc\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initializes A\+DC interface. 
+
+Initializes A\+DC interface with interrupts in P\+E0 (I\+N\+T2) 
+
+Definition at line 13 of file adc\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{adc__driver_8c_a17c6244e26388b37bab7ff5757205cfe}\label{adc__driver_8c_a17c6244e26388b37bab7ff5757205cfe}} 
+\index{adc\_driver.c@{adc\_driver.c}!adc\_read@{adc\_read}}
+\index{adc\_read@{adc\_read}!adc\_driver.c@{adc\_driver.c}}
+\doxysubsubsection{\texorpdfstring{adc\_read()}{adc\_read()}}
+{\footnotesize\ttfamily uint8\+\_\+t adc\+\_\+read (\begin{DoxyParamCaption}\item[{enum \mbox{\hyperlink{adc__driver_8h_ad2fe67f4cfbb8880eb29e52d6f9c2c1d}{channel\+\_\+type}}}]{channel }\end{DoxyParamCaption})}
+
+
+
+Reads the converted signal from specified channel. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em enum} & channel\+\_\+type channel -\/$>$ Channel to read from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily uint8\+\_\+t} -\/$>$ Digital value 
+\end{DoxyReturn}
+
+
+Definition at line 36 of file adc\+\_\+driver.\+c.
+

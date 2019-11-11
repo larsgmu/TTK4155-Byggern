@@ -1,5 +1,6 @@
 /*!@file
-* USART interface
+* This file include functions to communicate with USART between the atmega162and a computer.
+* The communication is done via a RS232 chip.
 */
 #define F_CPU 4915200
 #define FOSC 4915200

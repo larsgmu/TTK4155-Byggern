@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['can_5fmessage_5fstruct',['CAN_message_struct',['../structCAN__message__struct.html',1,'']]]
+  ['bit_5fstruct_133',['Bit_struct',['../struct_bit__struct.html',1,'']]]
 ];

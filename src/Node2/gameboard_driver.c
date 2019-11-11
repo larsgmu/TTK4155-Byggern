@@ -1,3 +1,7 @@
+/*!@file
+* This file contains functions to play the pingpong game including the IR-sensor.
+*/
+
 #include "gameboard_driver.h"
 #include "timer_driver.h"
 #include "can_driver.h"
@@ -77,7 +81,7 @@ void solenoid_extend(){
 }
 
 void play_pingpong() {
-  
+
     while(1) {
         ir_value = ir_adc_read();
         if (get_CAN_msg().id == 1) {

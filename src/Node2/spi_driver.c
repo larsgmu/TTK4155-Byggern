@@ -1,5 +1,5 @@
 /*!@file
-* SPI interface
+* This file contains functions to enable SPI communication between the atmega2560 and MCP2515 chip.
 */
 #include "spi_driver.h"
 #include <stdlib.h>

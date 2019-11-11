@@ -1,0 +1,76 @@
+\hypertarget{motor__driver_8c}{}\doxysection{src/\+Node2/motor\+\_\+driver.c File Reference}
+\label{motor__driver_8c}\index{src/Node2/motor\_driver.c@{src/Node2/motor\_driver.c}}
+{\ttfamily \#include \char`\"{}motor\+\_\+driver.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}T\+W\+I\+\_\+\+Master.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$avr/io.\+h$>$}\newline
+{\ttfamily \#include $<$util/delay.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{motor__driver_8c_a139f7f089139edc441fa11e58cd066e5}\label{motor__driver_8c_a139f7f089139edc441fa11e58cd066e5}} 
+\#define {\bfseries M\+O\+T\+O\+R\+\_\+\+A\+D\+D\+R\+E\+S\+S\+\_\+\+W\+R\+I\+TE}~0x50
+\item 
+\mbox{\Hypertarget{motor__driver_8c_a58e401192427bac48730394069f3bfda}\label{motor__driver_8c_a58e401192427bac48730394069f3bfda}} 
+\#define {\bfseries C\+O\+M\+M\+A\+N\+D\+\_\+\+B\+Y\+TE}~0x00
+\item 
+\mbox{\Hypertarget{motor__driver_8c_a43bafb28b29491ec7f871319b5a3b2f8}\label{motor__driver_8c_a43bafb28b29491ec7f871319b5a3b2f8}} 
+\#define {\bfseries F\+\_\+\+C\+PU}~16000000
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{motor__driver_8c_a151cccf0120a24d251b5ce5d878abb67}\label{motor__driver_8c_a151cccf0120a24d251b5ce5d878abb67}} 
+void \mbox{\hyperlink{motor__driver_8c_a151cccf0120a24d251b5ce5d878abb67}{motor\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Configures the atmega2560 pins and enables the motor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor__driver_8c_a64b6095b532d758c269465f07699bd1e}{motor\+\_\+run}} (uint8\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Sets the direction and speed of the motor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{motor__driver_8c_ab44cf21618924952dde6a8ef26dfe2b2}\label{motor__driver_8c_ab44cf21618924952dde6a8ef26dfe2b2}} 
+void \mbox{\hyperlink{motor__driver_8c_ab44cf21618924952dde6a8ef26dfe2b2}{motor\+\_\+get\+\_\+position}} ()
+\begin{DoxyCompactList}\small\item\em Returns the current position of the motor. \end{DoxyCompactList}\item 
+int16\+\_\+t \mbox{\hyperlink{motor__driver_8c_a45fa7734490b15dd4d47d3319b4c4ec0}{encoder\+\_\+read}} ()
+\begin{DoxyCompactList}\small\item\em Reads the encoder value. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{motor__driver_8c_af4d81eb98a3e26a165e3f4555fe7550a}\label{motor__driver_8c_af4d81eb98a3e26a165e3f4555fe7550a}} 
+void \mbox{\hyperlink{motor__driver_8c_af4d81eb98a3e26a165e3f4555fe7550a}{reset\+\_\+encoder}} ()
+\begin{DoxyCompactList}\small\item\em Resets the encoder. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file cointains functions to controll the motor. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{motor__driver_8c_a45fa7734490b15dd4d47d3319b4c4ec0}\label{motor__driver_8c_a45fa7734490b15dd4d47d3319b4c4ec0}} 
+\index{motor\_driver.c@{motor\_driver.c}!encoder\_read@{encoder\_read}}
+\index{encoder\_read@{encoder\_read}!motor\_driver.c@{motor\_driver.c}}
+\doxysubsubsection{\texorpdfstring{encoder\_read()}{encoder\_read()}}
+{\footnotesize\ttfamily int16\+\_\+t encoder\+\_\+read (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reads the encoder value. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily int16\+\_\+t} -\/$>$ Encoder value. 
+\end{DoxyReturn}
+
+
+Definition at line 83 of file motor\+\_\+driver.\+c.
+
+\mbox{\Hypertarget{motor__driver_8c_a64b6095b532d758c269465f07699bd1e}\label{motor__driver_8c_a64b6095b532d758c269465f07699bd1e}} 
+\index{motor\_driver.c@{motor\_driver.c}!motor\_run@{motor\_run}}
+\index{motor\_run@{motor\_run}!motor\_driver.c@{motor\_driver.c}}
+\doxysubsubsection{\texorpdfstring{motor\_run()}{motor\_run()}}
+{\footnotesize\ttfamily void motor\+\_\+run (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{val }\end{DoxyParamCaption})}
+
+
+
+Sets the direction and speed of the motor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 49 of file motor\+\_\+driver.\+c.
+

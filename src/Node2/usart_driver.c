@@ -1,6 +1,8 @@
 /*!@file
-* USART interface
+* This file include functions to communicate with USART between the atmega2560and a computer.
+* The communication is done via a RS232 chip.
 */
+
 //#define F_CPU 1843200
 #define FOSC 16000000
 #define BAUD 9600
