@@ -3,6 +3,24 @@
 */
 
 #include "pid.h"
+#include "can_driver.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <stdlib.h>
+#include "motor_driver.h"
+/*TUNING*/
+
+double Kp = 0.8;
+double Kd = 0.05;
+double Ki = 0.5;
+
+uint8_t count = 0;
+
+
+
+int16_t integral = 0;
+int16_t derivative = 0;
+int16_t prev_error = 0;
 
 void pid_init() {
   // we want this to send interrupts at our sample time frequency!
@@ -15,23 +33,30 @@ void pid_init() {
   TIFR3 |= (1 << TOV3);
 }
 
+void pid_controller(uint8_t ref) {
+    ref = 255 - ref;
+    uint16_t position  = motor_get_position();
+    int16_t error     = ref-position;
 
-void pid_controller() {
-  int8_t = reference;
+    count ++;
+    if ((-7 < error && error < 7) || (count == 40)) {
+      integral = 0;
+      count = 0;
+    }
 
-  position = motor_get_position();
-  error = reference - position;
+    integral     += error;
+    derivative   = error - prev_error;
+    prev_error   = error;
 
-  integral += error;
+    int16_t  u    = (int8_t) (Kp*error + Ki*integral + Kd*derivative);
 
-  derivative = error - prev_error;
-
-  prev_error = error;
-
-  u = Kp*error + Ki*integral + Kd*derivative;
+    printf("PID U: %d   Ref:  %d  Pos:  %d   Error: %d   \n\r", u, ref, position, error);
+    if (u < 255 && u > -255) {
+      motor_run_slider(u);
+    }
 
 }
 
 ISR(TIMER3_OVF_vect) {
-  pid_controller();
+  //pid_controller(ref);
 }

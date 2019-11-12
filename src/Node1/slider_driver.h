@@ -13,6 +13,6 @@ typedef struct Slider_struct {
     int left_pos;
 } Slider;
 
-void get_slider_pos(Slider* slider);
-
+void slider_run(Slider* slider);
+void send_slider_pos(Slider* slider);
 #endif

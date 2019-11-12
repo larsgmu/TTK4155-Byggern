@@ -5,14 +5,19 @@ CAN MESSAGE ID
 
       data = 8: run menu;
 
-  1 = Joystick msg
+  1 = Joystick_msg
     1.0 = X
     1.1 = Y
     1.2 = Right button
 
-  3 = Difficulty
-    data = 0: easy
-    data = 1: medium
-    data = 2: hard
+  2 = Slider_msg
+    2.0 = Right slider (0 - 255)
+    2.1 = Left slider (0 - 255)
 
-    8 = DUMMY
+  3 = Difficulty
+    3.0 = easy
+    3.1 = medium
+    3.3 = hard
+
+
+  8 = DUMMY

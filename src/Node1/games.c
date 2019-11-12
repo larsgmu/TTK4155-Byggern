@@ -35,7 +35,7 @@ void pingpong_score(){
   game.score += 1;
 }
 
-void play_pingpong(char* player, Joystick* joy) {
+void play_pingpong(char* player, Joystick* joy, Slider* slider) {
     /*Update current player and reset score*/
   game.player_name = player;
   game.score = 0;
@@ -65,7 +65,9 @@ void play_pingpong(char* player, Joystick* joy) {
   while(1) {
 
     joystick_run(joy);
-    send_joystick_pos(joy);
+    slider_run(slider);
+    //send_joystick_pos(joy);
+    send_slider_pos(slider);
     latest_msg = get_CAN_msg();
     if (get_CAN_msg().id == 0){
       if (get_CAN_msg().data[0] == 0) {

@@ -5,6 +5,9 @@
 #ifndef MOTOR_DRIVER_H
 #define MOTOR_DRIVER_H
 
+#define ENCODER_MAX 8971
+
+
 #include <stdint.h>
 
 /*!
@@ -16,12 +19,23 @@ void motor_init();
 *@brief Sets the direction and speed of the motor.
 *@param[in] @c uint8_t val -> Value sent from joystick x position to control speed and direction of motor.
 */
-void motor_run(uint8_t val);
+void motor_run_joy(uint8_t val);
+
+/*!
+*@brief Sets the direction and speed of the motor through slider.
+*@param[in] @c uint8_t val -> Value sent from slider x position to control speed and direction of motor.
+*/
+void motor_run_slider(int16_t val);
 
 /*!
 *@brief Returns the current position of the motor.
 */
-void motor_get_position();
+uint8_t motor_get_position();
+
+/*!
+*@brief Calibrates the motor encoder.
+*/
+void motor_calibrate();
 
 /*!
 *@brief Reads the encoder value.

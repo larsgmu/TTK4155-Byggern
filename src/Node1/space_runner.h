@@ -4,13 +4,17 @@
 #ifndef SPACE_RUNNER_H
 #define SPACE_RUNNER_H
 
+#include "slider_driver.h"
 #include "joystick_driver.h"
 #include <stdint.h>
 
-#define SR_RUNNER_WIDTH 		10
+
+
+
+#define SR_RUNNER_WIDTH 		2
 #define SR_RUNNER_HEIGHT 		16
 #define SR_OBSTACLE_DIM 		8
-#define SR_OBSTACLE_NO			3
+#define SR_OBSTACLE_NO			1
 
 /*A single bit struct to save space*/
 typedef struct Bit_struct {
@@ -79,19 +83,9 @@ void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* o_list);
 //void sr_mem_to_oled();
 
 /*Game loop*/
-void sr_play(Joystick* joy);
+void sr_play(char* nul, Joystick* joy, Slider* slider);
 
 
 
-const uint8_t obstacle_spike[8]  = {
-			0b11000000,
-			0b11100000,
-		 	0b11111100,
-		 	0b11111111,
-		 	0b11111111,
-		 	0b11111100,
-		 	0b11110000,
-		 	0b11000000;
-};
 
 #endif

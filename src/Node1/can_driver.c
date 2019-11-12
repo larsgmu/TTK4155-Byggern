@@ -45,7 +45,6 @@ void can_init() {
 }
 
 void can_send_msg(CANmsg* can_msg) {
-
   mcp2515_write(MCP_TXB0SIDH, 0);
   mcp2515_write(MCP_TXB0SIDL, can_msg->id << CAN_SHIFT_CONSTANT);
   mcp2515_write(MCP_TXB0DLC, can_msg->length);
@@ -55,6 +54,7 @@ void can_send_msg(CANmsg* can_msg) {
     _delay_ms(1);
   }
   mcp2515_request_send(0);
+  _delay_ms(20);
 }
 
 CANmsg can_receive_msg() {
@@ -73,5 +73,5 @@ CANmsg get_CAN_msg(){
 }
 
 ISR(INT0_vect){
-  latest_msg = can_receive_msg();
+    latest_msg = can_receive_msg();
 }

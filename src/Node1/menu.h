@@ -5,6 +5,7 @@
 #define MENU_H
 #include <stdint.h>
 #include "joystick_driver.h"
+#include "slider_driver.h"
 
 
 typedef struct Menu_struct Menu;
@@ -21,7 +22,7 @@ typedef struct Menu_struct {
   Menu* sub_menu[6]; /*!<Array containing pointers to sub menus*/
   uint8_t num_sub_menu;/*!<Variable to count number of submenus conneted to parent menu*/
   void (*fun_ptr)(char*); /*!<Function pointer*/
-  void (*fun_ptr2)(char*, Joystick*);/*!<Function pointer*/
+  void (*fun_ptr2)(char*, Joystick*, Slider*);/*!<Function pointer*/
 } Menu;
 
 /*!
@@ -42,7 +43,7 @@ Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info
 *@param[in] @c char* info -> Text to display at bottom page. Use "" if not desired.
 *@param[in] void (*function)(char*,Joystick*)) -> Function to perform if menu is selected. Use NULL if no function.
 */
-Menu* menu_make_sub_menu2(Menu* parent_menu, char* name, char* header, char* info, void (*function)(char*,Joystick*));
+Menu* menu_make_sub_menu2(Menu* parent_menu, char* name, char* header, char* info, void (*function)(char*,Joystick*, Slider*));
 
 /*!
 *@brief Creates the main menu and all submenus.
@@ -55,12 +56,12 @@ Menu* menu_init();
 *Jostick direction is updated and corresponding menu action is executed.
 *Writes the new menu to display to SRAM.
 */
-void menu_run(Joystick* joy);
+void menu_run(Joystick* joy, Slider* slider);
 
 /*!
 *@brief Executes function connected to selected menu.
 *@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
 */
-void menu_run_functions(Joystick* joy);
+void menu_run_functions(Joystick* joy, Slider* slider);
 
 #endif

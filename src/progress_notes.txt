@@ -27,14 +27,27 @@ ADC med interrupts fungerer
 CAN meldinger begge veier med interrupt fungerer
 Menysystemet fungerer
 
-
-#TO DO
-Implementer pid og fiks encoder
-Solenoide extension time
-Highscore med player valg
-Doxygen
-
 #9. Nov
-  - Arduino fucked?
-  - Motorbux fucked?
+  - Arduino fucked? noo
+  - Motorbux fucked? nop
   - Klarer ikke enbale motor - Får bare 2V ut fra arduino.
+
+#12. Nov
+  - la inn delay på CAN_send på node1 for at det ikke skal fucke seg
+  - fjernet printf flere steder fordi det fucket opp alt
+  - implementert pid-regulator m/ slider . men pådragsverdiene er veldig s
+
+#########################
+
+  #TO DO
+  Implementer pid og fiks encoder
+  Solenoide extension time
+  Highscore med player valg
+  Doxygen - legge til slider der det gjelder
+  Slider: left og right er byttet om
+
+##########################
+#Ideas
+- Settings meny med valg av
+  - Styre med slider med pid vs Joystick med 2V eller no
+  - Valg av sang

@@ -29,7 +29,7 @@ void main () {
   string_init();
   can_init();
   timer_init();
-  motor_init();
+  //motor_init();
   ir_adc_init();
   solenoid_init();
   sei();

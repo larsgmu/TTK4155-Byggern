@@ -51,11 +51,11 @@ void main( void ){
     Joystick joy;
     joystick_init(&joy);
     Slider slider;
-    //sr_play(&joy);
 
-    printf("########### Reboot ##############\n\r");
+    //sr_play("", &joy);
+    //printf("########### Reboot ##############\n\r");
     while(1){
-      menu_run(&joy);
+      menu_run(&joy, &slider);
       _delay_ms(40);
       oled_draw();
     }

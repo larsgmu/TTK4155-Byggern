@@ -73,7 +73,7 @@ void analog_direction(Joystick* joy) {
 }
 
 void send_joystick_pos(Joystick* joy){
-	_delay_ms(10);
+	//_delay_ms(10);
 	CANmsg joystick_msg;
 	joystick_msg.id = 1;
 	joystick_msg.length = 3;

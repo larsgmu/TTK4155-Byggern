@@ -9,6 +9,10 @@
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "pid.h"
+
+#define MOTOR_ADDRESS_WRITE 0x50 // 0101 000 0
+#define COMMAND_BYTE 0x00
 
 #define F_CPU 16000000
 #include <util/delay.h>
@@ -80,19 +84,35 @@ void solenoid_extend(){
   PORTB &= ~(1 << PB5);
 }
 
-void play_pingpong() {
 
+
+
+
+
+void play_pingpong() {
+    motor_init();
+    motor_calibrate();
+    pid_init();
     while(1) {
-        ir_value = ir_adc_read();
-        if (get_CAN_msg().id == 1) {
-            //printf("MOTOR: %d     SERVO: %d     SOLENOID: % d\n\r",get_CAN_msg().data[0], get_CAN_msg().data[1], get_CAN_msg().data[2] );
-            motor_run(get_CAN_msg().data[0]);
-            servo_joystick_control(get_CAN_msg().data[1]);
-            if (get_CAN_msg().data[2]){
-                solenoid_extend();
-                printf("FIRE!\n\r");
-            }
+        ir_value = DEAD + 10;
+        //printf("ENCODER: %d\n\r", motor_get_position());
+        /*SLIDER INPUT*/
+        if(get_CAN_msg().id == 2) {
+          pid_controller(get_CAN_msg().data[0]);
         }
+        _delay_ms(20);
+
+        /*JOYSTICK INPUT*/
+        // if (get_CAN_msg().id == 1) {
+        //     //printf("MOTOR: %d     SERVO: %d     SOLENOID: % d\n\r",get_CAN_msg().data[0], get_CAN_msg().data[1], get_CAN_msg().data[2] );
+        //     motor_run_joy(get_CAN_msg().data[0]);
+        //     pid_controller();
+        //     servo_joystick_control(get_CAN_msg().data[1]);
+        //     if (get_CAN_msg().data[2]){
+        //         solenoid_extend();
+        //         printf("FIRE!\n\r");
+        //     }
+        // }
         if (ir_value < DEAD){
             break;
         }

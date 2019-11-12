@@ -16,6 +16,8 @@
 
 void motor_init() {
   TWI_Master_Initialise();
+
+  /*Enable motor*/
   DDRH |= (1 << PH4);
   PINH |= (1 << PH4);
 
@@ -29,7 +31,7 @@ void motor_init() {
   /*Encoder output enable pin as output*/
   DDRH |= (1 << PH5);
   /*Encoder reset pin as output*/
-  //DDRH |= (1 << PH6);
+  DDRH |= (1 << PH6);
 
   /*Set PIN-K as input*/
   DDRK &= ~(1 << PK7);
@@ -41,47 +43,99 @@ void motor_init() {
   DDRK &= ~(1 << PK1);
   DDRK &= ~(1 << PK0);
 
-  //reset_encoder();
-  /*Enable motor*/
+  reset_encoder();
 
 }
 
-void motor_run(uint8_t val){
+void motor_run_joy(uint8_t val){
   /* Set direction*/
   int8_t data = val - 100;
-  if (data < 0) {
+  if (data < 0) {         //left
     data = (-1)*data;
     PORTH &= ~(1 << PH1);
   }
-  else if (data > 15) {
+  else if (data > 15) {   //right
     PORTH |= (1 << PH1);
   }
   else {
     data = 0;
   }
 
-  printf("DATA:                        %d\n\r", data);
-
   /* Set speed */
   int8_t message[3];
   message[0] = MOTOR_ADDRESS_WRITE;
   message[1] = COMMAND_BYTE;
-  message[2] = data;
-
-  printf("ENCODER VALUE: %d        \n\r", encoder_read() );
+  message[2] = (int)data * 2.55;
 
   TWI_Start_Transceiver_With_Data(message,3);
 }
 
-void motor_get_position(){
+void motor_run_slider(int16_t val) {
+    if (val > 0) {  //Go left
+      PORTH &= ~(1 << PH1);
+    }
+    else {        //Go right
+      val = 0 - val;
+      PORTH |= (1 << PH1);
+    }
+
+    int8_t message[3];
+    message[0] = MOTOR_ADDRESS_WRITE;
+    message[1] = COMMAND_BYTE;
+    message[2] = (uint8_t)val;
+
+    TWI_Start_Transceiver_With_Data(message, 3);
+}
+
+
+uint8_t motor_get_position(){
   /*Max and min values of the encoder output */
-  int encoder_min = 0;
-  int encoder_max = 7805;
+  uint8_t encoder_min = 0; //Far right
+  uint16_t encoder_max = ENCODER_MAX; //Far left
+  uint16_t val;
+
+  val = encoder_read();
+
+  if(val < encoder_min){
+    val = encoder_min;
+  }
+  if(val > encoder_max){
+    val = encoder_max;
+  }
+
+  uint16_t pos = (uint16_t)(val/35.18);
+
+  if (pos > 255) {
+    return 255;
+  }
+  else {
+    return pos;
+  }
+}
+
+
+void motor_calibrate(){
+
+  /*Drive motor to right*/
+
+  //First set direction to right
+  PORTH |= (1 << PH1);
+  // Drive slow to the right for 1 sec
+  int8_t message[3];
+  message[0] = MOTOR_ADDRESS_WRITE;
+  message[1] = COMMAND_BYTE;
+  message[2] = 100;
+  TWI_Start_Transceiver_With_Data(message,3);
+  _delay_ms(1500);
+  message[2] = 0;
+  TWI_Start_Transceiver_With_Data(message,3);
+  _delay_ms(200);
+  reset_encoder();
 
 }
 
 int16_t encoder_read(){
-  PINH |= (1 << PH6);
+  //PINH |= (1 << PH6);
 
   uint8_t high;
   uint8_t low;

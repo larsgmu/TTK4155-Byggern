@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 #include "joystick_driver.h"
-
+#include "slider_driver.h"
 /*!
 *@brief Struct containing the name and score of the current player.
 */
@@ -34,6 +34,6 @@ void pingpong_score();
 *@param[in] char* player -> Player name.
 *@param[in] Joystick* joy -> Pointer to game controller joystick struct.
 */
-void play_pingpong(char* player, Joystick* joy);
+void play_pingpong(char* player, Joystick* joy, Slider* slider);
 
 #endif
