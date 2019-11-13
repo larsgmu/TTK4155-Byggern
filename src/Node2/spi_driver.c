@@ -1,6 +1,8 @@
 /*!@file
 * This file contains functions to enable SPI communication between the atmega2560 and MCP2515 chip.
 */
+#define F_CPU 16000000
+
 #include "spi_driver.h"
 #include <stdlib.h>
 #include <avr/io.h>

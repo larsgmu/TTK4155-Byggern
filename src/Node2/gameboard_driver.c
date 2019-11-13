@@ -25,10 +25,17 @@ volatile static int playing = 0;
 volatile static int adc_value;
 volatile static uint16_t ir_value;
 
+Game current_game;
+
+void game_board_init(){
+  current_game.right_slider_pos = 127;
+  current_game.right_button = 0;
+  current_game.servo = 100;
+}
 
 void servo_joystick_control(uint8_t pos_msg){
   /* position between 0 and 200 */
-  uint32_t cycle = 12*pos_msg + 1800;
+  uint32_t cycle = 4200 - 12*pos_msg;
   set_duty_cycle(cycle);
 }
 
@@ -47,13 +54,14 @@ void ir_adc_init() {
   ADMUX &= ~(1 << REFS1);
   ADMUX |= (1 << REFS0);
 
-  //ADMUX |= (1 << MUX0);
 
   /*Enable interrupts*/
   ADCSRA |= (1 << ADIE);
 
   /*clear int flag */
   ADCSRA &= ~(1 << ADIF);
+
+
 }
 
 void solenoid_init(){
@@ -77,45 +85,45 @@ uint16_t ir_adc_read() {
   return adc_value/IR_SAMPLE_NO;
 }
 
-void solenoid_extend(){
-
-  PORTB |= (1 << PB5);
-  _delay_ms(100);
-  PORTB &= ~(1 << PB5);
+void solenoid_extend(uint8_t right_button){
+  if (right_button) {
+    PORTB |= (1 << PB5);
+    _delay_ms(100);
+    PORTB &= ~(1 << PB5);
+  }
 }
-
-
-
-
-
 
 void play_pingpong() {
     motor_init();
     motor_calibrate();
     pid_init();
     while(1) {
-        ir_value = DEAD + 10;
-        //printf("ENCODER: %d\n\r", motor_get_position());
+        if (ir_adc_read() < DEAD){
+          break;
+        }
         /*SLIDER INPUT*/
         if(get_CAN_msg().id == 2) {
-          pid_controller(get_CAN_msg().data[0]);
+          current_game.right_slider_pos = get_CAN_msg().data[0];
+          if (get_CAN_msg().data[2] && current_game.right_button == 0 ){
+             current_game.right_button = 1;
+             current_game.solenoid_extend = 1;
+          }
+          else if (get_CAN_msg().data[2] && current_game.right_button == 1){
+            current_game.solenoid_extend = 0;
+          }
+          else if (get_CAN_msg().data[2] == 0){
+            current_game.right_button = 0;
+            current_game.solenoid_extend = 0;
+          }
         }
-        _delay_ms(20);
-
         /*JOYSTICK INPUT*/
-        // if (get_CAN_msg().id == 1) {
-        //     //printf("MOTOR: %d     SERVO: %d     SOLENOID: % d\n\r",get_CAN_msg().data[0], get_CAN_msg().data[1], get_CAN_msg().data[2] );
-        //     motor_run_joy(get_CAN_msg().data[0]);
-        //     pid_controller();
-        //     servo_joystick_control(get_CAN_msg().data[1]);
-        //     if (get_CAN_msg().data[2]){
-        //         solenoid_extend();
-        //         printf("FIRE!\n\r");
-        //     }
-        // }
-        if (ir_value < DEAD){
-            break;
+        if (get_CAN_msg().id == 1) {
+            current_game.servo = get_CAN_msg().data[0];
         }
+        _delay_ms(20); //60 Hz frequency
+        pid_controller(current_game.right_slider_pos);
+        servo_joystick_control(current_game.servo);
+        solenoid_extend(current_game.solenoid_extend);
     }
     CANmsg stop_pingpong;
     stop_pingpong.id = 0;
@@ -125,9 +133,7 @@ void play_pingpong() {
     printf("STOP PINGPONG SENT\n\r");
     servo_joystick_control(100); //Center servo
     _delay_ms(200);
-
 }
-
 
 ISR(ADC_vect) {
   ir_adc_interrupt_flag = 1;

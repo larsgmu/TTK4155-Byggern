@@ -1,6 +1,7 @@
 /*!@file
 * This file contains functions to create and run the OLED menu.
 */
+#define F_CPU 4915200
 #include <util/delay.h>
 #include <stdlib.h>
 #include <string.h>

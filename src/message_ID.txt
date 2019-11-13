@@ -8,11 +8,12 @@ CAN MESSAGE ID
   1 = Joystick_msg
     1.0 = X
     1.1 = Y
-    1.2 = Right button
+    1.2 = Slider right button
 
   2 = Slider_msg
     2.0 = Right slider (0 - 255)
     2.1 = Left slider (0 - 255)
+    2.2 = Right button
 
   3 = Difficulty
     3.0 = easy

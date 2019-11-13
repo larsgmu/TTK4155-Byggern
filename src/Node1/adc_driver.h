@@ -4,7 +4,7 @@
 */
 #ifndef ADC_H
 #define ADC_H
-
+#define F_CPU 4915200
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdio.h>
@@ -18,8 +18,8 @@
 enum channel_type{
   Y_axis = 4, /*!< Y-axis of joystick, corresponding to UP/DOWN movement*/
   X_axis = 5, /*!< X-axis of joystick, corresponding to LEFT/RIGH movement*/
-  Left_slider = 6,
-  Right_slider = 7,
+  Right_slider = 6,
+  Left_slider = 7,
 };
 
 /*!

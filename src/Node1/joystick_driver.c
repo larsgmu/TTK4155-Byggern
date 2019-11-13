@@ -1,15 +1,20 @@
 /*!@file
 * This file contains functions to use the joystick and buttons on the game controller
 */
+#define F_CPU 4915200
+#define THRESHOLD 5
 #include <util/delay.h>
 #include <stdlib.h>
 #include "joystick_driver.h"
 #include "adc_driver.h"
 #include "can_driver.h"
+//#include "slider_driver.h"
 
 /*This is a global variable which enables sending CAN-msg
   with joystick position to node 2. In order to acess from other
 	files, initialize it with extern int*/
+
+uint8_t prev_joy[2] = {0,0};
 
 
 void joystick_init(Joystick* joy){
@@ -36,25 +41,6 @@ void analog_position(Joystick* joy){
 }
 
 
-/*Oppdatere til bool?*/
-/*Gameboard Buttons*/
-int8_t left_button_pressed(){
-  if(PINB&(1<<PB3)){
-    return 1;
-  }
-  return 0;
-}
-
-/*Oppdatere til bool?*/
-int8_t right_button_pressed(){
-  if(PINB&(1<<PB2)){
-    return 1;
-  }
-  else{
-  }
-  return 0;
-}
-
 void analog_direction(Joystick* joy) {
   /*Threshold on 15 percent*/
   int threshold = 15;
@@ -73,14 +59,17 @@ void analog_direction(Joystick* joy) {
 }
 
 void send_joystick_pos(Joystick* joy){
-	//_delay_ms(10);
 	CANmsg joystick_msg;
 	joystick_msg.id = 1;
-	joystick_msg.length = 3;
-	joystick_msg.data[0] = (uint8_t)joy->x + 100; //X mellom 0 og 200
-	joystick_msg.data[1] = (uint8_t)joy->y + 100; // Y mellom 0 og 200
-	joystick_msg.data[2] = (uint8_t)right_button_pressed();
-	can_send_msg(&joystick_msg);
+	joystick_msg.length = 2;
+	if ((abs(joy->x + 100 - prev_joy[0]) > THRESHOLD) || (abs(joy->y + 100 - prev_joy[1]) > THRESHOLD)) {
+		joystick_msg.data[0] = (uint8_t)joy->x + 100;
+		prev_joy[0] = (uint8_t)joy->x + 100;
+		joystick_msg.data[1] = (uint8_t)joy->y + 100;
+		prev_joy[1] = (uint8_t)joy->y + 100;
+		can_send_msg(&joystick_msg);
+		//printf("CAN MSG SENT JOYSTICK \n\r");
+	}
 }
 
 void joystick_run(Joystick* joy) {

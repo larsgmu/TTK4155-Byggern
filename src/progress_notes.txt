@@ -40,14 +40,19 @@ Menysystemet fungerer
 #########################
 
   #TO DO
-  Implementer pid og fiks encoder
-  Solenoide extension time
+  DONE - Solenoide extension time
   Highscore med player valg
   Doxygen - legge til slider der det gjelder
   Slider: left og right er byttet om
+  OLED: Timer update screen
 
 ##########################
 #Ideas
-- Settings meny med valg av
-  - Styre med slider med pid vs Joystick med 2V eller no
+- Settings meny med:
+  - Velge å styre med slider med pid vs. Joystick med 2V eller no
   - Valg av sang
+
+- Knappene på Universal-Seriell-Buss Multifunksjonelt-Kort kan endre PID-parametere:
+    -Knapp 1: Kp
+    -Knapp 2: Ki
+    -Knapp 3: Kd

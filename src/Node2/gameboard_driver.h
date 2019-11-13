@@ -7,7 +7,19 @@
 #include "can_driver.h"
 #include <stdint.h>
 
+typedef struct Game_struct {
+  //uint8_t left_slider_pos;
+  uint8_t right_slider_pos;
+  //uint8_t left_button;
+  uint8_t right_button;
+  uint8_t solenoid_extend;
+  uint8_t servo;
+} Game;
 
+/*!
+*@biref Current game init
+*/
+void game_board_init();
 
 /*!
 *@brief Sets the servo dutycycle from joystick input.
@@ -40,7 +52,7 @@ void solenoid_init();
 /*!
 *@brief Extends the solenoid.
 */
-void solenoid_extend();
+void solenoid_extend(uint8_t right_button);
 
 
 

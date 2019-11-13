@@ -10,19 +10,22 @@
 #include "motor_driver.h"
 /*TUNING*/
 
-double Kp = 0.8;
-double Kd = 0.05;
-double Ki = 0.5;
+#define DT 0.02  //our PID frequency (20ms rn)
 
-uint8_t count = 0;
+/*PID Tuning - Normal mode*/
+double Kp = 1.6;
+double Kd = 1;
+double Ki = 3;
 
 
-
-int16_t integral = 0;
-int16_t derivative = 0;
-int16_t prev_error = 0;
+int16_t integral;
+int16_t derivative;
+int16_t prev_error;
 
 void pid_init() {
+  integral    = 0;
+  derivative  = 0;
+  prev_error  = 0;
   // we want this to send interrupts at our sample time frequency!
 
   /* Sets prescalar to 8*/
@@ -34,27 +37,19 @@ void pid_init() {
 }
 
 void pid_controller(uint8_t ref) {
-    ref = 255 - ref;
-    uint16_t position  = motor_get_position();
-    int16_t error     = ref-position;
+    ref                 = 255 - ref;
+    uint16_t position   = motor_get_position();
+    int16_t error       = ref-position;
 
-    count ++;
-    if ((-7 < error && error < 7) || (count == 40)) {
-      integral = 0;
-      count = 0;
-    }
-
-    integral     += error;
+    integral     += (uint16_t)(error*DT);
     derivative   = error - prev_error;
     prev_error   = error;
 
-    int16_t  u    = (int8_t) (Kp*error + Ki*integral + Kd*derivative);
+    int16_t  u    = (int16_t) (Kp*error + Ki*integral + (Kd)*derivative);
 
-    printf("PID U: %d   Ref:  %d  Pos:  %d   Error: %d   \n\r", u, ref, position, error);
-    if (u < 255 && u > -255) {
-      motor_run_slider(u);
-    }
+    //printf("PID U: %d   Ref:  %d  Pos:  %d   Error: %d   \n\r", u, ref, position, error);
 
+    motor_run_slider(u);
 }
 
 ISR(TIMER3_OVF_vect) {

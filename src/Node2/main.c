@@ -22,7 +22,6 @@
 ISR(__vector_default){
   printf("FUCK ME\n\r");
 }
-
 void main () {
 
   cli();
@@ -32,6 +31,7 @@ void main () {
   //motor_init();
   ir_adc_init();
   solenoid_init();
+  game_board_init();
   sei();
 
   CANmsg run_menu;

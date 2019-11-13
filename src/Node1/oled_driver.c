@@ -46,6 +46,8 @@ void oled_init()   {
   oled_write_c(0xaf);        // display  on
 
 
+ 
+  ///*endre til 8bit register*/
   // /*  Want the timer to overflow every
   //     60Hz = 0.01667s= 16.67ms          */      // CPU = 4915200 Hz
   // /* Timer with 1024 prescaler*/
@@ -60,6 +62,23 @@ void oled_init()   {
   // TIFR  |= (1 << TOV1) ;
   // /* Enable Timer1 Overflow Interrupts*/
 	// TIMSK |= (1 << TOIE1) ;
+
+
+  // 8-bit timer med 1024 prescaler
+  // /*Ensuring Normal Mode*/
+  // TCCR0 &= ~(1 << WMG00);
+  // TCCR0 &= ~(1 << WMG01);
+  //
+  // /*Setting Prescaler to 1024*/
+  // TCCR0 &= ~(1 << CS00);
+  // TCCR0 &= ~(1 << CS01);
+  // TCCR0 |= (1 << CS02);
+  //
+  // /*Timer interrupt Mask -- Enable overflow interrupt*/
+  // TIMSK |= (1 << TOIE0);
+  // /*Clear interrupt flag*/
+  // TIFR |= (1 << TOV0);
+
 }
 
 ISR(TIMER1_OVF_vect){

@@ -1,6 +1,7 @@
 /*!@file
 * This file contains the different games to play.
 */
+#define F_CPU 4915200
 
 #include "games.h"
 #include "oled_driver.h"
@@ -10,7 +11,6 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-#define F_CPU 4915200
 
 CANmsg latest_msg;
 Game_info game;
@@ -66,7 +66,7 @@ void play_pingpong(char* player, Joystick* joy, Slider* slider) {
 
     joystick_run(joy);
     slider_run(slider);
-    //send_joystick_pos(joy);
+    send_joystick_pos(joy);
     send_slider_pos(slider);
     latest_msg = get_CAN_msg();
     if (get_CAN_msg().id == 0){

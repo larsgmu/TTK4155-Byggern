@@ -79,6 +79,10 @@ void motor_run_slider(int16_t val) {
       PORTH |= (1 << PH1);
     }
 
+    if (val > 255) { 
+      val = 255; 
+    }
+
     int8_t message[3];
     message[0] = MOTOR_ADDRESS_WRITE;
     message[1] = COMMAND_BYTE;
@@ -92,7 +96,7 @@ uint8_t motor_get_position(){
   /*Max and min values of the encoder output */
   uint8_t encoder_min = 0; //Far right
   uint16_t encoder_max = ENCODER_MAX; //Far left
-  uint16_t val;
+  int16_t val;
 
   val = encoder_read();
 
@@ -107,6 +111,9 @@ uint8_t motor_get_position(){
 
   if (pos > 255) {
     return 255;
+  }
+  else if (pos < 0) {
+    return 0;
   }
   else {
     return pos;

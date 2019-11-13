@@ -5,6 +5,7 @@
 * Node1 uses a MCP2551 chip as CAN transceiver.
 */
 
+#define F_CPU 4915200
 #include "can_driver.h"
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
@@ -12,7 +13,6 @@
 #include <stdio.h>
 #include <util/delay.h>
 
-#define F_CPU 4915200
 
 static CANmsg latest_msg;
 

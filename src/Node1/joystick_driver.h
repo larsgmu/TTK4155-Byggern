@@ -66,15 +66,4 @@ void send_joystick_pos(Joystick* joy);
 */
 void joystick_run(Joystick* joy);
 
-/*!
-*@brief Checks if left button on game controller is pressed
-*@return @c 1 on success, else @c 0.
-*/
-int8_t left_button_pressed();
-
-/*!
-*@brief Checks if right button on game controller is pressed
-*@return @c 1 on success, else @c 0.
-*/
-int8_t right_button_pressed();
 #endif
