@@ -4,8 +4,6 @@
 */
 #ifndef UART__H__
 #define UART__H__
-#include <avr/io.h>
-#include <stdio.h>
 
 /*!
 *@brief Sets the baudrate, enables receiver and transmitter

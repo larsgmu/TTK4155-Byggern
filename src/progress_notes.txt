@@ -41,11 +41,12 @@ Menysystemet fungerer
 
   #TO DO
   DONE - Solenoide extension time
+  DONE - Slider: left og right er byttet om
+  DONE - OLED: Timer update screen
+  Disable motor on reset - slik at den ikke kjører av seg selv
   Highscore med player valg
   Doxygen - legge til slider der det gjelder
-  Slider: left og right er byttet om
-  OLED: Timer update screen
-
+  SIA KABLING
 ##########################
 #Ideas
 - Settings meny med:

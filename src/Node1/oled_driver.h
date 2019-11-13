@@ -4,8 +4,6 @@
 #ifndef OLED_H
 #define OLED_H
 
-#include "menu.h"
-
 #define OLED_ROWS           64
 #define OLED_COLS           128
 #define OLED_PAGES          8
@@ -13,6 +11,9 @@
 
 #define F_CPU 4915200
 #define ASCII_OFFSET ((volatile unsigned int) 32)
+
+#include "menu.h"
+
 
 
 /*!

@@ -2,12 +2,11 @@
 * This file cointains functions to use a PID position/speed controller on the motor.
 */
 
-#include "pid.h"
-#include "can_driver.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <stdlib.h>
+
 #include "motor_driver.h"
+#include "pid.h"
 /*TUNING*/
 
 #define DT 0.02  //our PID frequency (20ms rn)

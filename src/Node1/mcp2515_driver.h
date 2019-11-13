@@ -5,7 +5,6 @@
 #ifndef MCP2515_H
 #define MCP2515_H
 
-#include <avr/io.h>
 #include <stdint.h>
 
 /*!

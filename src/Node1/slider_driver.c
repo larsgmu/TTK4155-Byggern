@@ -3,11 +3,15 @@
 */
 
 #define F_CPU 4915200
+#define SLIDER_THRESHOLD 5
 
 #include <util/delay.h>
+#include <stdlib.h>
+#include <avr/io.h>
+
 #include "slider_driver.h"
 #include "can_driver.h"
-#define THRESHOLD 5
+#include "adc_driver.h"
 uint8_t slider_left_button_prev   = 0;
 uint8_t slider_right_button_prev  = 0;
 uint8_t prev_slider[3] = {0,0,0};
@@ -25,8 +29,8 @@ void send_slider_pos(Slider* slider) {
     slider_msg.id = 2;
     slider_msg.length = 3;
     button = slider_right_button_pressed();
-    if ( (abs(slider->right_pos-prev_slider[0])>THRESHOLD)
-    || (abs(slider->left_pos-prev_slider[1])>THRESHOLD)
+    if ( (abs(slider->right_pos-prev_slider[0])>SLIDER_THRESHOLD)
+    || (abs(slider->left_pos-prev_slider[1])>SLIDER_THRESHOLD)
     || (button != prev_slider[2]) ){
       slider_msg.data[0] = slider->right_pos; // RIGHT slider
       prev_slider[0] = slider_msg.data[0];

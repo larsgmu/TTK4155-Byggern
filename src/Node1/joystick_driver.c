@@ -2,9 +2,15 @@
 * This file contains functions to use the joystick and buttons on the game controller
 */
 #define F_CPU 4915200
-#define THRESHOLD 5
+#define JOYSTICK_THRESHOLD 5
+#define JOYSTICK_CONSTANT 0.78431
+#define JOYSTICK_SAMPLE_NO 4
+#define JOYSTICK_OFFSET 100
+
 #include <util/delay.h>
 #include <stdlib.h>
+#include <math.h>
+
 #include "joystick_driver.h"
 #include "adc_driver.h"
 #include "can_driver.h"
@@ -40,7 +46,6 @@ void analog_position(Joystick* joy){
 
 }
 
-
 void analog_direction(Joystick* joy) {
   /*Threshold on 15 percent*/
   int threshold = 15;
@@ -62,7 +67,7 @@ void send_joystick_pos(Joystick* joy){
 	CANmsg joystick_msg;
 	joystick_msg.id = 1;
 	joystick_msg.length = 2;
-	if ((abs(joy->x + 100 - prev_joy[0]) > THRESHOLD) || (abs(joy->y + 100 - prev_joy[1]) > THRESHOLD)) {
+	if ((abs(joy->x + 100 - prev_joy[0]) > JOYSTICK_THRESHOLD) || (abs(joy->y + 100 - prev_joy[1]) > JOYSTICK_THRESHOLD)) {
 		joystick_msg.data[0] = (uint8_t)joy->x + 100;
 		prev_joy[0] = (uint8_t)joy->x + 100;
 		joystick_msg.data[1] = (uint8_t)joy->y + 100;

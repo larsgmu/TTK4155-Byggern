@@ -6,6 +6,7 @@
 #define GAMES_H
 
 #include <stdint.h>
+
 #include "joystick_driver.h"
 #include "slider_driver.h"
 /*!

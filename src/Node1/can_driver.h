@@ -4,13 +4,12 @@
 * The communication between atmega162 and MCP2515 is done with SPI.
 * Node1 uses a MCP2551 chip as CAN transceiver.
 */
-
 #ifndef CAN_H
 #define CAN_H
-#define CAN_MSG_DATA_LENGTH 8
-#define CAN_SHIFT_CONSTANT 5
-#include <avr/interrupt.h>
 
+#define CAN_MSG_DATA_LENGTH 8
+
+#include <stdint.h>
 //extern int can_interrupt_flag;
 //can_interrupt_flag = 0;
 

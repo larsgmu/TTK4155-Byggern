@@ -1,11 +1,11 @@
-#define F_CPU 4915200 
+#define F_CPU 4915200
 
 #include 	"space_runner.h"
 #include 	"oled_driver.h"
 //#include <time.h>
 #include 	<util/delay.h>
 #include	<stdio.h>
-#include  	<avr/io.h>
+#include  <avr/io.h>
 #include	<stdlib.h>
 #include 	<stdint.h>
 
@@ -208,9 +208,13 @@ void sr_draw_runner(sr_Runner* runner) {
 					}
 					oled_sram_adress[p*OLED_COLS + x] = temp[0];
 					temp[0] 			= 0b00000000;
+					if(bottom_page < 5) {
+						oled_sram_adress[(bottom_page+1)*OLED_COLS+x] = 0x00;
+					}
 				}
 				i++;
 			}
+
 		}
 		//oled_draw();
 }
@@ -220,7 +224,7 @@ void sr_gen_obst(sr_Obstacle_list* o_list) {
 	if (rand() % 6 == 5) {   //CHECK THIS
 		obstacle.height = 2;
 	}
-	else 	{	//TODO 
+	else 	{	//TODO
 	}
 
 	obstacle.height = 2;
@@ -247,7 +251,7 @@ void sr_draw_obstacle(sr_Runner* runner, sr_Obstacle_list* o_list) {
 					else { //Square 8x8 Obstacle
 						oled_sram_adress[(page-h)*OLED_COLS + x] = 0xFF;
 					}
-				
+
 				//clears previous columns, how many depends on x-velocity
 				if (x < SR_MAX_X - runner->velx) {
 					for (int c = 0; c < runner->velx; c++) {
@@ -283,16 +287,17 @@ void sr_jump(sr_Runner* runner) {
 void sr_crash() {
 
 	/*Print message to OLED */
-	oled_pos(3,30);
+	oled_pos(3,20);
 	char score[5];
-	uint8_t i = 0;
-	while(sr_SCORE) {
-		char c = (sr_SCORE % 10) + '0';
-		score[4-i] = c;
-		sr_SCORE = (sr_SCORE - sr_SCORE % 10)/10 ;
-		i++;
-	}
-	printf("Score: %s", score);
+  	itoa(sr_SCORE, score, 10);
+	// uint8_t i = 0;
+	// while(sr_SCORE) {
+	// 	char c = (sr_SCORE % 10) + '0';
+	// 	score[4-i] = c;
+	// 	sr_SCORE = (sr_SCORE - sr_SCORE % 10)/10 ;
+	// 	i++;
+	// }
+	printf("Something: %s", score);
 	oled_sram_write_string("Score: ");
 	oled_sram_write_string(score);
 	_delay_ms(1000);
@@ -358,7 +363,7 @@ void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* o_list) {
 
 			/*Check if crash*/
 			//if ((runner->posx + SR_RUNNER_WIDTH <= o_list->obstacles[i].posx) && (runner->posy >= GROUND_LEVEL-SR_OBSTACLE_DIM)) {
-			if ((o_list->obstacles[i].posx <= SR_RUNNER_WIDTH + runner->posx) && 
+			if ((o_list->obstacles[i].posx <= SR_RUNNER_WIDTH + runner->posx) &&
 				(o_list->obstacles[i].posx + SR_OBSTACLE_DIM >= runner->posx) &&
 				(runner->posy > GROUND_LEVEL-8)) {
 					sr_crash();
@@ -381,11 +386,11 @@ void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* o_list) {
 		 			oled_sram_adress[(6-h)*OLED_COLS + x] = 0x00;		//see if it works without this
 		 		}
 			}
-			
+
 		}
 
 		/*Randomly generates obstacles, maximum 3 at a time.*/
-		if  (sr_SCORE % 40 == 0  && o_list->size < SR_OBSTACLE_NO) {
+		if  (sr_SCORE % 20 == 0  && o_list->size < SR_OBSTACLE_NO) {
 			//((rand() % 500) == 5 && o_list->size < SR_OBSTACLE_NO) {
 			sr_gen_obst(o_list);
 		}
@@ -401,7 +406,7 @@ void sr_run(sr_Runner* runner, Joystick* joy, sr_Obstacle_list* o_list) {
 void sr_play(char* diff, Joystick* joy, Slider* slider) {
 	joystick_run(joy);
 	sr_Runner* 			runner;
-	sr_Obstacle_list* 	o_list; 
+	sr_Obstacle_list* 	o_list;
 	runner 		= malloc(sizeof(sr_Runner));
 	o_list 		= malloc(sizeof(sr_Obstacle_list));
 

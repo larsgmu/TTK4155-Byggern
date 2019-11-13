@@ -2,10 +2,12 @@
 * This file contains functions to use the MCP2515 chip as a stand-alone CAN controller on Node1.
 * The communication between atmega162 and MCP2515 is done with SPI.
 */
-#include "mcp2515_driver.h"
-#include "MCP2515.h"
-#include "spi_driver.h"
+#include <avr/io.h>
 #include <stdio.h>
+
+#include "MCP2515.h"
+#include "mcp2515_driver.h"
+#include "spi_driver.h"
 
 
 void mcp2515_init() {

@@ -6,13 +6,15 @@
 */
 
 #define F_CPU 4915200
-#include "can_driver.h"
-#include "mcp2515_driver.h"
-#include "MCP2515.h"
+#define CAN_SHIFT_CONSTANT 5
 
+#include <avr/interrupt.h>
 #include <stdio.h>
 #include <util/delay.h>
 
+#include "can_driver.h"
+#include "mcp2515_driver.h"
+#include "MCP2515.h"
 
 static CANmsg latest_msg;
 

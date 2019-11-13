@@ -3,13 +3,14 @@
 */
 #define F_CPU 4915200
 
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+
 #include "games.h"
 #include "oled_driver.h"
 #include "can_driver.h"
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
 
 
 CANmsg latest_msg;
@@ -63,7 +64,7 @@ void play_pingpong(char* player, Joystick* joy, Slider* slider) {
 
   /*Play game until stop pingpong message is received from Node2*/
   while(1) {
-
+    //printf("DIR: %d     SLIDER: %d \n\r", joy->dir, slider->right_pos);
     joystick_run(joy);
     slider_run(slider);
     send_joystick_pos(joy);

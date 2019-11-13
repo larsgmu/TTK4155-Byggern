@@ -1,24 +1,24 @@
 /*!@file
 * This file contains functions to play the pingpong game including the IR-sensor.
 */
+#define MOTOR_ADDRESS_WRITE 0x50 // 0101 000 0
+#define COMMAND_BYTE 0x00
+#define F_CPU 16000000
+#define IR_SAMPLE_NO 4
+#define DEAD 25
 
+#include <stdio.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+
+#include "pid.h"
 #include "gameboard_driver.h"
 #include "timer_driver.h"
 #include "can_driver.h"
 #include "motor_driver.h"
-#include <stdint.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include "pid.h"
 
-#define MOTOR_ADDRESS_WRITE 0x50 // 0101 000 0
-#define COMMAND_BYTE 0x00
 
-#define F_CPU 16000000
-#include <util/delay.h>
-
-#define IR_SAMPLE_NO 4
-#define DEAD 25
 
 volatile static int ir_adc_interrupt_flag = 0;
 volatile static int playing = 0;

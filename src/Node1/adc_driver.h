@@ -4,13 +4,8 @@
 */
 #ifndef ADC_H
 #define ADC_H
-#define F_CPU 4915200
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <stdio.h>
-#include <stdbool.h>
+
 #include <stdint.h>
-#include <util/delay.h>
 
 /*!
  *@brief Enum cointaining the different analog inputs from the game controller.

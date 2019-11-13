@@ -3,9 +3,14 @@
 * The conversion is done by an ADC0844CCN chip.
 */
 
+#define F_CPU 4915200
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
 #include "adc_driver.h"
 
-volatile bool adc_interrupt_flag = false;
+volatile uint8_t adc_interrupt_flag = 0;
 
 /*!
   * Initializes ADC interface with interrupts in PE0 (INT2)
@@ -37,10 +42,10 @@ uint8_t adc_read(enum channel_type channel){		//er interrupts brukt fornuftig he
   volatile char *address = (char*)0x1400;
   address[0] = channel;
   while(!(adc_interrupt_flag));
-  adc_interrupt_flag = false;
+  adc_interrupt_flag = 0;
   return address[0];
 }
 
 ISR(INT2_vect){
-  adc_interrupt_flag = true;
+  adc_interrupt_flag = 1;
 }

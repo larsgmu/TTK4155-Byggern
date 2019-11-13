@@ -4,7 +4,7 @@
 
 #ifndef GAMEBOARD_H
 #define GAMEBOARD_H
-#include "can_driver.h"
+
 #include <stdint.h>
 
 typedef struct Game_struct {

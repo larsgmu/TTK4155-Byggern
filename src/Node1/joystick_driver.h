@@ -5,11 +5,6 @@
 #define JOYSTICK_H
 
 #include <stdint.h>
-#include <math.h>
-
-#define JOYSTICK_CONSTANT 0.78431
-#define JOYSTICK_SAMPLE_NO 4
-#define JOYSTICK_OFFSET 100
 
 /*!
 *@brief Enum cointaining the different directions of the joystick.
@@ -26,10 +21,10 @@ enum joystick_dir {
 *@brief Sruct containing the current position, direction and center-point of the joystick.
 */
 typedef struct Joystick_struct {
-  int x;
-  int y;
-  int neutralx;
-  int neutraly;
+  int16_t x;
+  int16_t y;
+  int16_t neutralx;
+  int16_t neutraly;
   enum joystick_dir dir;
 } Joystick;
 

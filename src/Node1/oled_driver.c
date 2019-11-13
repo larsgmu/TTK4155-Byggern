@@ -2,14 +2,13 @@
 * This file contains functions to display data on the game controller OLED screen.
 */
 #include <string.h>
+#include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
-#include <math.h>
+
 #include "fonts.h"
 #include "oled_driver.h"
-#include "adc_driver.h"
 #include "sram_driver.h"
-//#include "menu.h"
 
 static volatile char* oled_command_address = (char*)0x1000;
 static volatile char* oled_data_address = (char*)0x1200;    //   sjekk h-fil
@@ -45,56 +44,45 @@ void oled_init()   {
   oled_write_c(0xa6);        // set  normal  display
   oled_write_c(0xaf);        // display  on
 
-
- 
-  ///*endre til 8bit register*/
   // /*  Want the timer to overflow every
-  //     60Hz = 0.01667s= 16.67ms          */      // CPU = 4915200 Hz
-  // /* Timer with 1024 prescaler*/
-  // TCCR1B |= (1<<CS10) | (1<<CS12);
-  // /* Setting the counter reg such that overflow occurs after 16.67ms (60Hz)*/
-  // TCNT1H = 0xFF;
-  // TCNT1L = 0xB0;
-  // /* Normal mode (just to be sure) */
-	// TCCR1A &= ~(1 << COM1A1);
-  // TCCR1A &= ~(1 << COM1A0);
-  // /*Clear overflow flag by writing 1 to its location*/
-  // TIFR  |= (1 << TOV1) ;
-  // /* Enable Timer1 Overflow Interrupts*/
-	// TIMSK |= (1 << TOIE1) ;
+  //60Hz = 0.01667s= 16.67ms                // CPU = 4915200 Hz
 
+  /*Ensuring clear on compare mode*/
+  TCCR0 &= ~(1 << WGM00);
+  TCCR0 |= (1 << WGM01);
 
-  // 8-bit timer med 1024 prescaler
-  // /*Ensuring Normal Mode*/
-  // TCCR0 &= ~(1 << WMG00);
-  // TCCR0 &= ~(1 << WMG01);
-  //
-  // /*Setting Prescaler to 1024*/
-  // TCCR0 &= ~(1 << CS00);
-  // TCCR0 &= ~(1 << CS01);
-  // TCCR0 |= (1 << CS02);
-  //
-  // /*Timer interrupt Mask -- Enable overflow interrupt*/
-  // TIMSK |= (1 << TOIE0);
-  // /*Clear interrupt flag*/
-  // TIFR |= (1 << TOV0);
+  /*Normal compare operation*/
+  TCCR0 &= ~(1 << COM00);
+  TCCR0 &= ~(1 << COM01);
+
+  /*Setting Prescaler to 256 -> Gives TOP = 159 */
+  TCCR0 |= (1 << CS00);
+  TCCR0 &= ~(1 << CS01);
+  TCCR0 |= (1 << CS02);
+
+  OCR0 = 255;
+
+  /*Enable interrupt on Timer Compare Match*/
+  TIMSK |= (1 << OCIE0);
+  /*Clear interrupt flag*/
+  TIFR |= (1 << OCF0);
+
+  oled_state.CHANGED = 1; //Draws main menu;
+  oled_state.LINE = 0;
+  oled_state.COL = 0;
+
 
 }
 
-ISR(TIMER1_OVF_vect){
-  // cli();
-  // /*Clear overflow flag by writing 1 to its location*/
-  // TIFR  |= (1 << TOV1) ;
-  // TCNT1H = 0xFF; //resetting the counter
-  // TCNT1L = 0xB0;
-  // if (!oled_state.CHANGED) {
-  //   sei();
-  //   return;
-  // }
-  // oled_draw();
-  // oled_state.CHANGED = 0;
-  // sei();
-  // return;
+ISR(TIMER0_COMP_vect){
+
+  if (!(oled_state.CHANGED)) {
+    TCNT0 = 0;
+    return;
+  }
+  oled_draw();
+  oled_state.CHANGED = 0;
+  TCNT0 = 0;
 }
 
 

@@ -3,10 +3,11 @@
 * The communication between atmega2560 and MCP2515 is done with SPI.
 */
 
-#include "mcp2515_driver.h"
+#include <avr/io.h>
+
 #include "MCP2515.h"
+#include "mcp2515_driver.h"
 #include "spi_driver.h"
-#include <stdio.h>
 
 
 void mcp2515_init() {

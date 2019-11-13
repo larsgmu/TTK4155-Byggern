@@ -2,10 +2,10 @@
 * This file contains functions to create and run the OLED menu.
 */
 #define F_CPU 4915200
+
 #include <util/delay.h>
 #include <stdlib.h>
-#include <string.h>
-#include "joystick_driver.h"
+
 #include "menu.h"
 #include "oled_driver.h"
 #include "can_driver.h"
@@ -62,7 +62,6 @@ void change_difficulty(char* diff){
   current_menu->info = diff;
 }
 
-
 Menu* menu_init() {
 
   //main menu creation
@@ -94,8 +93,10 @@ Menu* menu_init() {
   Menu* sr_diff     = menu_make_sub_menu(space_runner, "Difficulty", "Select speed", "",NULL);
   //oled initialisering
   current_line = 1; //top line
-}
 
+  oled_sram_menu(current_menu);
+  oled_sram_arrow(current_line);
+}
 
 void menu_run_functions(Joystick* joy, Slider* slider){
 
@@ -106,12 +107,9 @@ void menu_run_functions(Joystick* joy, Slider* slider){
   }
   else if(current_menu->sub_menu[current_line-1]->fun_ptr2 == &play_pingpong) {
       (*current_menu->sub_menu[current_line-1]->fun_ptr2)("Horefant",joy, slider);
-      current_menu = main_menu;
   }
   else if(current_menu->sub_menu[current_line-1]->fun_ptr2 == &sr_play) {
     (*current_menu->sub_menu[current_line-1]->fun_ptr2)("kmp",joy, slider);
-  }
-  else {
   }
 }
 
@@ -123,29 +121,35 @@ void menu_run(Joystick* joy, Slider* slider) {
       if (current_menu->sub_menu[current_line-1]->sub_menu[0] != NULL){
         current_menu = current_menu->sub_menu[current_line-1];
         current_line = 1;
-        _delay_ms(200);
+        oled_sram_menu(current_menu);
+        oled_sram_arrow(current_line);
       }
       else if (current_menu->sub_menu[current_line-1]->fun_ptr != NULL ||
         current_menu->sub_menu[current_line-1]->fun_ptr2 != NULL){
-          menu_run_functions(joy, slider);
+        menu_run_functions(joy, slider);
+        current_line = 1;
+        oled_sram_menu(current_menu);
+        oled_sram_arrow(current_line);
       }
-      else {
-
-      }
+      _delay_ms(150);
       break;
 
     case LEFT:
       if (current_menu->parent_menu != NULL){
         current_menu = current_menu->parent_menu;
         current_line = 1;
-        _delay_ms(200);
+        oled_sram_menu(current_menu);
+        oled_sram_arrow(current_line);
+        //_delay_ms(200);
       }
       break;
 
     case UP:
       if (current_line > 1) {
         current_line --; //radnr minker når vi går oppover
-        _delay_ms(200);
+        oled_sram_menu(current_menu);
+        oled_sram_arrow(current_line);
+        //_delay_ms(200);
       }
 
       break;
@@ -153,7 +157,9 @@ void menu_run(Joystick* joy, Slider* slider) {
     case DOWN:
       if (current_line < current_menu->num_sub_menu) {
         current_line ++;
-        _delay_ms(200);
+        oled_sram_menu(current_menu);
+        oled_sram_arrow(current_line);
+        //_delay_ms(200);
       }
 
       break;
@@ -164,6 +170,5 @@ void menu_run(Joystick* joy, Slider* slider) {
     default:
       break;
   }
-  oled_sram_menu(current_menu);
-  oled_sram_arrow(current_line);
+  _delay_ms(150);
 }

@@ -3,10 +3,11 @@
 */
 #ifndef MENU_H
 #define MENU_H
+
 #include <stdint.h>
+
 #include "joystick_driver.h"
 #include "slider_driver.h"
-
 
 typedef struct Menu_struct Menu;
 

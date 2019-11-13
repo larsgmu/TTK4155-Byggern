@@ -3,15 +3,13 @@
 * The communication is done via a RS232 chip.
 */
 
-//#define F_CPU 1843200
 #define FOSC 16000000
 #define BAUD 9600
-//#define MYUBRR (FOSC/16/BAUD-1)
 #define MYUBRR 103
 
-#include "usart_driver.h"
 #include <avr/io.h>
-#include <stdio.h>
+
+#include "usart_driver.h"
 
 void usart_init( unsigned int ubrr ){
     /* Set baud rate */

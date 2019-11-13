@@ -7,6 +7,9 @@
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
 
+#include <avr/io.h>
+#include <stdio.h>
+
 #include "usart_driver.h"
 
 void usart_init( unsigned int ubrr ){

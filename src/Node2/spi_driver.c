@@ -1,12 +1,8 @@
 /*!@file
 * This file contains functions to enable SPI communication between the atmega2560 and MCP2515 chip.
 */
-#define F_CPU 16000000
-
 #include "spi_driver.h"
-#include <stdlib.h>
 #include <avr/io.h>
-#include <util/delay.h>
 
 void spi_master_init(){
   /* Sets MCU-pins to output mode . Dette er andre pins enn i N1*/
@@ -19,7 +15,6 @@ void spi_master_init(){
 char spi_master_transceive(char c) {
   SPDR = c;
   while(!(SPSR & (1 << SPIF))){
-    //_delay_ms(100);
   }
   return SPDR;
 }

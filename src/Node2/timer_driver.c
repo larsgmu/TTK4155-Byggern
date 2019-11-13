@@ -1,12 +1,14 @@
 /*!@file
 * This file contains functions to use fastPWM for the servo.
 */
+#define PWM_MIN 1800
+#define PWM_MAX 4200
 
 #include <avr/io.h>
-#include "timer_driver.h"
 #include <avr/interrupt.h>
-#define minPWM 1800
-#define maxPWM 4200
+
+#include "timer_driver.h"
+
 
 void timer_init(){
 
@@ -32,7 +34,8 @@ void timer_init(){
 }
 
 void set_duty_cycle(uint16_t cycle) {
-  if ((cycle >= minPWM) && (cycle <= maxPWM)){
+  //printf("CYCLE: %d\n\r", cycle);
+  if ((cycle >= PWM_MIN) && (cycle <= PWM_MAX)){
     OCR1B = cycle;
   }
 }

@@ -5,15 +5,16 @@
 * Node2 uses a MCP2551 chip as CAN transceiver.
 */
 
+#define CAN_SHIFT_CONSTANT 5
+#define F_CPU 16000000
+
+#include <avr/interrupt.h>
+#include <util/delay.h>
+
 #include "can_driver.h"
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
 
-#include <stdio.h>
-#include <avr/interrupt.h>
-
-#define F_CPU 16000000
-#include <util/delay.h>
 
 static CANmsg latest_msg;
 

@@ -1,18 +1,15 @@
 /*!@file
 * This file cointains functions to controll the motor.
 */
-
-#include "motor_driver.h"
-#include "TWI_Master.h"
-#include <avr/io.h>
-
+#define F_CPU 16000000
 #define MOTOR_ADDRESS_WRITE 0x50 // 0101 000 0
 #define COMMAND_BYTE 0x00
 
-
-#define F_CPU 16000000
+#include <avr/io.h>
 #include <util/delay.h>
 
+#include "motor_driver.h"
+#include "TWI_Master.h"
 
 void motor_init() {
   TWI_Master_Initialise();
@@ -79,8 +76,8 @@ void motor_run_slider(int16_t val) {
       PORTH |= (1 << PH1);
     }
 
-    if (val > 255) { 
-      val = 255; 
+    if (val > 255) {
+      val = 255;
     }
 
     int8_t message[3];
