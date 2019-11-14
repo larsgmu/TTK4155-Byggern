@@ -70,9 +70,24 @@ void oled_init()   {
   oled_state.CHANGED = 1; //Draws main menu;
   oled_state.LINE = 0;
   oled_state.COL = 0;
+  oled_state.COLOR = 1;
 
 
 }
+
+// void oled_set_brightness(char* c){
+//   return;
+// }
+//
+// void oled_flip_colors(char* c){
+//   if (oled_state.COLOR) {
+//     oled_write_c(0xa7);
+//     oled_state.COLOR = 0;
+//     return;
+//   }
+//   oled_write_c(0xa6);
+//   oled_state.COLOR = 1;
+// }
 
 ISR(TIMER0_COMP_vect){
 

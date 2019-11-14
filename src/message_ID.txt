@@ -21,4 +21,9 @@ CAN MESSAGE ID
     3.3 = hard
 
 
+
+  7 = Play/Stop
+    7.0 = 0 ->stop
+    7.0 = 1 ->play
+    7.1 = Song (1 = Mario, 2= , 3= , 4= , 5= , 6= )
   8 = DUMMY

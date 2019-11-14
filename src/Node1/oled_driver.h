@@ -24,6 +24,7 @@ struct oled_data_marker_struct
     uint8_t LINE; /*!<Current page */
     uint8_t COL; /*!<Current column */
     int CHANGED; /*!<If picture is changed*/
+    uint8_t COLOR;
 };
 /*!
 *@brief Initializes the OLED screen.
@@ -36,6 +37,11 @@ void oled_init();
 *@param[in] @c uint8_t command -> Command to execute.
 */
 void oled_write_c(uint8_t command);
+
+
+void oled_set_brightness(char* c);
+
+void oled_flip_colors(char* c);
 
 /*!
 *@brief Writes data to OLED.
