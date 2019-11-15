@@ -20,7 +20,7 @@ typedef struct Menu_struct {
   Text to display at top page if header is empty*/
   char* info;   /*!<Text to display at bottom page if not empty*/
   Menu* parent_menu; /*!<Pointer to parent menu */
-  Menu* sub_menu[6]; /*!<Array containing pointers to sub menus*/
+  Menu* sub_menu[]; /*!<Array containing pointers to sub menus*/
   uint8_t num_sub_menu;/*!<Variable to count number of submenus conneted to parent menu*/
   void (*fun_ptr)(char*); /*!<Function pointer*/
   void (*fun_ptr2)(char*, Joystick*, Slider*);/*!<Function pointer*/
