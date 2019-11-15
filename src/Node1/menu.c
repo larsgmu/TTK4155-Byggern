@@ -26,15 +26,18 @@ Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info
   new_menu->header          = header;
   new_menu->info            = info;
   new_menu->parent_menu     = parent_menu;
-  for (int i = 0; i < 7; i++) {
-    new_menu->sub_menu[i]   = NULL;
-  }
+  new_menu->sub_menu = NULL;
+  // for (int i = 0; i < 7; i++) {
+  //   new_menu->sub_menu[i]   = NULL;
+  // }
   new_menu->fun_ptr         = function;
   new_menu->fun_ptr2        = NULL;
   new_menu->num_sub_menu    = 0;
   //update parent menu
+
   parent_menu->num_sub_menu += 1;
   uint8_t nsm = parent_menu->num_sub_menu;
+  parent_menu->sub_menu = realloc(parent_menu->sub_menu,sizeof(Menu*)*nsm)
   parent_menu->sub_menu[nsm-1] = new_menu;
   return new_menu;
 }
@@ -45,15 +48,19 @@ Menu* menu_make_sub_menu2(Menu* parent_menu, char* name, char* header, char* inf
   new_menu->header        = header;
   new_menu->info          = info;
   new_menu->parent_menu   = parent_menu;
-  for (int i = 0; i < 7; i++) {
-    new_menu->sub_menu[i] = NULL;
-  }
+  // for (int i = 0; i < 7; i++) {
+  //   new_menu->sub_menu[i] = NULL;
+  // }
+  new_menu->sub_menu = NULL;
+
   new_menu->fun_ptr       = NULL;
   new_menu->fun_ptr2      = function;
   new_menu->num_sub_menu  = 0;
+
   //update parent menu
   parent_menu->num_sub_menu += 1;
   uint8_t nsm = parent_menu->num_sub_menu;
+  parent_menu->sub_menu = realloc(parent_menu->sub_menu,sizeof(Menu*)*nsm)
   parent_menu->sub_menu[nsm-1] = new_menu;
   return new_menu;
 }

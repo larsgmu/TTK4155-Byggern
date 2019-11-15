@@ -37,6 +37,11 @@ Menysystemet fungerer
   - fjernet printf flere steder fordi det fucket opp alt
   - implementert pid-regulator m/ slider . men pådragsverdiene er veldig s
 
+
+
+#15 Nov
+- SLIDER og JOYSTICK har nå uint8_t  som posisjon, bør fungere fint
+
 #########################
 
   #TO DO
@@ -57,3 +62,21 @@ Menysystemet fungerer
     -Knapp 1: Kp
     -Knapp 2: Ki
     -Knapp 3: Kd
+
+
+
+##########################
+~=EXTRAS=~
+- SRAM Dual buffering. Oled laster kun inn når noe har endret seg.
+- Joystick auto-kalibrering med digitalt filter
+- Interrupts med ADC - (Node1)
+- Spill som benytter full OLED-oppløsning, slider og joystick inputs.
+
+- PID: Interrupts med fast frekvens, Node2
+
+- Dokumentasjon gjennom Doxygen
+
+
+//TODO
+- Musikk (fra node2?)
+-
