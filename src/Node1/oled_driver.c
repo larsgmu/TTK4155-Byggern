@@ -79,15 +79,15 @@ void oled_init()   {
 //   return;
 // }
 //
-// void oled_flip_colors(char* c){
-//   if (oled_state.COLOR) {
-//     oled_write_c(0xa7);
-//     oled_state.COLOR = 0;
-//     return;
-//   }
-//   oled_write_c(0xa6);
-//   oled_state.COLOR = 1;
-// }
+void oled_flip_colors(char* c){
+  if (oled_state.COLOR) {
+    oled_write_c(0xa7);
+    oled_state.COLOR = 0;
+    return;
+  }
+  oled_write_c(0xa6);
+  oled_state.COLOR = 1;
+}
 
 ISR(TIMER0_COMP_vect){
 

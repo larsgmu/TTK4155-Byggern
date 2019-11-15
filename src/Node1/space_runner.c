@@ -5,10 +5,11 @@
 #define SR_GROUND_LEVEL 56
 
 #include 	<util/delay.h>
-#include	<stdio.h>
 #include	<stdlib.h>
 #include 	<stdint.h>
 
+#include "slider_driver.h"
+#include "joystick_driver.h"
 #include 	"space_runner.h"
 #include 	"oled_driver.h"
 
@@ -126,8 +127,7 @@ void sr_init(char* diff, sr_Runner* runner, sr_Obstacle_list* o_list) {
     srand(seed);
 }
 
-void sr_play(char* diff, Joystick* joy, Slider* slider) {
-	joystick_run(joy);
+void sr_play(char* diff) {
 	sr_Runner* 			runner;
 	sr_Obstacle_list* 	o_list;
 	runner 		= malloc(sizeof(sr_Runner));
@@ -137,10 +137,9 @@ void sr_play(char* diff, Joystick* joy, Slider* slider) {
 
 	while (!sr_GAMEOVER) {
 		sr_draw_runner(runner);
-		joystick_run(joy);
     slider_run(slider);
-		sr_run(runner, o_list, joy, slider);
-		/*if(joy->dir == UP) {
+		sr_run(runner, o_list);
+		/*if(joystick_get_direction() == UP) {
 			for (int i = 0; i < 30; i++) {
 				runner->posy -= 1;
 				sr_draw_runner(runner);
@@ -160,7 +159,8 @@ void sr_play(char* diff, Joystick* joy, Slider* slider) {
 	oled_init();
 }
 
-void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list, Joystick* joy, Slider* slider) {
+void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list) {
+
 		/*Update score*/
 		sr_SCORE ++;
 
@@ -199,13 +199,14 @@ void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list, Joystick* joy, Slider* 
 			}
 		}
     else {//if (sr_SCORE % 20 == 0){
-      if (slider->right_pos < 90) {
+      Slider slid = slider_get();
+      if (slider.right_pos < 90) {
         runner->velx = 2;
       }
-      else if (slider->right_pos < 160 ) {
+      else if (slider.right_pos < 160 ) {
         runner->velx = 3;
       }
-      else if (slider->right_pos < 230) {
+      else if (slider.right_pos < 230) {
         runner->velx = 4;
       }
       else {
@@ -214,7 +215,7 @@ void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list, Joystick* joy, Slider* 
     }
 
 		/*Jump*/
-		if (joy->dir == UP) {
+		if (joystick_get_direction() == UP) {
 			sr_jump(runner);
 		}
 
