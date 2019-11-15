@@ -10,22 +10,23 @@
 *@brief Enum cointaining the different directions of the joystick.
 */
 enum joystick_dir {
-  NEUTRAL = 0,
-  UP = 1,
-  DOWN = 2,
-  LEFT = 3,
-  RIGHT = 4,
+  NEUTRAL   = 0,
+  UP        = 1,
+  DOWN      = 2,
+  LEFT      = 3,
+  RIGHT     = 4,
 };
 
 /*!
 *@brief Sruct containing the current position, direction and center-point of the joystick.
+* Values in range of [-100, 100].
 */
 typedef struct Joystick_struct {
-  int16_t x;
-  int16_t y;
-  int16_t neutralx;
-  int16_t neutraly;
-  enum joystick_dir dir;
+  int8_t  x;
+  int8_t  y;
+  int8_t  neutralx;
+  int8_t  neutraly;
+  enum    joystick_dir dir;
 } Joystick;
 
 /*!

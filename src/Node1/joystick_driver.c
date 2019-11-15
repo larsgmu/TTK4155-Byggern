@@ -19,8 +19,7 @@
 /*This is a global variable which enables sending CAN-msg
   with joystick position to node 2. In order to acess from other
 	files, initialize it with extern int*/
-
-uint8_t prev_joy[2] = {0,0};
+static uint8_t prev_joy[2] = {0,0};
 
 
 void joystick_init(Joystick* joy){
@@ -35,25 +34,24 @@ void joystick_init(Joystick* joy){
 	}
   joy->neutralx = JOYSTICK_CONSTANT*(x_sum / JOYSTICK_SAMPLE_NO) - JOYSTICK_OFFSET;
   joy->neutraly = JOYSTICK_CONSTANT*(y_sum / JOYSTICK_SAMPLE_NO) - JOYSTICK_OFFSET;
-	joy->x = 0;
-  joy->y = 0;
-  joy->dir = NEUTRAL;
+	joy->x 				= 0;
+  joy->y 				= 0;
+  joy->dir 			= NEUTRAL;
 }
 
 void analog_position(Joystick* joy){
-  joy->x = (int)(JOYSTICK_CONSTANT*adc_read(X_axis) - JOYSTICK_OFFSET) ;//Må fikse offset TODO
-  joy->y = (int)(JOYSTICK_CONSTANT*adc_read(Y_axis) - JOYSTICK_OFFSET) ;
+  joy->x 				= (uint8_t)(JOYSTICK_CONSTANT*adc_read(X_axis) - JOYSTICK_OFFSET) ;
+  joy->y 				= (uint8_t)(JOYSTICK_CONSTANT*adc_read(Y_axis) - JOYSTICK_OFFSET) ;
 
 }
 
 void analog_direction(Joystick* joy) {
   /*Threshold on 15 percent*/
-  int threshold = 15;
+  uint8_t threshold = 15;
 
   /*Calculates direction based on angle*/
   double anglerad = atan2(joy->y,joy->x);
 	int angle = 180 * anglerad / M_PI;
-
   if ((abs(joy->x - joy->neutralx) < threshold) && (abs(joy->y - joy->neutraly) < threshold))  {
 		joy->dir = NEUTRAL;
 	}
@@ -65,15 +63,14 @@ void analog_direction(Joystick* joy) {
 
 void send_joystick_pos(Joystick* joy){
 	CANmsg joystick_msg;
-	joystick_msg.id = 1;
-	joystick_msg.length = 2;
+	joystick_msg.id 		= 1;
+	joystick_msg.length	= 2;
 	if ((abs(joy->x + 100 - prev_joy[0]) > JOYSTICK_THRESHOLD) || (abs(joy->y + 100 - prev_joy[1]) > JOYSTICK_THRESHOLD)) {
-		joystick_msg.data[0] = (uint8_t)joy->x + 100;
-		prev_joy[0] = (uint8_t)joy->x + 100;
-		joystick_msg.data[1] = (uint8_t)joy->y + 100;
-		prev_joy[1] = (uint8_t)joy->y + 100;
+		joystick_msg.data[0] 	= (uint8_t)joy->x + 100;
+		prev_joy[0] 					= (uint8_t)joy->x + 100;
+		joystick_msg.data[1] 	= (uint8_t)joy->y + 100;
+		prev_joy[1] 					= (uint8_t)joy->y + 100;
 		can_send_msg(&joystick_msg);
-		//printf("CAN MSG SENT JOYSTICK \n\r");
 	}
 }
 

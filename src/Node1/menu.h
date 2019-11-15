@@ -15,15 +15,15 @@ typedef struct Menu_struct Menu;
 *@brief Struct containing information about a menu object.
 */
 typedef struct Menu_struct {
-  char* header; /*!<Text to display at top page if not empty.*/
-  char* name;   /*!<Text to display as sub menu when parent menu is selected.
+  char*     header;       /*!<Text to display at top page if not empty.*/
+  char*     name;         /*!<Text to display as sub menu when parent menu is selected.
   Text to display at top page if header is empty*/
-  char* info;   /*!<Text to display at bottom page if not empty*/
-  Menu* parent_menu; /*!<Pointer to parent menu */
-  Menu* sub_menu[6]; /*!<Array containing pointers to sub menus*/
-  uint8_t num_sub_menu;/*!<Variable to count number of submenus conneted to parent menu*/
-  void (*fun_ptr)(char*); /*!<Function pointer*/
-  void (*fun_ptr2)(char*, Joystick*, Slider*);/*!<Function pointer*/
+  char*     info;         /*!<Text to display at bottom page if not empty*/
+  Menu*     parent_menu;  /*!<Pointer to parent menu */
+  Menu*     sub_menu[6];  /*!<Array containing pointers to sub menus*/
+  uint8_t   num_sub_menu; /*!<Variable to count number of submenus conneted to parent menu*/
+  void  (*fun_ptr)(char*);                        /*!<Function pointer*/
+  void  (*fun_ptr2)(char*, Joystick*, Slider*);   /*!<Function pointer*/
 } Menu;
 
 /*!

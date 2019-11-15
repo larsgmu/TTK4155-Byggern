@@ -90,16 +90,16 @@ Menu* menu_init() {
 
   //main menu creation
   main_menu = malloc(sizeof(Menu));
-  current_difficulty = "EASY";
-  main_menu->name = "Main Menu";
-  main_menu->header = "";
-  main_menu->info = "";
-  main_menu->parent_menu = NULL;
+  main_menu->name         = "Main Menu";
+  main_menu->header       = "";
+  main_menu->info         = "";
+  main_menu->parent_menu  = NULL;
   main_menu->num_sub_menu = 0;
   for (int i = 0; i < 7; i++) {
     main_menu->sub_menu[i] = NULL;
   }
-  current_menu = main_menu;
+  current_menu            = main_menu;
+  current_difficulty      = "EASY";
 
   /*Main Menu options*/
   Menu* ping_pong     = menu_make_sub_menu(main_menu, "Ping Pong!","",current_difficulty,NULL);
@@ -113,12 +113,12 @@ Menu* menu_init() {
 
   /*Difficulty submenus*/
   Menu* level_1     = menu_make_sub_menu(difficulty, "EASY","","",&change_difficulty);
-  Menu* level_2     = menu_make_sub_menu(difficulty, "NORMAL","","",&change_difficulty);
-  Menu* level_3     = menu_make_sub_menu(difficulty, "HARD","","",&change_difficulty);
+  //Menu* level_2     = menu_make_sub_menu(difficulty, "NORMAL","","",&change_difficulty);
+  //Menu* level_3     = menu_make_sub_menu(difficulty, "HARD","","",&change_difficulty);
 
   /*Spacerunner submenus*/
   Menu* sr_start    = menu_make_sub_menu2(space_runner, "Start SR","","",&sr_play);
-  Menu* sr_diff     = menu_make_sub_menu(space_runner, "Difficulty", "Select speed", "",NULL);
+  //Menu* sr_diff     = menu_make_sub_menu(space_runner, "Difficulty", "Select speed", "",NULL);
 
   // /*Settings submenus*/
   // Menu* music       = menu_make_sub_menu(settings, "Media Player", "", "", NULL);

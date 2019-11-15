@@ -1,8 +1,7 @@
 /*!@file
 * This file contains functions to convert analog signals from the game controller to digital values for the atmega162.
-* The conversion is done by an ADC0844CCN chip.
+* The conversion is done by an ADC0844CCN chip. Node1.
 */
-
 #define F_CPU 4915200
 
 #include <avr/io.h>

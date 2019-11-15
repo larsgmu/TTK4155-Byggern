@@ -7,8 +7,8 @@
 #include <stdint.h>
 
 typedef struct Slider_struct {
-    int right_pos;
-    int left_pos;
+    uint8_t right_pos;
+    uint8_t left_pos;
 } Slider;
 
 // void button_timer_init();
