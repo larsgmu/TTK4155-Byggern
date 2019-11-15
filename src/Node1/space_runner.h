@@ -74,7 +74,7 @@ void sr_play(char* diff);
 *@param[in] @c Joystick* joy -> Pointer to a continiously updated joystick struct.
 *@param[in] @c sr_Obstacle_list* o_list -> Pointer to list of obstacles.
 */
-void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list;
+void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list);
 
 /*!
 *@brief Draws runner from struct x-position and y-position info. Clears old pixels.

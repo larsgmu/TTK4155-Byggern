@@ -19,7 +19,7 @@ uint8_t current_line;
 char* current_difficulty;
 uint8_t selected_song;
 
-Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info, void (*function)(char*))){
+Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info, void (*function)(char*)){
   Menu* new_menu = malloc(sizeof(Menu));
   new_menu->name            = name;
   new_menu->header          = header;
@@ -161,7 +161,7 @@ void menu_run_functions(){
 }
 
 void menu_run() {
-    joystick_dir joy_dir = joystick_get_direction();
+    uint8_t joy_dir = joystick_get_direction();
     switch (joy_dir) {
     case RIGHT:
       //Om submenyen vi prøver å velge har en submeny
@@ -171,7 +171,7 @@ void menu_run() {
         oled_sram_menu(current_menu);
         oled_sram_arrow(current_line);
       }
-      else if (current_menu->sub_menu[current_line-1]->fun_ptr != NULL{
+      else if (current_menu->sub_menu[current_line-1]->fun_ptr != NULL){
         menu_run_functions();
         current_line = 1;
         oled_sram_menu(current_menu);

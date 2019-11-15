@@ -137,7 +137,6 @@ void sr_play(char* diff) {
 
 	while (!sr_GAMEOVER) {
 		sr_draw_runner(runner);
-    slider_run(slider);
 		sr_run(runner, o_list);
 		/*if(joystick_get_direction() == UP) {
 			for (int i = 0; i < 30; i++) {
@@ -200,13 +199,13 @@ void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list) {
 		}
     else {//if (sr_SCORE % 20 == 0){
       Slider slid = slider_get();
-      if (slider.right_pos < 90) {
+      if (slid.right_pos < 90) {
         runner->velx = 2;
       }
-      else if (slider.right_pos < 160 ) {
+      else if (slid.right_pos < 160 ) {
         runner->velx = 3;
       }
-      else if (slider.right_pos < 230) {
+      else if (slid.right_pos < 230) {
         runner->velx = 4;
       }
       else {
