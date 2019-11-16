@@ -71,14 +71,20 @@ void oled_init()   {
   oled_state.LINE = 0;
   oled_state.COL = 0;
   oled_state.COLOR = 1;
+  oled_state.BRIGHTNESS = 170;
 
 
 }
 
-// void oled_set_brightness(char* c){
-//   return;
-// }
-//
+void oled_set_brightness(char* c){
+  oled_state.BRIGHTNESS += 85;
+  if (oled_state.BRIGHTNESS == 0) {
+    oled_state.BRIGHTNESS += 85;
+  }
+  oled_write_c(0x81);
+  oled_write_c(oled_state.BRIGHTNESS);
+}
+
 void oled_flip_colors(char* c){
   if (oled_state.COLOR) {
     oled_write_c(0xa7);

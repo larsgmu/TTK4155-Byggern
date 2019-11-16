@@ -16,7 +16,7 @@ void motor_init() {
 
   /*Enable motor*/
   DDRH |= (1 << PH4);
-  PINH |= (1 << PH4);
+  PINH = ~(1 << PH4);
 
   /* Set direction pin as output*/
   DDRH |= (1 << PH1);
@@ -84,7 +84,7 @@ void motor_run_slider(int16_t val) {
     message[0] = MOTOR_ADDRESS_WRITE;
     message[1] = COMMAND_BYTE;
     message[2] = (uint8_t)val;
-
+    //printf("MOTOR DATA: %d\n\r", (uint8_t)val);
     TWI_Start_Transceiver_With_Data(message, 3);
 }
 

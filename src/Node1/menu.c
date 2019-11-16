@@ -12,12 +12,11 @@
 #include "space_runner.h"
 #include "menu.h"
 
-Menu* main_menu;
-Menu* current_menu;
+static Menu* main_menu;
+static Menu* current_menu;
 
-uint8_t current_line;
-char* current_difficulty;
-uint8_t selected_song;
+static uint8_t current_line;
+static uint8_t selected_song;
 
 Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info, void (*function)(char*)){
   Menu* new_menu = malloc(sizeof(Menu));
@@ -37,32 +36,39 @@ Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info
   return new_menu;
 }
 
-void change_difficulty(char* diff){
-  current_difficulty = diff;
-  current_menu->parent_menu->info = diff;
-  current_menu->info = diff;
+void change_difficulty(char* info){
+  CANmsg diff;
+  diff.id = 3;
+  diff.length = 1;
+  if (info == "BI" ) {
+    current_menu->info = "Dragvoll";
+    diff.data[0] = 1;
+  }
+  else if (info == "Dragvoll") {
+    current_menu->info = "NTH";
+    diff.data[0] = 2;
+  }
+  else {
+    current_menu->info = "BI";
+    diff.data[0] = 0;
+  }
+  can_send_msg(&diff);
 }
 
-void music_play(char* c){
-  CANmsg start_music;
-  start_music.id = 7;
-  start_music.length = 2;
-  start_music.data[0] = 1;
-  start_music.data[1] = selected_song;
-  can_send_msg(&start_music);
-}
+void music_run(char* name){
+  CANmsg music_msg;
+  music_msg.id = 7;
+  music_msg.length = 2;
 
-void music_stop(char* c){
-  CANmsg start_music;
-  start_music.id = 7;
-  start_music.length = 2;
-  start_music.data[0] = 0;
-  start_music.data[1] = 99;
-  can_send_msg(&start_music);
-}
-
-void select_song(char* c){
-  selected_song = current_line;
+  if (name == "Play Music"){
+    music_msg.data[0] = 1;
+    current_menu->sub_menu[current_line-1]->name = "Stop Music";
+  }
+  else {
+    music_msg.data[0] = 0;
+    current_menu->sub_menu[current_line-1]->name = "Play Music";
+  }
+  can_send_msg(&music_msg);
 }
 
 Menu* menu_init() {
@@ -76,43 +82,24 @@ Menu* menu_init() {
   main_menu->num_sub_menu = 0;
   main_menu->sub_menu     = NULL;
   current_menu            = main_menu;
-  current_difficulty      = "EASY";
 
   /*Main Menu options*/
-  Menu* ping_pong     = menu_make_sub_menu(main_menu, "Ping Pong!","",current_difficulty,NULL);
+  Menu* ping_pong     = menu_make_sub_menu(main_menu, "Ping Pong!","","BI",NULL);
   Menu* space_runner  = menu_make_sub_menu(main_menu, "Space Runner", "", "",NULL);
-  // Menu* settings      = menu_make_sub_menu(main_menu, "Settings", "", "", NULL);
+  Menu* settings      = menu_make_sub_menu(main_menu, "Settings", "", "", NULL);
 
   /*Pingpong submenus*/
   Menu* start_game  = menu_make_sub_menu(ping_pong, "Start","","",&play_pingpong);
   Menu* high_score  = menu_make_sub_menu(ping_pong, "High Score", "Select Level", "",NULL);
-  Menu* difficulty  = menu_make_sub_menu(ping_pong, "Difficulty", "Select Level", "",NULL);
-
-  /*Difficulty submenus*/
-  Menu* level_1     = menu_make_sub_menu(difficulty, "EASY","","",&change_difficulty);
-  Menu* level_2     = menu_make_sub_menu(difficulty, "NORMAL","","",&change_difficulty);
-  Menu* level_3     = menu_make_sub_menu(difficulty, "HARD","","",&change_difficulty);
+  Menu* difficulty  = menu_make_sub_menu(ping_pong, "Difficulty", "", "",&change_difficulty);
 
   /*Spacerunner submenus*/
   Menu* sr_start    = menu_make_sub_menu(space_runner, "Start SR","","",&sr_play);
-  Menu* sr_diff     = menu_make_sub_menu(space_runner, "Difficulty", "Select speed", "",NULL);
+  Menu* music        = menu_make_sub_menu(space_runner, "Play Music", "", "", &music_run);
 
   /*Settings submenus*/
-  // Menu* music       = menu_make_sub_menu(settings, "Media Player", "", "", NULL);
-  // Menu* brightness  = menu_make_sub_menu(settings, "Brightness", "", "", &oled_set_brightness);
-  // Menu* flip_col    = menu_make_sub_menu(settings, "Flip Colors", "", "", &oled_flip_colors);
-
-  /*Media Player submenus*/
-  // Menu* song_select = menu_make_sub_menu(music, "Select song", "", "", NULL);
-  // Menu* play = menu_make_sub_menu(music, "Play!", "", "", &music_play);
-  // Menu* stop = menu_make_sub_menu(music, "Stop!", "", "", &music_stop);
-
-  /*Select song submenus*/
-  // Menu* mario = menu_make_sub_menu(song_select, "MARIO", "", "", &select_song);
-  // Menu* horer = menu_make_sub_menu(song_select, "HORER", "", "", &select_song);
-  // Menu* er = menu_make_sub_menu(song_select, "ER", "", "", &select_song);
-  // Menu* greit = menu_make_sub_menu(song_select, "GREIT", "", "", &select_song);
-  // Menu* bby = menu_make_sub_menu(song_select, "BBY", "", "", &select_song);
+  Menu* flip_col    = menu_make_sub_menu(settings, "Flip Colors", "", "", &oled_flip_colors);
+  Menu* set_bright = menu_make_sub_menu(settings, "Set brightness", "", "", &oled_set_brightness);
 
   //oled initialisering
   current_line = 1; //top line
@@ -120,6 +107,8 @@ Menu* menu_init() {
 
   oled_sram_menu(current_menu);
   oled_sram_arrow(current_line);
+
+  //return main_menu;
 }
 
 void menu_run_functions(){
@@ -127,7 +116,7 @@ void menu_run_functions(){
   /*Change difficulty*/
   if (current_menu->sub_menu[current_line-1]->fun_ptr == &change_difficulty) {
       /*Update info lable at bottom of Ping Pong menu with the current difficulty*/
-      (*current_menu->sub_menu[current_line-1]->fun_ptr)(current_menu->sub_menu[current_line-1]->name);
+      (*current_menu->sub_menu[current_line-1]->fun_ptr)(current_menu->info);
   }
 
   else if(current_menu->sub_menu[current_line-1]->fun_ptr == &play_pingpong) {
@@ -137,35 +126,25 @@ void menu_run_functions(){
   else if(current_menu->sub_menu[current_line-1]->fun_ptr == &sr_play) {
     (*current_menu->sub_menu[current_line-1]->fun_ptr)("kmp");
   }
-  //
-  // else if(current_menu->sub_menu[current_line-1]->fun_ptr == &oled_set_brightness) {
-  //   (*current_menu->sub_menu[current_line-1]->fun_ptr)("");
-  // }
-  //
-  // else if(current_menu->sub_menu[current_line-1]->fun_ptr == &oled_flip_colors) {
-  //   (*current_menu->sub_menu[current_line-1]->fun_ptr)("");
-  // }
-  //
-  // else if(current_menu->sub_menu[current_line-1]->fun_ptr == &music_play) {
-  //   (*current_menu->sub_menu[current_line-1]->fun_ptr)("");
-  // }
-  //
-  // else if(current_menu->sub_menu[current_line-1]->fun_ptr == &music_stop) {
-  //   (*current_menu->sub_menu[current_line-1]->fun_ptr)("");
-  // }
-  //
-  // else if(current_menu->sub_menu[current_line-1]->fun_ptr == &select_song) {
-  //   (*current_menu->sub_menu[current_line-1]->fun_ptr)("");
-  // }
 
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &oled_set_brightness) {
+    (*current_menu->sub_menu[current_line-1]->fun_ptr)("");
+  }
+
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &oled_flip_colors) {
+    (*current_menu->sub_menu[current_line-1]->fun_ptr)("");
+  }
+
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &music_run) {
+    (*current_menu->sub_menu[current_line-1]->fun_ptr)(current_menu->sub_menu[current_line-1]->name);
+  }
 }
 
 void menu_run() {
-    uint8_t joy_dir = joystick_get_direction();
-    switch (joy_dir) {
+    switch (joystick_get_direction()) {
     case RIGHT:
       //Om submenyen vi prøver å velge har en submeny
-      if (current_menu->sub_menu[current_line-1]->sub_menu[0] != NULL){
+      if (current_menu->sub_menu[current_line-1]->sub_menu != NULL){
         current_menu = current_menu->sub_menu[current_line-1];
         current_line = 1;
         oled_sram_menu(current_menu);
@@ -173,7 +152,7 @@ void menu_run() {
       }
       else if (current_menu->sub_menu[current_line-1]->fun_ptr != NULL){
         menu_run_functions();
-        current_line = 1;
+        //current_line = 1;
         oled_sram_menu(current_menu);
         oled_sram_arrow(current_line);
       }

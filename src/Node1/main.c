@@ -42,9 +42,7 @@ void main( void ){
     _delay_ms(20);
     sei();
     joystick_init();
-    //SRAM_test();
     while(1){
-      //sr_play("ss",&joy, &slider);
       menu_run();
     }
 }

@@ -19,6 +19,6 @@ void pid_init();
 *@return @c int -> PID-controlled motor voltage.
 *@param[in] @c uint8_t ref -> Reference position, from 0 to 255.
 */
-void pid_controller(uint8_t ref);
+void pid_controller();
 
 #endif

@@ -94,7 +94,8 @@ void solenoid_extend(uint8_t right_button){
 }
 
 void play_pingpong() {
-    motor_init();
+    /*Enable motor*/
+    PINH |= (1 << PH4);
     motor_calibrate();
     pid_init();
     while(1) {
@@ -120,8 +121,8 @@ void play_pingpong() {
         if (get_CAN_msg().id == 1) {
             current_game.servo = get_CAN_msg().data[0];
         }
-        _delay_ms(20); //60 Hz frequency
-        pid_controller(current_game.right_slider_pos);
+        //_delay_ms(20); //60 Hz frequency
+        //pid_controller(current_game.right_slider_pos);
         servo_joystick_control(current_game.servo);
         solenoid_extend(current_game.solenoid_extend);
     }
