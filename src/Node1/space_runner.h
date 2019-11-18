@@ -4,8 +4,6 @@
 #ifndef SPACE_RUNNER_H
 #define SPACE_RUNNER_H
 
-#include "slider_driver.h"
-#include "joystick_driver.h"
 #include <stdint.h>
 
 #define SR_RUNNER_WIDTH 		6
@@ -53,19 +51,16 @@ void sr_sprite_init(sr_Runner* runner);
 
 /*!
 *@brief Initialize game with player and obstacle info.
-*@param[in] @c char* diff -> Sets difficulty, changing runner speed.
 *@param[in] @c sr_Runner* runner -> Pointer to player struct.
 *@param[in] @c sr_Obstacle_list* o_list -> Pointer to list of obstacles.
 */
-void sr_init(char* diff, sr_Runner* runner, sr_Obstacle_list* o_list);
+void sr_init(sr_Runner* runner, sr_Obstacle_list* o_list);
 
 /*!
 *@brief Game loop that runs until player has crashed and Game Over-flag is set.
-*@param[in] @c char* diff -> String containing difficulty; Easy or hard. Changes running speed.
-*@param[in] @c Joystick* joy -> Continiously updated Joystick struct pointer
-*@param[in] @c Slider* slider -> Slider struct pointer. Not in use.
+*@param[in] @c char* diff -> Non in use. 
 */
-void sr_play(char* diff, Joystick* joy, Slider* slider);
+void sr_play(char* diff);
 
 /*!
 *@brief Runs every time step. Updates runner Y-position according to Y-velocity and gravity.
@@ -73,10 +68,9 @@ void sr_play(char* diff, Joystick* joy, Slider* slider);
 * Updates obstacles X-position according to runner X-speed. Removes obstacle from list if out of bounds.
 * Runs a random function for when to generate obstacle.
 *@param[in] @c sr_Runner* runner -> Pointer to player struct containing velocity.
-*@param[in] @c Joystick* joy -> Pointer to a continiously updated joystick struct.
 *@param[in] @c sr_Obstacle_list* o_list -> Pointer to list of obstacles.
 */
-void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list, Joystick* joy, Slider* slider);
+void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list);
 
 /*!
 *@brief Draws runner from struct x-position and y-position info. Clears old pixels.
@@ -107,10 +101,5 @@ void sr_jump(sr_Runner* runner);
 *@brief Activates when player collides with an obstacle. Print score, make screen white. Set Game Over-flag to 1.
 */
 void sr_crash();
-
-
-
-
-
 
 #endif

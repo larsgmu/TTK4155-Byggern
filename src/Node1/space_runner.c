@@ -5,10 +5,11 @@
 #define SR_GROUND_LEVEL 56
 
 #include 	<util/delay.h>
-#include	<stdio.h>
 #include	<stdlib.h>
 #include 	<stdint.h>
 
+#include "slider_driver.h"
+#include "joystick_driver.h"
 #include 	"space_runner.h"
 #include 	"oled_driver.h"
 
@@ -100,7 +101,7 @@ void sr_sprite_init(sr_Runner* runner) {
   }
 }
 
-void sr_init(char* diff, sr_Runner* runner, sr_Obstacle_list* o_list) {
+void sr_init(sr_Runner* runner, sr_Obstacle_list* o_list) {
 		/*Initialize OLED for game purposes*/
 		oled_init();
     /*Reset flags and counters*/
@@ -126,8 +127,7 @@ void sr_init(char* diff, sr_Runner* runner, sr_Obstacle_list* o_list) {
     srand(seed);
 }
 
-void sr_play(char* diff, Joystick* joy, Slider* slider) {
-	joystick_run(joy);
+void sr_play(char* diff) {
 	sr_Runner* 			runner;
 	sr_Obstacle_list* 	o_list;
 	runner 		= malloc(sizeof(sr_Runner));
@@ -136,44 +136,26 @@ void sr_play(char* diff, Joystick* joy, Slider* slider) {
 	sr_init(diff, runner, o_list);
 
 	while (!sr_GAMEOVER) {
-		sr_draw_runner(runner);
-		joystick_run(joy);
-    slider_run(slider);
-		sr_run(runner, o_list, joy, slider);
-		/*if(joy->dir == UP) {
-			for (int i = 0; i < 30; i++) {
-				runner->posy -= 1;
-				sr_draw_runner(runner);
-				_delay_ms(5);
-			}
-			for (int j = 0; j < 30; j++) {
-				runner->posy += 1;
-				sr_draw_runner(runner);
-				_delay_ms(5);
-			}
-		}*/
-
-		//sr_GAMEOVER = 0;
+		sr_run(runner, o_list);
 	}
 	free(runner);
 	free(o_list);
 	oled_init();
 }
 
-void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list, Joystick* joy, Slider* slider) {
+void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list) {
 		/*Update score*/
-		sr_SCORE ++;
+		sr_SCORE += (int)(runner->velx / 2);
 
 		/* Update Y-velocity */
 		if (runner->vely != 0) {
-      //_delay_ms(100);
 			runner->vely -= GRAVITY*0.1;
+
 			/*If player hits ground*/
 			if (runner->posy >= SR_GROUND_LEVEL-1 && sr_JUMPFLAG) {
 				runner->vely = 0;
 				runner->posy = SR_GROUND_LEVEL-1;
 				sr_JUMPFLAG = 0;
-
 				/*Change back to running sprite*/
         {
           runner->sprite[0][0] = 0;
@@ -198,14 +180,15 @@ void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list, Joystick* joy, Slider* 
         }
 			}
 		}
-    else {//if (sr_SCORE % 20 == 0){
-      if (slider->right_pos < 90) {
+    else { /* Update X-velocity from right slider */
+      Slider slider = slider_get();
+      if (slider.right_pos < 90) {
         runner->velx = 2;
       }
-      else if (slider->right_pos < 160 ) {
+      else if (slider.right_pos < 160 ) {
         runner->velx = 3;
       }
-      else if (slider->right_pos < 230) {
+      else if (slider.right_pos < 230) {
         runner->velx = 4;
       }
       else {
@@ -214,13 +197,13 @@ void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list, Joystick* joy, Slider* 
     }
 
 		/*Jump*/
-		if (joy->dir == UP) {
+		if (joystick_get_direction() == UP) {
 			sr_jump(runner);
 		}
 
 		/*Update Y-position*/
 		if (sr_JUMPFLAG) {
-			runner->posy = (int)(runner->posy - runner->vely);		//Values probably not right
+			runner->posy = (int)(runner->posy - runner->vely);
 		}
 
 		/*Update Ostacles' X-position*/
@@ -228,17 +211,15 @@ void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list, Joystick* joy, Slider* 
 			o_list->obstacles[i].posx -= runner->velx;
 
 			/*Check if crash*/
-			//if ((runner->posx + SR_RUNNER_WIDTH <= o_list->obstacles[i].posx) && (runner->posy >= GROUND_LEVEL-SR_OBSTACLE_DIM)) {
 			if ((o_list->obstacles[i].posx <= SR_RUNNER_WIDTH + runner->posx-1) &&
 				(o_list->obstacles[i].posx + SR_OBSTACLE_DIM >= runner->posx) &&
 				(runner->posy > SR_GROUND_LEVEL-8)) {
 					sr_crash();
-					//printf("CRASH\n" );
 			}
 		}
 
 		// /*Check if Obstacle 1 out of bounds*/
-		if (o_list->obstacles[0].posx <= runner->velx) { //O_OFFSET) {
+		if (o_list->obstacles[0].posx <= runner->velx) {
 			if (o_list->size > 1) {
 				for (int o = 0; o < (o_list->size)-1; o++) {
 					o_list->obstacles[o] = o_list->obstacles[o+1];
@@ -247,25 +228,24 @@ void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list, Joystick* joy, Slider* 
 			if (o_list->size >= 1) {
 				o_list->size --; //dequeue
 			}
-			for (int h = 0; h < o_list->obstacles[0].height; h++) {		//CHECK THIS
-				for (int x = 0; x < SR_OBSTACLE_DIM + runner->posx; x++) {//runner->posx + SR_RUNNER_WIDTH; x++) {
-		 			oled_sram_adress[(6-h)*OLED_COLS + x] = 0x00;		//see if it works without this
+			for (int h = 0; h < 2; h++) {
+				for (int x = 0; x < SR_OBSTACLE_DIM + runner->posx; x++) {
+		 			oled_sram_adress[(6-h)*OLED_COLS + x] = 0x00;
 		 		}
 			}
 
 		}
 
-		/*Randomly generates obstacles, maximum 3 at a time.*/
+		/*Randomly generates obstacles, maximum 2 in the frame at a time.*/
 		if  ((rand() % (180/runner->velx) == 0 || rand() % (182/runner->velx) == 0) && o_list->size < SR_OBSTACLE_NO) {
-			//((rand() % 500) == 5 && o_list->size < SR_OBSTACLE_NO) {
-      srand(rand());
+      srand(rand()); //new seed for continuously random spawning
 			sr_gen_obstacle(o_list);
 		}
 
 		/*Update map*/
 		sr_draw_runner(runner);
 		sr_draw_obstacle(runner, o_list);
-		_delay_ms(5);
+		_delay_ms(16); //60 fps
 		oled_draw();
 
 }
@@ -276,19 +256,20 @@ void sr_draw_runner(sr_Runner* runner) {
 		char 		temp[1] 		= {0b00000000};	//Contains info about 8 pixels; 1 col in 1 page
 		uint8_t i 					= 0;
 
-
 		/*If runner hasnt jumped, (is on ground)*/
 		if (sr_JUMPFLAG == 0) {
 			for (int p = bottom_page; p >= top_page; p--) { //start at p6, then p5
-				for (int x = (runner->posx); x < SR_RUNNER_WIDTH+(runner->posx); x++) {	//x<12
-					for (int y = 0; y < OLED_PAGE_HEIGHT; y++) {	//y<8
+				for (int x = (runner->posx); x < SR_RUNNER_WIDTH+(runner->posx); x++) {
+					for (int y = 0; y < OLED_PAGE_HEIGHT; y++) {
+            /*Draw the sprite with 0's and 1's*/
 						if ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x-(runner->posx)] == 1)) {
-							temp[0] |=  (1 << (7-y));
+							temp[0] |=  (1 << (7-y));  //shift the 1's into place
 						}
 						else {
-							temp[0] &= ~(1 << (7-y));
+							temp[0] &= ~(1 << (7-y)); //shift the 0's into place
 						}
 					}
+          /*Write 8 bits to SRAM*/
 					oled_sram_adress[p*OLED_COLS + x] = temp[0];
 					/*Clear page above Runner*/
 					oled_sram_adress[4*OLED_COLS + x] = 0x00;
@@ -297,35 +278,33 @@ void sr_draw_runner(sr_Runner* runner) {
 			}
 		}
 
-		/*If runner has jumped*/
+		/*If runner has jumped. Sprite takes up 2 or 3 pages.*/
 		else if (sr_JUMPFLAG == 1){
-			bottom_page 	=  runner->posy / OLED_PAGE_HEIGHT ; //floors value;
+			bottom_page 	=  runner->posy / OLED_PAGE_HEIGHT ;
 			top_page 			= (runner->posy - SR_RUNNER_HEIGHT +1 ) / OLED_PAGE_HEIGHT ;
 			temp[0] 			= 0b00000000;
 			i 						= 0;
-			//Difference between bottom of page and runner y-pos
+			/*Difference between bottom of page and runner y-pos*/
 			uint8_t diff 	= (bottom_page+1)*OLED_PAGE_HEIGHT - runner->posy - 1;
 
 			/*Bottom range: 1<p<6 . Top range: 0<p<5 */
 			for (int p = bottom_page; p >= top_page; p--) {
 				for (int x = (runner->posx); x < SR_RUNNER_WIDTH + (runner->posx); x++) {
-          //_delay_ms(10);
 					for (int y = 0; y < OLED_PAGE_HEIGHT; y++) {
 
 						/*If runner is perfectly within 2 pages*/
 						if ((runner->posy + 1) % 8 == 0) {
 							if ((runner->sprite[y + i*OLED_PAGE_HEIGHT ][x-(runner->posx)] == 1)) {
-								temp[0] |=  (1 << (7-y));	//Light up pixel
+								temp[0] |=  (1 << (7-y));	//shift the 1's into place
 							}
 							else {
-								temp[0] &= ~(1 << (7-y)); //Not light up pixel
+								temp[0] &= ~(1 << (7-y)); //shift the 0's into place
 							}
-							/*Clear out page below and above runner*/
+							/*Clear out pages above runner*/
 							if (p > 1) {
-								oled_sram_adress[(p-1)*OLED_COLS + x] = 0x00;	//above
-								oled_sram_adress[(p-2)*OLED_COLS + x] = 0x00;	//above
+								oled_sram_adress[(p-1)*OLED_COLS + x] = 0x00;
+								oled_sram_adress[(p-2)*OLED_COLS + x] = 0x00;
 								}
-
 						}
 
             /*If runner is between 3 pages*/
@@ -337,25 +316,26 @@ void sr_draw_runner(sr_Runner* runner) {
 								else {
 									temp[0] &= ~(1 << (7-y-diff));
 								}
-
 							}
+
 							else if (p == top_page) { /*This page has the top of the sprite*/
 								uint8_t ind = y + 2*OLED_PAGE_HEIGHT-diff;
-								if (ind < SR_RUNNER_HEIGHT) {		/*If runner sprite is actually in MAP y-pos*/
+								if (ind < SR_RUNNER_HEIGHT) {		/*If the runner is actually at the y-position we iterate through*/
 									if (runner->sprite[ind][x-(runner->posx)] == 1) {
-										temp[0] |=  (1 << (7-y));
+										temp[0] |=  (1 << (7-y)); //Set pixels in sprite
 									}
 									else {
-										temp[0] &= ~(1 << (7-y));
+										temp[0] &= ~(1 << (7-y)); //Clear pixels in sprite
 									}
 								}
-								else { 	/*Set 0 to the rest of page-column*/
+								else { 	/*If there is no runner there, clear pixels0*/
 									temp[0] &= ~(1 << (7-y));
 								}
 								if (p >1) { /*Clear page above runner*/
 									oled_sram_adress[(p-1)*OLED_COLS + x] = 0x00;
 								}
 							}
+
 							else { /* This page has the middle of the sprite */
 								if (runner->sprite[7-diff+y][x-(runner->posx)] == 1) {
 									temp[0] |=  (1 << (7-y));
@@ -366,45 +346,43 @@ void sr_draw_runner(sr_Runner* runner) {
 							}
 						}
 					}
-					oled_sram_adress[p*OLED_COLS + x] = temp[0];
-					temp[0] 			= 0b00000000;
-					if(bottom_page < 6) {
+          /*Write column data to SRAM*/
+          oled_sram_adress[p*OLED_COLS + x] = temp[0];
+					temp[0] 			= 0b00000000; //reset
+					if(bottom_page < 6) { /*Clear pages below runner*/
 						oled_sram_adress[(bottom_page+1)*OLED_COLS+x] = 0x00;
 					}
 				}
 				i++;
 			}
-
 		}
-		//oled_draw();
 }
 
 void sr_gen_obstacle(sr_Obstacle_list* o_list) {
 	sr_Obstacle obstacle ;
-	if (rand() % 6 == 5) {   //CHECK THIS
+	if (rand() % 2 == 1) {
 		obstacle.height = 2;
 	}
-	else 	{	//TODO
+	else 	{
+    obstacle.height = 1;
 	}
-
-	obstacle.height = 2;
-	obstacle.posx 	= SR_MAX_X;// - O_OFFSET;
-	/*add obstacle to list*/
+	obstacle.posx 	= SR_MAX_X;
 	o_list->size ++ ;
 	o_list->obstacles[(o_list->size)-1] = obstacle;
 }
 
 void sr_draw_obstacle(sr_Runner* runner, sr_Obstacle_list* o_list) {
-	uint8_t page = 6;
+    uint8_t page = 6;
   	/*Iterate for every obstacle in list*/
   	for (int o = 0; o < o_list->size; o++) {
 		uint8_t height = o_list->obstacles[o].height;
-		//printf("height: %d \n\r", height);
+
 	  /*For every height in obstacle; 1 or 2 */
-		for (int h = 0; h < height; h++) {		//o_list->obstacles[o].height ; h++) { WTFFF
+		for (int h = 0; h < height; h++) {
+
 			/*For every column in obstacle*/
 			for (int x = o_list->obstacles[o].posx; x < o_list->obstacles[o].posx + SR_OBSTACLE_DIM; x++) {
-				if (x >= 0 && x < SR_MAX_X) {
+				if (x >= 0 && x < SR_MAX_X) { //if within bounds
 					if (h == height-1) {	//draw a spike shape
 						oled_sram_adress[(page-h)*OLED_COLS + x] = obstacle_spike[x - o_list->obstacles[0].posx];
 					}
@@ -412,7 +390,7 @@ void sr_draw_obstacle(sr_Runner* runner, sr_Obstacle_list* o_list) {
 						oled_sram_adress[(page-h)*OLED_COLS + x] = 0xFF;
 					}
 
-				//clears previous columns, how many depends on x-velocity
+				/*Clear the old obstable position columns, depending on runner speed*/
 				if (x < SR_MAX_X - runner->velx) {
 					for (int c = 0; c < runner->velx; c++) {
 						oled_sram_adress[(page-h)*OLED_COLS + x + c + 1] = 0x00;
@@ -425,7 +403,7 @@ void sr_draw_obstacle(sr_Runner* runner, sr_Obstacle_list* o_list) {
 }
 
 void sr_jump(sr_Runner* runner) {
-    if (sr_JUMPFLAG == 1) { return;	} //no double jumps
+    if (sr_JUMPFLAG == 1) { return;	} //No double jumps
 		sr_JUMPFLAG  = 1;
     runner->vely = JUMP_SPEED;
 
@@ -462,7 +440,7 @@ void sr_crash() {
 	oled_sram_write_string(score);
 	_delay_ms(1000);
 
-	/*Draws OLED white*/
+	/*Draws OLED white, a few columns at a time*/
 	for (int p = 0; p < OLED_PAGES; p++) {
 		if (p != 3) {
 			for (int x = 3; x < OLED_COLS+3; x += 4) {
