@@ -1,8 +1,11 @@
 /*!@file
 * This file contains functions to enable SPI communication between the atmega2560 and MCP2515 chip.
 */
-#include "spi_driver.h"
 #include <avr/io.h>
+#include "spi_driver.h"
+
+/*-------------------------------------------------------*/
+/********Function implementations*********/
 
 void spi_master_init(){
   /* Sets MCU-pins to output mode . Dette er andre pins enn i N1*/

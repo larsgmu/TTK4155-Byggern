@@ -9,7 +9,9 @@
 
 #include "adc_driver.h"
 
-volatile uint8_t adc_interrupt_flag = 0;
+
+/*! */
+volatile static uint8_t adc_FLAG = 0;
 
 /*!
   * Initializes ADC interface with interrupts in PE0 (INT2)
@@ -37,14 +39,14 @@ void adc_init(void) {
   DDRB &= ~(1 << PB3);
 }
 
-uint8_t adc_read(enum channel_type channel){		//er interrupts brukt fornuftig her ?
+uint8_t adc_read(enum channel_type channel){
   volatile char *address = (char*)0x1400;
   address[0] = channel;
-  while(!(adc_interrupt_flag));
-  adc_interrupt_flag = 0;
+  while(!(adc_FLAG));
+  adc_FLAG = 0;
   return address[0];
 }
 
 ISR(INT2_vect){
-  adc_interrupt_flag = 1;
+  adc_FLAG = 1;
 }

@@ -11,21 +11,8 @@ typedef struct Slider_struct {
     uint8_t left_pos;
 } Slider;
 
-// void button_timer_init();
-
 Slider slider_get();
 
 void send_slider_pos();
 
-/*!
-*@brief Checks if left button on game controller is pressed
-*@return @c 1 on success, else @c 0.
-*/
-uint8_t slider_left_button_pressed();
-
-/*!
-*@brief Checks if right button on game controller is pressed
-*@return @c 1 on success, else @c 0.
-*/
-uint8_t slider_right_button_pressed();
 #endif

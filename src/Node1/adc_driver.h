@@ -11,10 +11,10 @@
  *@brief Enum cointaining the different analog inputs from the game controller.
 */
 enum channel_type{
-  Y_axis = 4, /*!< Y-axis of joystick, corresponding to UP/DOWN movement*/
-  X_axis = 5, /*!< X-axis of joystick, corresponding to LEFT/RIGH movement*/
-  Right_slider = 6,
-  Left_slider = 7,
+  Y_axis        = 4, /*!< Y-axis of joystick, corresponding to UP/DOWN movement*/
+  X_axis        = 5, /*!< X-axis of joystick, corresponding to LEFT/RIGH movement*/
+  Right_slider  = 6,
+  Left_slider   = 7,
 };
 
 /*!

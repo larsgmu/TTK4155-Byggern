@@ -8,8 +8,27 @@
 #define MYUBRR 103
 
 #include <avr/io.h>
+#include <stdio.h>
 
 #include "usart_driver.h"
+
+/*-------------------------------------------------------*/
+/********Function declarations*********/
+
+/*!
+*@brief Sends specified data.
+*@param[in] @c unsigned char data -> Data to send.
+*/
+void usart_transmit( unsigned char data );
+
+/*!
+*@brief Receives data.
+*@return @c unsigned char -> Data received.
+*/
+unsigned char usart_receive( void );
+
+/*-------------------------------------------------------*/
+/********Function implementations*********/
 
 void usart_init( unsigned int ubrr ){
     /* Set baud rate */

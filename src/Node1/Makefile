@@ -1,7 +1,7 @@
 # List all source files to be compiled; separate with space
 SOURCE_FILES := main.c usart_driver.c sram_driver.c adc_driver.c joystick_driver.c
 SOURCE_FILES += slider_driver.c oled_driver.c spi_driver.c mcp2515_driver.c
-SOURCE_FILES += can_driver.c games.c menu.c  space_runner.c
+SOURCE_FILES += can_driver.c games.c menu.c  space_runner.c EEPROM_driver.c
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
 PROGRAM_WITH_JTAG := yes

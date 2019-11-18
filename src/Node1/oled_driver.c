@@ -10,14 +10,60 @@
 #include "oled_driver.h"
 #include "sram_driver.h"
 
-static volatile char* oled_command_address = (char*)0x1000;
-static volatile char* oled_data_address = (char*)0x1200;    //   sjekk h-fil
-static volatile char* oled_sram_adress = (char*)0x1C00;
+static volatile char* oled_command_address  = (char*)0x1000;
+static volatile char* oled_data_address     = (char*)0x1200;
+static volatile char* oled_sram_adress      = (char*)0x1C00;
 
-static struct oled_data_marker_struct oled_state;
+static struct   oled_data_marker_struct     oled_state;
 
-//const char* const font[] PROGMEM = {font8, font5, font4};
-//
+/*-------------------------------------------------------*/
+/*Function declarations*/
+
+/*!
+*@brief Chooses specified OLED command to execute.
+*@param[in] @c uint8_t command -> Command to execute.
+*/
+void oled_write_c(uint8_t command);
+
+/*!
+*@brief Writes data to OLED.
+*@param[in] @c uint8_t data -> Data to write to OLED
+*/
+void oled_write_d(uint8_t data);
+
+/*!
+*@brief Updates current state struct and chooses specified column.
+*@param[in] @c int column -> Column to move to.
+*/
+void oled_goto_column(int column);
+
+/*!
+*@brief Updates current state struct goes to top page and left most column.
+*/
+void oled_home(void);
+
+/*!
+*@brief Updates current state and writes specified data to given adress.
+*@param[in] @c uint8_t adr -> Adress to write data to.
+*@param[in] @c uint8_t data -> Data to write to adress.
+*/
+void oled_sram_write_d(uint8_t adr, uint8_t data);  //TROR IKKE DENNE BRUKES
+
+/*!
+*@brief Updates current state and writes a character to OLED-SRAM.
+*@param[in] @c unsigned char c -> Charachter to write to OLED-SRAM.
+*/
+void oled_sram_write_char(unsigned char c);
+
+/*!
+*@brief Resets the specified page of the OLED-SRAM.
+*@param[in] @c int line -> Page to reset.
+*/
+void oled_sram_clear_line(int line);
+
+
+/*-------------------------------------------------------*/
+/*Function implementations*/
 
 void oled_init()   {
   oled_write_c(0xae);        // display  off
@@ -55,13 +101,13 @@ void oled_init()   {
   TCCR0 &= ~(1 << COM00);
   TCCR0 &= ~(1 << COM01);
 
-  /*Setting Prescaler to 256 -> Gives TOP = 159 */
+  /*Setting Prescaler to 1024*/
   TCCR0 |= (1 << CS00);
   TCCR0 &= ~(1 << CS01);
   TCCR0 |= (1 << CS02);
 
-  OCR0 = 255;
-
+  OCR0 = 81;
+  TCNT0 = 0;
   /*Enable interrupt on Timer Compare Match*/
   TIMSK |= (1 << OCIE0);
   /*Clear interrupt flag*/
@@ -76,7 +122,7 @@ void oled_init()   {
 
 }
 
-void oled_set_brightness(char* c){
+void oled_set_brightness(){
   oled_state.BRIGHTNESS += 85;
   if (oled_state.BRIGHTNESS == 0) {
     oled_state.BRIGHTNESS += 85;
@@ -85,7 +131,7 @@ void oled_set_brightness(char* c){
   oled_write_c(oled_state.BRIGHTNESS);
 }
 
-void oled_flip_colors(char* c){
+void oled_flip_colors(){
   if (oled_state.COLOR) {
     oled_write_c(0xa7);
     oled_state.COLOR = 0;
@@ -95,16 +141,6 @@ void oled_flip_colors(char* c){
   oled_state.COLOR = 1;
 }
 
-ISR(TIMER0_COMP_vect){
-
-  if (!(oled_state.CHANGED)) {
-    TCNT0 = 0;
-    return;
-  }
-  oled_draw();
-  oled_state.CHANGED = 0;
-  TCNT0 = 0;
-}
 
 
 void oled_write_c(uint8_t command){
@@ -190,9 +226,7 @@ void oled_sram_write_string(char* str){
 
 void oled_sram_reset(void){
     for(int row =0; row < 8; row++){
-      //oled_goto_line(rows);
       for(int col = 0; col < OLED_COLS; col++){
-        //oled_data_address[cols] = 0x00;
         oled_sram_adress[row*OLED_COLS + col] = 0x00;
       }
     }
@@ -202,9 +236,6 @@ void oled_sram_reset(void){
 
 void oled_sram_clear_line(int line){
   oled_goto_line(line);
-  //for(int i=0; i<127; i++){
-    //oled_write_d(0x00);
-  //}
   for(int col = 0; col < OLED_COLS; col++){
     oled_sram_adress[oled_state.LINE*OLED_COLS + col] = 0x00;
   }
@@ -224,11 +255,11 @@ void oled_sram_menu(Menu* menu) {
     oled_goto_column(15);
     oled_sram_write_string(menu->sub_menu[i]->name);
   }
-  if (menu->info != "") {
-    oled_goto_column(0);
-    oled_goto_line(7);
-    oled_sram_write_string(menu->info);
-  }
+  // if (menu->info != "") {
+  //   oled_goto_column(0);
+  //   oled_goto_line(7);
+  //   oled_sram_write_string(menu->info);
+  // }
 }
 
 void oled_sram_arrow(uint8_t line){
@@ -245,4 +276,15 @@ void oled_draw(){
       oled_write_d(oled_sram_adress[line*OLED_COLS + col]);
     }
   }
+}
+
+ISR(TIMER0_COMP_vect){
+
+  if (!(oled_state.CHANGED)) {
+    TCNT0 = 0;
+    return;
+  }
+  oled_draw();
+  oled_state.CHANGED = 0;
+  TCNT0 = 0;
 }

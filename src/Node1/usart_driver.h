@@ -9,20 +9,7 @@
 *@brief Sets the baudrate, enables receiver and transmitter
 @param[in] @c unsigned int ubrr -> Value to set baudrate correct.
 */
-void usart_init( unsigned int ubrr );
-
-/*!
-*@brief Sends specified data.
-*@param[in] @c unsigned char data -> Data to send.
-*/
-void usart_transmit( unsigned char data );
-
-
-/*!
-*@brief Receives data.
-*@return @c unsigned char -> Data received.
-*/
-unsigned char usart_receive( void );
+void usart_init(unsigned int ubrr);
 
 /*!
 *@brief Enables the use of printf().

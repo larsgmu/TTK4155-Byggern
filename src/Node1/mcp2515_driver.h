@@ -20,12 +20,6 @@ void mcp2515_init();
 uint8_t mcp2515_read(uint8_t address);
 
 /*!
-*@brief Reads the current status of the MCP2515.
-*@return @c uint8_t -> Current status.
-*/
-uint8_t mcp2515_read_status();
-
-/*!
 *@brief Writes the given data to the specified address.
 *@param[in] @c uint8_t address -> Address to write to.
 *@param[in] @c uint8_t data -> Data to write to address.
@@ -46,9 +40,5 @@ void mcp2515_request_send(uint8_t pin);
 */
 void mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data);
 
-/*!
-*@brief Resets the MCP2515.
-*/
-void mcp2515_reset();
 
 #endif

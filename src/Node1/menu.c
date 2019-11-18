@@ -3,13 +3,18 @@
 */
 #define F_CPU 4915200
 
-#include <util/delay.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <util/delay.h>
+
 #include "oled_driver.h"
 #include "can_driver.h"
 #include "games.h"
-#include "space_runner.h"
+#include "joystick_driver.h"
 #include "menu.h"
+#include "slider_driver.h"
+#include "space_runner.h"
+#include "EEPROM_driver.h"
 
 static Menu* main_menu;
 static Menu* current_menu;
@@ -17,64 +22,40 @@ static Menu* current_menu;
 static uint8_t current_line;
 static uint8_t selected_song;
 
-Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info, void (*function)(void)){
-  Menu* new_menu = malloc(sizeof(Menu));
-  new_menu->name            = name;
-  new_menu->header          = header;
-  new_menu->info            = info;
-  new_menu->parent_menu     = parent_menu;
-  new_menu->sub_menu        = NULL;
-  new_menu->fun_ptr         = function;
-  new_menu->num_sub_menu    = 0;
-  //update parent menu
 
-  parent_menu->num_sub_menu += 1;
-  uint8_t nsm = parent_menu->num_sub_menu;
-  parent_menu->sub_menu = realloc(parent_menu->sub_menu,sizeof(Menu*)*nsm);
-  parent_menu->sub_menu[nsm-1] = new_menu;
-  return new_menu;
-}
 
-void change_difficulty(){
-  char* info = current_menu->info;
-  CANmsg diff;
-  diff.id = 3;
-  diff.length = 1;
-  if (info == "BI" ) {
-    current_menu->info = "Dragvoll";
-    diff.data[0] = 1;
-  }
-  else if (info == "Dragvoll") {
-    current_menu->info = "NTH";
-    diff.data[0] = 2;
-  }
-  else {
-    current_menu->info = "BI";
-    diff.data[0] = 0;
-  }
-  can_send_msg(&diff);
-}
+/*-------------------------------------------------------*/
+/*Function declarations*/
 
-void music_run(){
-  char* name = current_menu->sub_menu[current_line-1]->name;
-  CANmsg music_msg;
-  music_msg.id = 7;
-  music_msg.length = 1;
+/*!
+*@brief Creates a new submenu.
+*@param[in] @c Menu* parent_menu -> Pointer to parent menu.
+*@param[in] @c char* name -> Name of menu
+*@param[in] @c char* header -> Header to display at top page. Use "" if same as name.
+*@param[in] @c char* info -> Text to display at bottom page. Use "" if not desired.
+*@param[in] void (*function)(void)) -> Function to perform if menu is selected. Use NULL if no function.
+*/
+Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info, void (*function)(void));
+/*!
+*@brief Executes function connected to selected menu.
+*@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
+*/
+void menu_run_functions();
+/*!
+*@brief Changes game difficulty.
+*/
+void change_difficulty();
+/*!
+*@brief Either plays or stops music.
+*/
+void music_run();
 
-  if (name == "Play Music"){
-    music_msg.data[0] = 1;
-    current_menu->sub_menu[current_line-1]->name = "Stop Music";
+void print_pingpong_score();
 
-  }
-  else  {
-    music_msg.data[0] = 0;
-    current_menu->sub_menu[current_line-1]->name = "Play Music";
-  }
-  can_send_msg(&music_msg);
-}
+/*-------------------------------------------------------*/
+/*Function implementations*/
 
 Menu* menu_init() {
-
   //main menu creation
   main_menu = malloc(sizeof(Menu));
   main_menu->name         = "Main Menu";
@@ -92,9 +73,8 @@ Menu* menu_init() {
 
   /*Pingpong submenus*/
   Menu* start_game    = menu_make_sub_menu(ping_pong, "Start","","",&play_pingpong);
-  Menu* high_score    = menu_make_sub_menu(ping_pong, "High Score", "Select Level", "",NULL);
+  Menu* high_score    = menu_make_sub_menu(ping_pong, "High Score", "", "", &print_pingpong_score);
   Menu* difficulty    = menu_make_sub_menu(ping_pong, "Difficulty", "", "",&change_difficulty);
-
   /*Spacerunner submenus*/
   Menu* sr_start      = menu_make_sub_menu(space_runner, "Start SR","","",&sr_play);
   Menu* music         = menu_make_sub_menu(space_runner, "Play Music", "", "", &music_run);
@@ -113,33 +93,22 @@ Menu* menu_init() {
   //return main_menu;
 }
 
-void menu_run_functions(){
+Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info, void (*function)(void)){
+  Menu* new_menu = malloc(sizeof(Menu));
+  new_menu->name            = name;
+  new_menu->header          = header;
+  new_menu->info            = info;
+  new_menu->parent_menu     = parent_menu;
+  new_menu->sub_menu        = NULL;
+  new_menu->fun_ptr         = function;
+  new_menu->num_sub_menu    = 0;
+  //update parent menu
 
-  /*Change difficulty*/
-  if (current_menu->sub_menu[current_line-1]->fun_ptr == &change_difficulty) {
-      /*Update info lable at bottom of Ping Pong menu with the current difficulty*/
-      (*current_menu->sub_menu[current_line-1]->fun_ptr)(current_menu->info);
-  }
-  /*Play ping pong*/
-  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &play_pingpong) {
-      (*current_menu->sub_menu[current_line-1]->fun_ptr)();
-  }
-  /*Play Space runner*/
-  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &sr_play) {
-    (*current_menu->sub_menu[current_line-1]->fun_ptr)();
-  }
-  /*Change OLED brightness*/
-  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &oled_set_brightness) {
-    (*current_menu->sub_menu[current_line-1]->fun_ptr)();
-  }
-  /*Flip OLED colors*/
-  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &oled_flip_colors) {
-    (*current_menu->sub_menu[current_line-1]->fun_ptr)();
-  }
-  /*Play music*/
-  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &music_run) {
-    (*current_menu->sub_menu[current_line-1]->fun_ptr)(current_menu->sub_menu[current_line-1]->name);
-  }
+  parent_menu->num_sub_menu += 1;
+  uint8_t nsm = parent_menu->num_sub_menu;
+  parent_menu->sub_menu = realloc(parent_menu->sub_menu,sizeof(Menu*)*nsm);
+  parent_menu->sub_menu[nsm-1] = new_menu;
+  return new_menu;
 }
 
 void menu_run() {
@@ -198,4 +167,94 @@ void menu_run() {
       break;
   }
   _delay_ms(150);
+}
+
+void menu_run_functions(){
+
+  /*Change difficulty*/
+  if (current_menu->sub_menu[current_line-1]->fun_ptr == &change_difficulty) {
+      /*Update info lable at bottom of Ping Pong menu with the current difficulty*/
+      (*current_menu->sub_menu[current_line-1]->fun_ptr)();
+  }
+  /*Play ping pong*/
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &play_pingpong) {
+      (*current_menu->sub_menu[current_line-1]->fun_ptr)();
+  }
+  /*Play Space runner*/
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &sr_play) {
+    (*current_menu->sub_menu[current_line-1]->fun_ptr)();
+  }
+  /*Change OLED brightness*/
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &oled_set_brightness) {
+    (*current_menu->sub_menu[current_line-1]->fun_ptr)();
+  }
+  /*Flip OLED colors*/
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &oled_flip_colors) {
+    (*current_menu->sub_menu[current_line-1]->fun_ptr)();
+  }
+  /*Play music*/
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &music_run) {
+    (*current_menu->sub_menu[current_line-1]->fun_ptr)();
+  }
+  /*Display Highscore*/
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &print_pingpong_score) {
+    (*current_menu->sub_menu[current_line-1]->fun_ptr)();
+  }
+}
+
+void change_difficulty(){
+  char* info = current_menu->info;
+  CANmsg diff;
+  diff.id = 3;
+  diff.length = 1;
+  if (info == "BI" ) {
+    current_menu->info = "Dragvoll";
+    diff.data[0] = 1;
+  }
+  else if (info == "Dragvoll") {
+    current_menu->info = "NTH";
+    diff.data[0] = 2;
+  }
+  else {
+    current_menu->info = "BI";
+    diff.data[0] = 0;
+  }
+  oled_goto_column(1);
+  oled_goto_line(5);
+  oled_sram_write_string("Changed Diff To: ");
+  oled_goto_column(1);
+  oled_goto_line(7);
+  oled_sram_write_string(current_menu->info);
+  oled_draw();
+  _delay_ms(1500);
+  can_send_msg(&diff);
+}
+
+void print_pingpong_score(){
+  char score[5];
+  itoa(EEPROM_read(HIGHSCORE_PINGPONG_ADDR), score, 10);
+  oled_goto_column(1);
+  oled_goto_line(5);
+  oled_sram_write_string("High Score: ");
+  oled_sram_write_string(score);
+  oled_draw();
+  _delay_ms(1000);
+}
+
+void music_run(){
+  char* name = current_menu->sub_menu[current_line-1]->name;
+  CANmsg music_msg;
+  music_msg.id = 7;
+  music_msg.length = 1;
+
+  if (name == "Play Music"){
+    music_msg.data[0] = 1;
+    current_menu->sub_menu[current_line-1]->name = "Stop Music";
+
+  }
+  else  {
+    music_msg.data[0] = 0;
+    current_menu->sub_menu[current_line-1]->name = "Play Music";
+  }
+  can_send_msg(&music_msg);
 }

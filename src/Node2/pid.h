@@ -5,14 +5,10 @@
 #ifndef PID_H
 #define PID_H
 
-#include <stdint.h>
-
-
 /*!
 *@brief Enables timer and interrupt.
 */
 void pid_init();
-
 
 /*!
 *@brief PID controller.

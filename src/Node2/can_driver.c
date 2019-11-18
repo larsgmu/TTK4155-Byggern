@@ -15,13 +15,18 @@
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
 
-
 static CANmsg latest_msg;
 
+/*!
+*@brief Function to receive CAN message when interrupt is received.
+*@return @c CANmsg -> The received CAN message.
+*/
+CANmsg can_receive_msg();
+
+/*-------------------------------------------------------*/
+/*Function implementations*/
 
 void can_init() {
-
-
   /*Set interrupt on PD0 to falling edge */
   EICRA &= ~(1 << ISC20);
   EICRA |= (1 << ISC21);
@@ -77,6 +82,6 @@ CANmsg get_CAN_msg(){
 }
 
 ISR(INT2_vect){
- //printf("Message recieved");
+  printf("Canmsg\n\r");
  latest_msg = can_receive_msg();
 }

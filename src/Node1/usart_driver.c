@@ -12,7 +12,22 @@
 
 #include "usart_driver.h"
 
-void usart_init( unsigned int ubrr ){
+/*!
+*@brief Sends specified data.
+*@param[in] @c unsigned char data -> Data to send.
+*/
+void usart_transmit(unsigned char data);
+
+/*!
+*@brief Receives data.
+*@return @c unsigned char -> Data received.
+*/
+unsigned char usart_receive(void);
+
+/*-------------------------------------------------------*/
+/*Function implementations*/
+
+void usart_init(unsigned int ubrr){
     /* Set baud rate */
     UBRR0H = (unsigned char)(ubrr>>8);
     UBRR0L = (unsigned char)ubrr;
@@ -23,7 +38,7 @@ void usart_init( unsigned int ubrr ){
 
 }
 
-void usart_transmit( unsigned char data){
+void usart_transmit(unsigned char data){
     /* Wait for empty transmit buffer */
     while ( !( UCSR0A & (1<<UDRE0)) );
     /* Put data into buffer, sends the data */
@@ -31,7 +46,7 @@ void usart_transmit( unsigned char data){
 
 }
 
-unsigned char usart_receive( void ){
+unsigned char usart_receive(void){
     /* Wait for data to be received */
     while ( !(UCSR0A & (1<<RXC0)) );
     /* Get and return received data from buffer */

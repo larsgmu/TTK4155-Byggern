@@ -14,7 +14,6 @@
 #include "joystick_driver.h"
 #include "adc_driver.h"
 #include "can_driver.h"
-//#include "slider_driver.h"
 
 /*This is a global variable which enables sending CAN-msg
   with joystick position to node 2. In order to acess from other
@@ -38,6 +37,10 @@ void joystick_init(){
   neutraly = JOYSTICK_CONSTANT*(y_sum / JOYSTICK_SAMPLE_NO) - JOYSTICK_OFFSET;
 }
 
+/*!
+*@brief Updates current X and Y-position as integers between -100 and 100.
+*@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
+*/
 Joystick_pos joystick_get_position(){
 	Joystick_pos joy_pos;
   joy_pos.x 				= (uint8_t)(JOYSTICK_CONSTANT*adc_read(X_axis) - JOYSTICK_OFFSET) ;

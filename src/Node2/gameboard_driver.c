@@ -18,14 +18,42 @@
 #include "can_driver.h"
 #include "motor_driver.h"
 
+volatile static int       ir_adc_interrupt_flag = 0;
+volatile static int       playing               = 0;
+volatile static int       adc_value;
+volatile static uint16_t  ir_value;
 
-
-volatile static int ir_adc_interrupt_flag = 0;
-volatile static int playing = 0;
-volatile static int adc_value;
-volatile static uint16_t ir_value;
+typedef struct Game_struct {
+  uint8_t right_slider_pos;
+  uint8_t right_button;
+  uint8_t solenoid_extend;
+  uint8_t servo;
+} Game;
 
 Game current_game;
+
+/*-----------------------------------------------------*/
+/*Function declarations*/
+
+/*!
+*@brief Reads the IR sensor with digital filtering.
+*@return @c uint16_t -> Digital IR-sensor value.
+*/
+uint16_t ir_adc_read();
+
+/*!
+*@brief Sets the servo dutycycle from joystick input.
+*@param[in] @c uint8_t pos_msg -> Joystick Y position.
+*/
+void servo_joystick_control(uint8_t pos_msg);
+
+/*!
+*@brief Extends the solenoid.
+*/
+void solenoid_extend(uint8_t right_button);
+
+/*------------------------------------------------------*/
+/*Function implementations*/
 
 void game_board_init(){
   current_game.right_slider_pos = 127;
@@ -54,11 +82,10 @@ void ir_adc_init() {
   ADMUX &= ~(1 << REFS1);
   ADMUX |= (1 << REFS0);
 
-
   /*Enable interrupts*/
   ADCSRA |= (1 << ADIE);
 
-  /*clear int flag */
+  /*Clear interrupt flag */
   ADCSRA &= ~(1 << ADIF);
 
 
@@ -94,12 +121,22 @@ void solenoid_extend(uint8_t right_button){
 }
 
 void play_pingpong() {
-    /*Enable motor*/
-    PINH |= (1 << PH4);
+
+  /*CTC INTERRUPT disable*/
+  TIMSK4 &= ~(1 << OCIE4A);
     motor_calibrate();
+    _delay_ms(200);
     pid_init();
+    _delay_ms(1000);
     while(1) {
         if (ir_adc_read() < DEAD){
+          TIMSK4 &= ~(1 << OCIE4A);
+          int8_t message[3];
+          message[0] = MOTOR_ADDRESS_WRITE;
+          message[1] = COMMAND_BYTE;
+          message[2] = 0;  // Stop
+          TWI_Start_Transceiver_With_Data(message,3);
+          _delay_ms(1000);
           break;
         }
         /*SLIDER INPUT*/
@@ -126,6 +163,10 @@ void play_pingpong() {
         servo_joystick_control(current_game.servo);
         solenoid_extend(current_game.solenoid_extend);
     }
+    /*Disable motor*/
+
+
+
     CANmsg stop_pingpong;
     stop_pingpong.id = 0;
     stop_pingpong.length = 1;

@@ -18,6 +18,15 @@
 
 static CANmsg latest_msg;
 
+/*!
+*@brief Function to receive CAN message when interrupt is received.
+*@return @c CANmsg -> The received CAN message.
+*/
+CANmsg can_receive_msg();
+
+/*-------------------------------------------------------*/
+/*Function implementations*/
+
 void can_init() {
   mcp2515_init();
 

@@ -6,7 +6,7 @@
 
 /*!
 *@brief Game loop that runs until player has crashed and Game Over-flag is set.
-*@param[in] @c char* diff -> Non in use.
 */
 void sr_play();
 #endif
+

@@ -1,14 +1,35 @@
 #define F_CPU 16000000
-#include "music_driver.h"
-#include "can_driver.h"
-#include "pitches.h"
-#include "songs.h"
-#include <stdio.h>
-#include <util/delay.h>
-#include <float.h>
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <float.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <util/delay.h>
 
+#include "can_driver.h"
+#include "music_driver.h"
+#include "pitches.h"
+#include "songs.h"
+
+/*-------------------------------------------------------*/
+/********Function declarations*********/
+
+/*!
+*@brief Function to make the piezo buzzer buzz.
+*@param[in] @c float freq -> Frequency of note to be played.
+*@param[in] @c uint8_t data -> Lenght of note.
+*/
+void music_buzzer(float freq, int length);
+/*!
+*@brief Function to make the piezo buzzer buzz.
+*@param[in] @c float freq -> Frequency of note to be played.
+**/
+void set_tone(float freq);
+
+
+/*-------------------------------------------------------*/
+/********Function implementations*********/
 
 void music_init(){
 
@@ -18,14 +39,11 @@ void music_init(){
     /*Mode 12 CTC*/
     TCCR3B |= (1 << WGM33) | (1 << WGM32);
 
-    /*For generating a waveform output in CTC
-    mode*/
+    /*For generating a waveform output in CTC mode*/
     TCCR3A = (1 << COM3A0);
 
     /*64 bit Prescaler*/
     TCCR3B |= (1 << CS31) | ( 1 << CS30);
-
-
 }
 
 
@@ -47,7 +65,7 @@ void music_play(song title){
             music_buzzer(mario_melody[current_note], note_duration);
 
             //Small delay between notes
-            int note_delay = note_duration * 2;
+            int note_delay = note_duration * 2.1;
             for(int i = 1; i < note_delay; i++){
             _delay_ms(1);
           }
@@ -95,6 +113,4 @@ void set_tone(float freq){
   int pwm_signal = (clock/(2*64*freq)) - 1;
   /*IC3 defines top value of counter, hence our freq*/
   ICR3 = pwm_signal;
-
-
 }

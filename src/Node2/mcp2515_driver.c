@@ -9,6 +9,22 @@
 #include "mcp2515_driver.h"
 #include "spi_driver.h"
 
+/*-------------------------------------------------------*/
+/********Function declarations*********/
+
+/*!
+*@brief Reads the current status of the MCP2515.
+*@return @c uint8_t -> Current status.
+*/
+uint8_t mcp2515_read_status();
+
+/*!
+*@brief Resets the MCP2515.
+*/
+void mcp2515_reset();
+
+/*-------------------------------------------------------*/
+/********Function implementations*********/
 
 void mcp2515_init() {
   spi_master_init();

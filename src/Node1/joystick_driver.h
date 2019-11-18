@@ -36,12 +36,6 @@ typedef struct Joystick_position_struct {
 void joystick_init();
 
 /*!
-*@brief Updates current X and Y-position as integers between -100 and 100.
-*@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
-*/
-Joystick_pos joystick_get_position();
-
-/*!
 *@brief Updates the current direction of the joystick.
 *@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
 */

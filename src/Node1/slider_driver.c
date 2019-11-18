@@ -18,6 +18,23 @@ static uint8_t slider_right_button_prev  = 0;
 static uint8_t button                    = 0;
 static uint8_t prev_slider[3]            = {0,0,0};
 
+/*-------------------------------------------------------*/
+/********Function declarations*********/
+
+/*!
+*@brief Checks if left button on game controller is pressed
+*@return @c 1 on success, else @c 0.
+*/
+uint8_t slider_left_button_pressed();
+
+/*!
+*@brief Checks if right button on game controller is pressed
+*@return @c 1 on success, else @c 0.
+*/
+uint8_t slider_right_button_pressed();
+
+/*-------------------------------------------------------*/
+/********Function implementations*********/
 
 void send_slider_pos() {
     Slider slid = slider_get();
@@ -46,7 +63,6 @@ void send_slider_pos() {
     }
 }
 
-/*Gameboard Buttons*/ /*TODO*/
 uint8_t slider_left_button_pressed(){
   if (PINB&(1<<PB3)) {
     return 1;

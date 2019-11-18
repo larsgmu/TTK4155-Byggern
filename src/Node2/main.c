@@ -28,14 +28,21 @@ void main () {
 
   cli();
   string_init();
+      _delay_ms(20);
   music_init();
+      _delay_ms(20);
   can_init();
-  timer_init();
+      _delay_ms(20);
   motor_init();
+      _delay_ms(20);
   ir_adc_init();
+      _delay_ms(20);
   solenoid_init();
+      _delay_ms(20);
   game_board_init();
-  music_init();
+      _delay_ms(20);
+  timer_init();
+      _delay_ms(20);
   sei();
 
   CANmsg run_menu;
@@ -50,12 +57,14 @@ void main () {
         case IDLE:
            if (get_CAN_msg().id == 0 && get_CAN_msg().data[0] == 1){
                MODE = PINGPONG;
+
            }
            if (get_CAN_msg().id == 3){
                //Implementer detta
                //set_difficulty(get_CAN_msg().data[0]);
            }
            if (get_CAN_msg().id == 7 && get_CAN_msg().data[0] == 1){
+              music_init();
               music_play(SOVJET);
            }
            break;

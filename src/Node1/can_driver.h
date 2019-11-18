@@ -10,9 +10,6 @@
 #define CAN_MSG_DATA_LENGTH 8
 
 #include <stdint.h>
-//extern int can_interrupt_flag;
-//can_interrupt_flag = 0;
-
 
 /*!
 *@brief Struct containing the CAN message.
@@ -22,7 +19,6 @@ typedef struct CAN_message_struct {
   uint8_t id;
   uint8_t data[CAN_MSG_DATA_LENGTH];
 } CANmsg;
-
 
 /*!
 *@brief Initializes CAN interace with interrupt.
@@ -34,12 +30,6 @@ void can_init();
 *@param[in] CANmsg* can_msg -> Pointer to CAN message to send.
 */
 void can_send_msg(CANmsg* can_msg);
-
-/*!
-*@brief Function to receive CAN message when interrupt is received.
-*@return @c CANmsg -> The received CAN message.
-*/
-CANmsg can_receive_msg();
 
 /*!
 *@brief Returns the latest received CAN message.

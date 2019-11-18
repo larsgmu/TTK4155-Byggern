@@ -11,9 +11,6 @@
 
 #include <stdint.h>
 
-//extern int can_interrupt_flag;
-//can_interrupt_flag = 0;
-
 /*!
 *@brief Struct containing the CAN message.
 */
@@ -34,17 +31,12 @@ void can_init();
 void can_send_msg(CANmsg* can_msg);
 
 /*!
-*@brief Function to receive CAN message when interrupt is received.
-*@return @c CANmsg -> The received CAN message.
-*/
-CANmsg can_receive_msg();
-
-/*!
 *@brief Returns the latest received CAN message.
 *@return @c CANmsg -> Latest received CAN message.
 */
 CANmsg get_CAN_msg();
 
+// ER DENNE BRUKT? 
 enum joystick_dir {
   NEUTRAL = 0,
   UP = 1,

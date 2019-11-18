@@ -3,25 +3,35 @@
 */
 #include "sram_driver.h"
 #include <avr/io.h>
-void SRAM_init(){
-    /*Enable external SRAM*/
-    MCUCR |= (1 << SRE);
 
-    /*USE PC7-PC4 as normal*/
-    SFIOR |= (1 << XMM2);
-}
 
-void SRAM_write(unsigned int adr, unsigned int data) {
+/*!
+*@brief Writes specified data to given address.
+*@param[in] @c unsigned int adr -> Address to write data to.
+*@param[in] @c usigned int data -> Data to write to address.
+*/
+void sram_write(unsigned int adr, unsigned int data) {
     volatile char* external_ram = (char *) 0x1800;
     external_ram[adr] = data;
 }
-
-unsigned int SRAM_read(unsigned int adr) {
+/*!
+*@brief Read data from specified address.
+*@param[in] @c unsigned int adr -> Address to read from.
+*@return @c usigned int -> Data read from address.
+*/
+unsigned int sram_read(unsigned int adr) {
     volatile char* external_ram = (char *) 0x1800;
     return external_ram[adr];
 }
 
-void SRAM_test(void){
+void sram_init(){
+    /*Enable external SRAM*/
+    MCUCR |= (1 << SRE);
+    /*USE PC7-PC4 as normal*/
+    SFIOR |= (1 << XMM2);
+}
+
+void sram_test(){
   volatile char *ext_ram = (char *) 0x1800;
   // Start address for the SRAM
   uint16_t ext_ram_size= 0x800;

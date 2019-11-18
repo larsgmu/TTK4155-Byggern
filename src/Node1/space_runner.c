@@ -16,6 +16,7 @@
 #include "oled_driver.h"
 #include "slider_driver.h"
 #include "space_runner.h"
+#include "EEPROM_driver.h"
 
 /*!
 *@brief Struct containing the player info; X/Y-position, X/Y-velocity and Player sprite.
@@ -66,7 +67,9 @@ volatile static uint8_t 	sr_GAMEOVER   = 0;
 volatile static uint16_t 	sr_SCORE 		  = 0; 	//max is 65536
 
 
+/*-------------------------------------------------------*/
 /********Function declarations*********/
+
 /*!
 *@brief Clears SRAM and draws ground.
 */
@@ -124,13 +127,29 @@ void sr_jump(sr_Runner* runner);
 */
 void sr_crash();
 
-/********Function definitions*********/
+/*-------------------------------------------------------*/
+/********Function implementations*********/
+
+void sr_play() {
+  sr_Runner* 			runner;
+  sr_Obstacle_list* 	o_list;
+  runner 		= malloc(sizeof(sr_Runner));
+  o_list 		= malloc(sizeof(sr_Obstacle_list));
+
+  sr_init(runner, o_list);
+  while (!sr_GAMEOVER) {
+    sr_run(runner, o_list);
+  }
+  free(runner);
+  free(o_list);
+  oled_init();
+}
 
 void sr_sram_init() {
 		/*Clear SRAM*/
 		for (int p = 0; p < OLED_PAGES; p++) {
 			for (int x = 0; x < OLED_COLS; x++) {
-				oled_sram_address[p*OLED_COLS + x] = 0b00000000;
+				oled_sram_address[p*OLED_COLS + x] = 0x00;
 			}
 		}
 		/*Draw ground*/
@@ -143,7 +162,12 @@ void sr_sram_init() {
     oled_pos(4,0);
     oled_sram_write_string("to change speed");
 		oled_draw();
-    _delay_ms(1000);
+    _delay_ms(1400);
+    for (int y = 3; y < 5; y++) {
+      for (int x = 0; x < OLED_COLS; x++) {
+        oled_sram_address[y*OLED_COLS + x] = 0x00;;
+      }
+    }
 }
 
 void sr_sprite_init(sr_Runner* runner) {
@@ -218,21 +242,6 @@ void sr_init(sr_Runner* runner, sr_Obstacle_list* o_list) {
     srand(seed);
 }
 
-void sr_play() {
-	sr_Runner* 			runner;
-	sr_Obstacle_list* 	o_list;
-	runner 		= malloc(sizeof(sr_Runner));
-	o_list 		= malloc(sizeof(sr_Obstacle_list));
-
-	sr_init(diff, runner, o_list);
-
-	while (!sr_GAMEOVER) {
-		sr_run(runner, o_list);
-	}
-	free(runner);
-	free(o_list);
-	oled_init();
-}
 
 void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list) {
 		/*Update score*/
@@ -336,7 +345,7 @@ void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list) {
 		/*Update map*/
 		sr_draw_runner(runner);
 		sr_draw_obstacle(runner, o_list);
-		_delay_ms(16); //60 fps
+		_delay_ms(6);
 		oled_draw();
 
 }
@@ -524,13 +533,26 @@ void sr_jump(sr_Runner* runner) {
 
 void sr_crash() {
 	/*Print message to OLED */
-	oled_pos(3,20);
+
 	char score[5];
   itoa(sr_SCORE, score, 10);
+  uint16_t currentHS = (EEPROM_read(HIGHSCORE_SRH_ADDR)<<8) + (EEPROM_read(HIGHSCORE_SRL_ADDR));
+
+  if (sr_SCORE > currentHS ) {
+    EEPROM_write(HIGHSCORE_SRL_ADDR, (sr_SCORE & 0xFF));
+    EEPROM_write(HIGHSCORE_SRH_ADDR, (sr_SCORE >> 8));
+    oled_pos(3,30);
+    oled_sram_write_string("Score: ");
+  	oled_sram_write_string(score);
+  	oled_pos(5,10);
+    oled_sram_write_string("New Highscore!");
+  }
+  else {
+	oled_pos(3,20);
 	oled_sram_write_string("Score: ");
 	oled_sram_write_string(score);
+  }
 	_delay_ms(1000);
-
 	/*Draws OLED white, a few columns at a time*/
 	for (int p = 0; p < OLED_PAGES; p++) {
 		if (p != 3) {

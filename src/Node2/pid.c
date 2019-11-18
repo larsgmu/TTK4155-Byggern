@@ -1,28 +1,33 @@
 /*!@file
 * This file cointains functions to use a PID position/speed controller on the motor.
 */
-
+#define F_CPU 16000000
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stdint.h>
+#include <stdio.h>
 
 #include "motor_driver.h"
 #include "pid.h"
 #include "can_driver.h"
+#include <util/delay.h>
 /*TUNING*/
 
 #define DT 0.02  //our PID frequency (20ms rn)
 
 /*PID Tuning - Normal mode*/
-double Kp = 1.6;
+double Kp = 1;
 double Kd = 1;
 double Ki = 3;
-
 
 static int16_t integral;
 static int16_t derivative;
 static int16_t prev_error;
 static int16_t u;
 static uint8_t ref;
+
+/*-------------------------------------------------------*/
+/********Function implementations*********/
 
 void pid_init() {
   integral    = 0;
@@ -33,25 +38,26 @@ void pid_init() {
   /*we want this to send interrupts at our sample time frequency!*/
 
   /*CTC MODE*/
-  TCCR3B |= (1 << WGM32);
+  TCCR4B |= (1 << WGM42);
 
-  /*Running with x Hz*/
-  OCR3AL = 255;
-  OCR3AH = 255;
-  /* Sets prescalar to 64*/
-  TCCR3B |= (1 << CS32) | (1 << CS30);
+  /* Sets prescalar to 1024*/
+  TCCR4B |= (1 << CS42) | (1 << CS40);
 
-  /*CTC INTERRUPT ENBALE*/
-  TIMSK3 |= (1 << OCIE3A);
+  /*Running with 30 Hz*/
+  OCR4A = 468;
+  TCNT4 = 0;
 
   /*Clear interrupt flag by writing 1*/
-  TIFR3 |= (1 << OCF3A);
+  TIFR4 |= (1 << OCF4A);
+
+  /*CTC INTERRUPT ENBALE*/
+  TIMSK4 |= (1 << OCIE4A);
 }
 
 void pid_controller() {
     if(get_CAN_msg().id == 2) {
        ref = get_CAN_msg().data[0];
-       ref                 = 255 - ref;
+       ref = 255 - ref;
        uint16_t position   = motor_get_position();
        int16_t error       = ref-position;
        integral     += (uint16_t)(error*DT);
@@ -62,7 +68,9 @@ void pid_controller() {
   motor_run_slider(u);
 }
 
-ISR(TIMER3_COMPA_vect) {
+ISR(TIMER4_COMPA_vect) {
+
   pid_controller();
-  TIFR3 |= (1 << OCF3A);
+  TIFR4 |= (1 << OCF4A);
+  TCNT4 = 0;
 }
