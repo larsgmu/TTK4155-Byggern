@@ -269,7 +269,6 @@ void oled_draw(){
 }
 
 ISR(TIMER0_COMP_vect){
-  //printf("asdas\n\r");
   if (!(oled_state.CHANGED)) {
     TCNT0 = 0;
     return;

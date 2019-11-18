@@ -533,13 +533,12 @@ void sr_jump(sr_Runner* runner) {
 
 void sr_crash() {
 	/*Print message to OLED */
-  EEPROM_write(HIGHSCORE_SRL_ADDR, (0 & 0xFF));
-  EEPROM_write(HIGHSCORE_SRH_ADDR, (0 >> 8));
 	char score[5];
   itoa(sr_SCORE, score, 10);
   uint16_t currentHS = (EEPROM_read(HIGHSCORE_SRH_ADDR)<<8) + (EEPROM_read(HIGHSCORE_SRL_ADDR));
-  //printf("Current highscore %d\n\r", currentHS);
   if (sr_SCORE > currentHS ) {
+    EEPROM_write(HIGHSCORE_SRL_ADDR, (0b00000000 & 0xFF));
+    EEPROM_write(HIGHSCORE_SRH_ADDR, (0b00000000 >> 8));
     EEPROM_write(HIGHSCORE_SRL_ADDR, (sr_SCORE));
     EEPROM_write(HIGHSCORE_SRH_ADDR, (sr_SCORE >> 8));
     oled_pos(3,30);
@@ -553,7 +552,6 @@ void sr_crash() {
 	oled_sram_write_string("Score: ");
 	oled_sram_write_string(score);
   }
-	_delay_ms(1000);
 	/*Draws OLED white, a few columns at a time*/
 	for (int p = 0; p < OLED_PAGES; p++) {
 		if (p != 3) {

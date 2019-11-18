@@ -101,7 +101,10 @@ void play_pingpong() {
           oled_goto_column(0);
           oled_sram_write_string("Score: ");
           oled_sram_write_string(score);
-          if(game.score > EEPROM_read(HIGHSCORE_PINGPONG_ADDR)){
+
+          /*If a new Highscore is obtained, save it*/
+          if (game.score > EEPROM_read(HIGHSCORE_PINGPONG_ADDR)) {
+            EEPROM_write(HIGHSCORE_PINGPONG_ADDR, 0b0000000);
             EEPROM_write(HIGHSCORE_PINGPONG_ADDR, game.score);
             oled_goto_line(6);
             oled_goto_column(0);

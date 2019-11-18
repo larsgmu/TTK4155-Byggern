@@ -34,7 +34,6 @@ void timer_init(){
 }
 
 void set_duty_cycle(uint16_t cycle) {
-  //printf("CYCLE: %d\n\r", cycle);
   if ((cycle >= PWM_MIN) && (cycle <= PWM_MAX)){
     OCR1B = cycle;
   }

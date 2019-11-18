@@ -49,9 +49,13 @@ void change_difficulty();
 *@brief Either plays or stops music.
 */
 void music_run();
-
+/*!
+*@brief Displays current highscore in Ping Pong Game.
+*/
 void print_pingpong_score();
-
+/*!
+*@brief Displays current highscore in Space Runner Game.
+*/
 void print_sr_score();
 /*-------------------------------------------------------*/
 /*Function implementations*/
@@ -74,8 +78,8 @@ Menu* menu_init() {
 
   /*Pingpong submenus*/
   Menu* start_game    = menu_make_sub_menu(ping_pong, "Start","","",&play_pingpong);
-  Menu* high_score    = menu_make_sub_menu(ping_pong, "High Score", "", "", &print_pingpong_score);
   Menu* difficulty    = menu_make_sub_menu(ping_pong, "Difficulty", "", "",&change_difficulty);
+  Menu* high_score    = menu_make_sub_menu(ping_pong, "High Score", "", "", &print_pingpong_score);
   /*Spacerunner submenus*/
   Menu* sr_start      = menu_make_sub_menu(space_runner, "Start SR","","",&sr_play);
   Menu* music         = menu_make_sub_menu(space_runner, "Play Music", "", "", &music_run);
@@ -237,7 +241,7 @@ void change_difficulty(){
 
 void print_pingpong_score(){
   char score[5];
-  itoa(EEPROM_read(HIGHSCORE_PINGPONG_ADDR), score, 5);
+  itoa(EEPROM_read(HIGHSCORE_PINGPONG_ADDR), score, 10);
   oled_goto_column(1);
   oled_goto_line(5);
   oled_sram_write_string("High Score: ");
@@ -248,7 +252,7 @@ void print_pingpong_score(){
 
 void print_sr_score(){
   char score[5];
-  itoa((uint16_t)(EEPROM_read(HIGHSCORE_SRH_ADDR)<<8) + (EEPROM_read(HIGHSCORE_SRL_ADDR)), score, 5);
+  itoa((uint16_t)(EEPROM_read(HIGHSCORE_SRH_ADDR)<<8) + (EEPROM_read(HIGHSCORE_SRL_ADDR)), score, 10);
   oled_goto_column(1);
   oled_goto_line(5);
   oled_sram_write_string("High Score: ");
