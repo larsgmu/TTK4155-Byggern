@@ -113,4 +113,38 @@ int underworld_tempo[] = {
 };
 //###################################
 //###################################
+
+//SOVJET ANTHEM
+int sovjet_melody[] = {
+  NOTE_G4, NOTE_C5, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_E4, NOTE_E4,
+  NOTE_A4, NOTE_G4, NOTE_F4, NOTE_G4, NOTE_C4, NOTE_C4,
+  NOTE_D4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5, NOTE_D5,
+  NOTE_E5, NOTE_D5, NOTE_C5, NOTE_D5, NOTE_B4, NOTE_G4,
+  NOTE_C5, NOTE_B4, NOTE_A4, NOTE_B4, NOTE_E4, NOTE_E4,
+  NOTE_A4, NOTE_G4, NOTE_F4, NOTE_G4, NOTE_C4, NOTE_C4,
+  NOTE_C5, NOTE_B4, NOTE_A4, NOTE_G4, NOTE_B4, NOTE_C5, NOTE_D5,
+  NOTE_E5, NOTE_D5, NOTE_C5, NOTE_B4, NOTE_C5, NOTE_D5, NOTE_G4, NOTE_G4, NOTE_B4, NOTE_C5, NOTE_D5,
+  NOTE_C5, NOTE_B4, NOTE_A4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_E4, NOTE_E4, NOTE_G4, NOTE_A4, NOTE_B4,
+  NOTE_C5, NOTE_A4, NOTE_B4, NOTE_C5, NOTE_A4, NOTE_B4, NOTE_C5, NOTE_A4, NOTE_C5, NOTE_F5,
+  NOTE_F5, NOTE_E5, NOTE_D5, NOTE_C5, NOTE_D5, NOTE_E5, NOTE_C5, NOTE_C5,
+  NOTE_D5, NOTE_C5, NOTE_B4, NOTE_A4, NOTE_B4, NOTE_C5, NOTE_A4, NOTE_A4,
+  NOTE_C5, NOTE_B4, NOTE_A4, NOTE_G4, NOTE_C4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5
+};
+
+int sovjet_tempo[] = {
+  8, 4, 6, 16, 4, 8, 8,
+  4, 6, 16, 4, 8, 8,
+  4, 8, 8, 4, 8, 8, 4, 8, 8, 2,
+  4, 6, 16, 4, 8, 8,
+  4, 6, 16, 4, 8, 8,
+  4, 6, 16, 4, 6, 16,
+  4, 6, 16, 8, 8, 8, 8,
+  2, 8, 8, 8, 8, 3, 8, 8, 8, 8, 8,
+  2, 8, 8, 8, 8, 3, 8, 8, 8, 8, 8,
+  4, 6, 16, 4, 6, 16, 4, 8, 8, 2,
+  2, 8, 8, 8, 8, 3, 8, 2,
+  2, 8, 8, 8, 8, 3, 8, 2,
+  4, 6, 16, 4, 4, 2, 4, 4, 1
+};
+//
 #endif

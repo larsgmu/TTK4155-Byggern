@@ -20,6 +20,7 @@
 #include "usart_driver.h"
 #include "music_driver.h"
 
+
 ISR(__vector_default){
   printf("FUCK ME\n\r");
 }
@@ -32,10 +33,11 @@ void main () {
   //play_mario();
   /*can_init();
   timer_init();
-  //motor_init();
+  motor_init();
   ir_adc_init();
   solenoid_init();
   game_board_init();
+  music_init();
   sei();
 
   CANmsg run_menu;
@@ -43,7 +45,7 @@ void main () {
   run_menu.length = 1;
   run_menu.data[0] = 8;
   printf("########### Reboot ##############\n\r");
-
+  music_play(MARIO);
   typedef enum {IDLE = 0, PINGPONG = 1}mode;
   mode MODE = IDLE;
   while (1){

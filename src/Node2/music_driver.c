@@ -48,6 +48,24 @@ void music_play(song title){
             _delay_ms(1);
           }
         }
+        break;
+    case SOVJET:
+      size = sizeof(mario_melody)/sizeof(int);
+      //size = 49;
+      //Iterate through all notes of the song
+      for (int current_note = 0; current_note < size; current_note++){
+
+          //Calculating the note duration - 1sec/Notetype eg. 1000/8
+          int note_duration = 1000 / mario_tempo[current_note];
+
+          music_buzzer(mario_melody[current_note], note_duration);
+
+          //Small delay between notes
+          int note_delay = note_duration * 2;
+          for(int i = 1; i < note_delay; i++){
+          _delay_ms(1);
+        }
+      }
   }
 }
 
