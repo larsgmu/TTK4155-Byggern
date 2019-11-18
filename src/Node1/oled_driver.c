@@ -1,6 +1,8 @@
 /*!@file
 * This file contains functions to display data on the game controller OLED screen.
 */
+#include <stdio.h>
+
 #include <string.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
@@ -31,11 +33,7 @@ void oled_write_c(uint8_t command);
 */
 void oled_write_d(uint8_t data);
 
-/*!
-*@brief Updates current state struct and chooses specified column.
-*@param[in] @c int column -> Column to move to.
-*/
-void oled_goto_column(int column);
+
 
 /*!
 *@brief Updates current state struct goes to top page and left most column.
@@ -47,7 +45,7 @@ void oled_home(void);
 *@param[in] @c uint8_t adr -> Adress to write data to.
 *@param[in] @c uint8_t data -> Data to write to adress.
 */
-void oled_sram_write_d(uint8_t adr, uint8_t data);  //TROR IKKE DENNE BRUKES
+// void oled_sram_write_d(uint8_t adr, uint8_t data);  //TROR IKKE DENNE BRUKES
 
 /*!
 *@brief Updates current state and writes a character to OLED-SRAM.
@@ -106,7 +104,7 @@ void oled_init()   {
   TCCR0 &= ~(1 << CS01);
   TCCR0 |= (1 << CS02);
 
-  OCR0 = 81;
+  OCR0 = 160; //81;
   TCNT0 = 0;
   /*Enable interrupt on Timer Compare Match*/
   TIMSK |= (1 << OCIE0);
@@ -201,13 +199,12 @@ void oled_pos(int row,int column){
 }
 
 
-void oled_sram_write_d(uint8_t adr, uint8_t data){
-  oled_state.CHANGED = 1;
-  oled_sram_adress[adr] = data;
-}
+// void oled_sram_write_d(uint8_t adr, uint8_t data){
+//   oled_sram_adress[adr] = data;
+//   oled_state.CHANGED = 1;
+// }
 
 void oled_sram_write_char(unsigned char c){
-    oled_state.CHANGED = 1;
     int output = c - 32;
     for(int i = 0; i<OLED_PAGE_HEIGHT; i++){
       oled_sram_adress[oled_state.LINE*OLED_COLS + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
@@ -222,8 +219,6 @@ void oled_sram_write_string(char* str){
   }
 }
 
-
-
 void oled_sram_reset(void){
     for(int row =0; row < 8; row++){
       for(int col = 0; col < OLED_COLS; col++){
@@ -233,7 +228,6 @@ void oled_sram_reset(void){
     oled_home();
 }
 
-
 void oled_sram_clear_line(int line){
   oled_goto_line(line);
   for(int col = 0; col < OLED_COLS; col++){
@@ -241,10 +235,9 @@ void oled_sram_clear_line(int line){
   }
 }
 
-
 void oled_sram_menu(Menu* menu) {
   oled_sram_reset();
-  oled_home();
+  //oled_home();
   if(menu->header != ""){
     oled_sram_write_string(menu->header);
   }else{
@@ -255,21 +248,18 @@ void oled_sram_menu(Menu* menu) {
     oled_goto_column(15);
     oled_sram_write_string(menu->sub_menu[i]->name);
   }
-  // if (menu->info != "") {
-  //   oled_goto_column(0);
-  //   oled_goto_line(7);
-  //   oled_sram_write_string(menu->info);
-  // }
+  oled_state.CHANGED = 1;
 }
 
 void oled_sram_arrow(uint8_t line){
-  oled_goto_line(line);
-  oled_goto_column(0);
+  oled_pos(line, 0);
   oled_sram_write_string("~");
+  oled_state.CHANGED = 1;
 }
 
 void oled_draw(){
-  oled_home();
+  //oled_write_c(0xD3);
+  //oled_write_c(0b111111);
   for (int line = 0; line < OLED_PAGES; line++ ) {
     for (int col = 0; col < OLED_COLS; col++){
       oled_pos(line,col);
@@ -279,12 +269,12 @@ void oled_draw(){
 }
 
 ISR(TIMER0_COMP_vect){
-
+  //printf("asdas\n\r");
   if (!(oled_state.CHANGED)) {
     TCNT0 = 0;
     return;
   }
-  oled_draw();
   oled_state.CHANGED = 0;
   TCNT0 = 0;
+  oled_draw();
 }

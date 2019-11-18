@@ -49,6 +49,12 @@ void oled_flip_colors();
 void oled_goto_line(int line);
 
 /*!
+*@brief Updates current state struct and chooses specified column.
+*@param[in] @c int column -> Column to move to.
+*/
+void oled_goto_column(int column);
+
+/*!
 *@brief Updates current state struct and goes to specified page and column.
 *@param[in] int row -> Page to go to.
 *@param[in] int Column -> Column to go to.

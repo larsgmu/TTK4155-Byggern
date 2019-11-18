@@ -52,6 +52,7 @@ void music_run();
 
 void print_pingpong_score();
 
+void print_sr_score();
 /*-------------------------------------------------------*/
 /*Function implementations*/
 
@@ -78,6 +79,7 @@ Menu* menu_init() {
   /*Spacerunner submenus*/
   Menu* sr_start      = menu_make_sub_menu(space_runner, "Start SR","","",&sr_play);
   Menu* music         = menu_make_sub_menu(space_runner, "Play Music", "", "", &music_run);
+  Menu* high_score_sr = menu_make_sub_menu(space_runner, "High Score", "", "", &print_sr_score);
 
   /*Settings submenus*/
   Menu* flip_col      = menu_make_sub_menu(settings, "Flip Colors", "", "", &oled_flip_colors);
@@ -127,7 +129,7 @@ void menu_run() {
         oled_sram_menu(current_menu);
         oled_sram_arrow(current_line);
       }
-      _delay_ms(150);
+      //_delay_ms(150);
       break;
 
     case LEFT:
@@ -136,7 +138,7 @@ void menu_run() {
         current_line = 1;
         oled_sram_menu(current_menu);
         oled_sram_arrow(current_line);
-        //_delay_ms(200);
+        _delay_ms(200);
       }
       break;
 
@@ -200,6 +202,9 @@ void menu_run_functions(){
   else if(current_menu->sub_menu[current_line-1]->fun_ptr == &print_pingpong_score) {
     (*current_menu->sub_menu[current_line-1]->fun_ptr)();
   }
+  else if(current_menu->sub_menu[current_line-1]->fun_ptr == &print_sr_score) {
+    (*current_menu->sub_menu[current_line-1]->fun_ptr)();
+  }
 }
 
 void change_difficulty(){
@@ -232,7 +237,18 @@ void change_difficulty(){
 
 void print_pingpong_score(){
   char score[5];
-  itoa(EEPROM_read(HIGHSCORE_PINGPONG_ADDR), score, 10);
+  itoa(EEPROM_read(HIGHSCORE_PINGPONG_ADDR), score, 5);
+  oled_goto_column(1);
+  oled_goto_line(5);
+  oled_sram_write_string("High Score: ");
+  oled_sram_write_string(score);
+  oled_draw();
+  _delay_ms(1000);
+}
+
+void print_sr_score(){
+  char score[5];
+  itoa((uint16_t)(EEPROM_read(HIGHSCORE_SRH_ADDR)<<8) + (EEPROM_read(HIGHSCORE_SRL_ADDR)), score, 5);
   oled_goto_column(1);
   oled_goto_line(5);
   oled_sram_write_string("High Score: ");

@@ -15,6 +15,10 @@
 #include "sram_driver.h"
 #include "usart_driver.h"
 
+ISR(BADISR_vect){
+  printf("STUSSELIG?\n\r");
+}
+
 void main( void ){
 
     cli();

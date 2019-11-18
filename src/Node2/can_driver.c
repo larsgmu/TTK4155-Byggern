@@ -82,6 +82,5 @@ CANmsg get_CAN_msg(){
 }
 
 ISR(INT2_vect){
-  printf("Canmsg\n\r");
  latest_msg = can_receive_msg();
 }

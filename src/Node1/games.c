@@ -54,7 +54,7 @@ void pingpong_timer_init() {
 }
 
 void pingpong_score(){
-  game.score += 1;
+  game.score ++;
 }
 
 void play_pingpong() {

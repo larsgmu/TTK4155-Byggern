@@ -12,9 +12,4 @@
 */
 void sram_init();
 
-/*!
-*@brief SRAM test.
-*/
-void sram_test();
-
 #endif
