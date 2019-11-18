@@ -12,8 +12,10 @@ typedef struct Slider_struct {
 } Slider;
 
 // void button_timer_init();
-void slider_run(Slider* slider);
-void send_slider_pos(Slider* slider);
+
+Slider slider_get();
+
+void send_slider_pos();
 
 /*!
 *@brief Checks if left button on game controller is pressed

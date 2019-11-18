@@ -4,8 +4,6 @@
 #ifndef SPACE_RUNNER_H
 #define SPACE_RUNNER_H
 
-#include "slider_driver.h"
-#include "joystick_driver.h"
 #include <stdint.h>
 
 #define SR_RUNNER_WIDTH 		6
@@ -65,7 +63,7 @@ void sr_init(char* diff, sr_Runner* runner, sr_Obstacle_list* o_list);
 *@param[in] @c Joystick* joy -> Continiously updated Joystick struct pointer
 *@param[in] @c Slider* slider -> Slider struct pointer. Not in use.
 */
-void sr_play(char* diff, Joystick* joy, Slider* slider);
+void sr_play(char* diff);
 
 /*!
 *@brief Runs every time step. Updates runner Y-position according to Y-velocity and gravity.
@@ -76,7 +74,7 @@ void sr_play(char* diff, Joystick* joy, Slider* slider);
 *@param[in] @c Joystick* joy -> Pointer to a continiously updated joystick struct.
 *@param[in] @c sr_Obstacle_list* o_list -> Pointer to list of obstacles.
 */
-void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list, Joystick* joy, Slider* slider);
+void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list);
 
 /*!
 *@brief Draws runner from struct x-position and y-position info. Clears old pixels.
@@ -107,10 +105,5 @@ void sr_jump(sr_Runner* runner);
 *@brief Activates when player collides with an obstacle. Print score, make screen white. Set Game Over-flag to 1.
 */
 void sr_crash();
-
-
-
-
-
 
 #endif

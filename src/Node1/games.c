@@ -10,11 +10,10 @@
 #include "games.h"
 #include "oled_driver.h"
 #include "can_driver.h"
+#include "joystick_driver.h"
+#include "slider_driver.h"
 
-
-
-CANmsg latest_msg;
-Game_info game;
+static Game_info game;
 
 void pingpong_timer_init() {
   /*Normal mode*/
@@ -36,7 +35,8 @@ void pingpong_score(){
   game.score += 1;
 }
 
-void play_pingpong(char* player, Joystick* joy, Slider* slider) {
+void play_pingpong(char* player) {
+
     /*Update current player and reset score*/
   game.player_name = player;
   game.score = 0;
@@ -64,12 +64,8 @@ void play_pingpong(char* player, Joystick* joy, Slider* slider) {
 
   /*Play game until stop pingpong message is received from Node2*/
   while(1) {
-    //printf("DIR: %d     SLIDER: %d \n\r", joy->dir, slider->right_pos);
-    joystick_run(joy);
-    slider_run(slider);
-    send_joystick_pos(joy);
-    send_slider_pos(slider);
-    latest_msg = get_CAN_msg();
+    send_joystick_pos();
+    send_slider_pos();
     if (get_CAN_msg().id == 0){
       if (get_CAN_msg().data[0] == 0) {
         oled_sram_reset();

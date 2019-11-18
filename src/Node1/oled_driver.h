@@ -23,8 +23,9 @@ struct oled_data_marker_struct
 {
     uint8_t LINE; /*!<Current page */
     uint8_t COL; /*!<Current column */
-    int CHANGED; /*!<If picture is changed*/
+    uint8_t CHANGED; /*!<If picture is changed*/
     uint8_t COLOR;
+    uint8_t BRIGHTNESS;
 };
 /*!
 *@brief Initializes the OLED screen.

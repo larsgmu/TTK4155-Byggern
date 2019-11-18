@@ -21,13 +21,11 @@ enum joystick_dir {
 *@brief Sruct containing the current position, direction and center-point of the joystick.
 * Values in range of [-100, 100].
 */
-typedef struct Joystick_struct {
+typedef struct Joystick_position_struct {
   int8_t  x;
   int8_t  y;
-  int8_t  neutralx;
-  int8_t  neutraly;
   enum    joystick_dir dir;
-} Joystick;
+} Joystick_pos;
 
 /*!
 *@brief Initializes and calibrate the joystick.
@@ -35,31 +33,31 @@ typedef struct Joystick_struct {
 * Current direction and position is set to 0.
 *@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
 */
-void joystick_init(Joystick* joy);
+void joystick_init();
 
 /*!
 *@brief Updates current X and Y-position as integers between -100 and 100.
 *@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
 */
-void analog_position(Joystick* joy);
+Joystick_pos joystick_get_position();
 
 /*!
 *@brief Updates the current direction of the joystick.
 *@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
 */
-void analog_direction(Joystick* joy);
+uint8_t joystick_get_direction();
 
 /*!
 *@brief Constructs a CAN message with data from specified joystick and sends the message.
 * X and Y position is updated from [-100,100] to [0,200].
 *@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
 */
-void send_joystick_pos(Joystick* joy);
+void send_joystick_pos();
 
 /*!
 *@brief Global function to update joystick data.
 *@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
 */
-void joystick_run(Joystick* joy);
+// Joystick joystick_run();
 
 #endif
