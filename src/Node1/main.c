@@ -13,10 +13,10 @@
 #include "joystick_driver.h"
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
-//#include "menu.h"
+#include "menu.h"
 #include "oled_driver.h"
 #include "slider_driver.h"
-#include "space_runner.h"
+//#include "space_runner.h"
 #include "spi_driver.h"
 #include "sram_driver.h"
 #include "usart_driver.h"
@@ -36,19 +36,13 @@ void main( void ){
     _delay_ms(20);
     oled_sram_reset();
     _delay_ms(20);
-    //menu_init();
+    menu_init();
     _delay_ms(20);
     can_init();
     _delay_ms(20);
     sei();
-    Joystick joy;
-    joystick_init(&joy);
-    Slider slider;
-    //SRAM_test();
-    printf("########### Reboot ##############\n\r");
+    joystick_init();
     while(1){
-      sr_play("ss",&joy, &slider);
-
-      //menu_run(&joy, &slider);
+      menu_run();
     }
 }

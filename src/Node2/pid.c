@@ -7,6 +7,7 @@
 
 #include "motor_driver.h"
 #include "pid.h"
+#include "can_driver.h"
 /*TUNING*/
 
 #define DT 0.02  //our PID frequency (20ms rn)
@@ -17,40 +18,51 @@ double Kd = 1;
 double Ki = 3;
 
 
-int16_t integral;
-int16_t derivative;
-int16_t prev_error;
+static int16_t integral;
+static int16_t derivative;
+static int16_t prev_error;
+static int16_t u;
+static uint8_t ref;
 
 void pid_init() {
   integral    = 0;
   derivative  = 0;
   prev_error  = 0;
-  // we want this to send interrupts at our sample time frequency!
+  u           = 0;
+  ref         = 0;
+  /*we want this to send interrupts at our sample time frequency!*/
 
-  /* Sets prescalar to 8*/
-  TCCR3B |= (1 << CS31);
-  /*Timer overflow interrupt enable*/
-  TIMSK3 |= (1 << TOIE3);
+  /*CTC MODE*/
+  TCCR3B |= (1 << WGM32);
+
+  /*Running with x Hz*/
+  OCR3AL = 255;
+  OCR3AH = 255;
+  /* Sets prescalar to 64*/
+  TCCR3B |= (1 << CS32) | (1 << CS30);
+
+  /*CTC INTERRUPT ENBALE*/
+  TIMSK3 |= (1 << OCIE3A);
+
   /*Clear interrupt flag by writing 1*/
-  TIFR3 |= (1 << TOV3);
+  TIFR3 |= (1 << OCF3A);
 }
 
-void pid_controller(uint8_t ref) {
-    ref                 = 255 - ref;
-    uint16_t position   = motor_get_position();
-    int16_t error       = ref-position;
-
-    integral     += (uint16_t)(error*DT);
-    derivative   = error - prev_error;
-    prev_error   = error;
-
-    int16_t  u    = (int16_t) (Kp*error + Ki*integral + (Kd)*derivative);
-
-    //printf("PID U: %d   Ref:  %d  Pos:  %d   Error: %d   \n\r", u, ref, position, error);
-
-    motor_run_slider(u);
+void pid_controller() {
+    if(get_CAN_msg().id == 2) {
+       ref = get_CAN_msg().data[0];
+       ref                 = 255 - ref;
+       uint16_t position   = motor_get_position();
+       int16_t error       = ref-position;
+       integral     += (uint16_t)(error*DT);
+       derivative   = error - prev_error;
+       prev_error   = error;
+       u    = (int16_t) (Kp*error + Ki*integral + Kd*derivative);
+  }
+  motor_run_slider(u);
 }
 
-ISR(TIMER3_OVF_vect) {
-  //pid_controller(ref);
+ISR(TIMER3_COMPA_vect) {
+  pid_controller();
+  TIFR3 |= (1 << OCF3A);
 }

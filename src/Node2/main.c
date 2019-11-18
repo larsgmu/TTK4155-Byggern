@@ -18,6 +18,7 @@
 #include "spi_driver.h"
 #include "timer_driver.h"
 #include "usart_driver.h"
+#include "music_driver.h"
 
 
 ISR(__vector_default){
@@ -27,12 +28,16 @@ void main () {
 
   cli();
   string_init();
-  can_init();
+  music_init();
+  music_play(MARIO);
+  //play_mario();
+  /*can_init();
   timer_init();
-  //motor_init();
+  motor_init();
   ir_adc_init();
   solenoid_init();
   game_board_init();
+  music_init();
   sei();
 
   CANmsg run_menu;
@@ -40,7 +45,7 @@ void main () {
   run_menu.length = 1;
   run_menu.data[0] = 8;
   printf("########### Reboot ##############\n\r");
-
+  music_play(MARIO);
   typedef enum {IDLE = 0, PINGPONG = 1}mode;
   mode MODE = IDLE;
   while (1){
@@ -62,5 +67,5 @@ void main () {
             can_send_msg(&run_menu);
             break;
     }
-  }
+  }*/
 }

@@ -1,24 +1,50 @@
 #define F_CPU 4915200
 
-#define SR_MAX_Y 64		//height of OLED	: 8 chars
-#define SR_MAX_X 128	//width of OLED		:16 chars
-#define SR_GROUND_LEVEL 56
+#define SR_MAX_Y          64		//height of OLED	: 8 chars
+#define SR_MAX_X          128	  //width of OLED		:16 chars
+#define SR_RUNNER_WIDTH 	6
+#define SR_RUNNER_HEIGHT 	16
+#define SR_OBSTACLE_NO		2
+#define SR_OBSTACLE_DIM 	8
+#define SR_GROUND_LEVEL   56
 
-#include 	<util/delay.h>
-#include	<stdlib.h>
 #include 	<stdint.h>
+#include	<stdlib.h>
+#include 	<util/delay.h>
 
-#include "slider_driver.h"
 #include "joystick_driver.h"
-#include 	"space_runner.h"
-#include 	"oled_driver.h"
+#include "oled_driver.h"
+#include "slider_driver.h"
+#include "space_runner.h"
 
-/*todo:
-runner sr_sprite
-progmem shit
-init oled message
+/*!
+*@brief Struct containing the player info; X/Y-position, X/Y-velocity and Player sprite.
 */
+typedef struct SpaceRunner_struct {
+  	uint8_t 	posy ; 									/*!<Y-position of bottommost pixel.*/
+  	uint8_t		posx ;  								/*!<X-position of leftmost pixel of sprite*/
+  	uint8_t 	velx ; 									/*!<Running speed. Changes the speed of obstacles*/
+  	float 		vely ; 									/*!<Jump speed vector*/
+  	uint8_t		sprite[SR_RUNNER_HEIGHT][SR_RUNNER_WIDTH]; /*!<Player sprite*/
+} sr_Runner;
 
+/*!
+*@brief Struct containing X-pos and height (in units of 8 pixels) of a single obstacle.
+*/
+typedef struct Obstacle_struct {
+  	int8_t 		posx;							      /*!<X-position, left of obstacle. Shifted 10 pixels to Right!*/
+  	uint8_t		height;							    /*!<The obstacles may be higher than 1 unit*/
+} sr_Obstacle;
+
+/*!
+*@brief Struct containing info about how many obstacles there are in the game frame at current time.
+*/
+typedef struct Obstacle_list_struct {
+    sr_Obstacle 	obstacles[SR_OBSTACLE_NO];  /*!<List of obstacles*/
+  	uint8_t				size;                       /*!<Size of list*/
+} sr_Obstacle_list;
+
+/*The spike shape for the top of obstacles*/
 const uint8_t obstacle_spike [8]  = {
   0b11000000,
   0b11110000,
@@ -30,8 +56,8 @@ const uint8_t obstacle_spike [8]  = {
   0b11000000,
 };
 
-static volatile char* oled_sram_adress 	= (char*)0x1C00;
-
+/*Global game variables*/
+static volatile char*     oled_sram_address 	= (char*)0x1C00;
 static uint8_t 						GRAVITY       = 4;
 static uint8_t						JUMP_SPEED		= 5;
 static uint8_t						RUNNER_SPEED  = 2;
@@ -40,19 +66,84 @@ volatile static uint8_t 	sr_GAMEOVER   = 0;
 volatile static uint16_t 	sr_SCORE 		  = 0; 	//max is 65536
 
 
+/********Function declarations*********/
+/*!
+*@brief Clears SRAM and draws ground.
+*/
+void sr_sram_init();
+
+/*!
+*@Initialize the runner sprite.
+*@param[in] @c sr_Runner* runner -> Pointer to player struct.
+*/
+void sr_sprite_init(sr_Runner* runner);
+
+/*!
+*@brief Initialize game with player and obstacle info.
+*@param[in] @c sr_Runner* runner -> Pointer to player struct.
+*@param[in] @c sr_Obstacle_list* o_list -> Pointer to list of obstacles.
+*/
+void sr_init(sr_Runner* runner, sr_Obstacle_list* o_list);
+
+/*!
+*@brief Runs every time step. Updates runner Y-position according to Y-velocity and gravity.
+* Runs jump-function if joystick is pushed up.
+* Generates obstacles at random times and update the X-positions. Removes obstacle from list if out of bounds.
+*@param[in] @c sr_Runner* runner -> Pointer to player struct containing velocity.
+*@param[in] @c sr_Obstacle_list* o_list -> Pointer to list of obstacles.
+*/
+void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list);
+
+/*!
+*@brief Draws runner from struct x-position and y-position info. Clears old pixels.
+*@param[in] @c sr_Runner* runner -> Pointer to player struct.
+*/
+void sr_draw_runner(sr_Runner* runner);
+
+/*!
+*@brief Draws obstacles. Iterates through Obstacle List containing info about all current obstacles.
+*@param[in] @c sr_Runner* runner -> Pointer to player struct containing velocity.
+*@param[in] @c sr_Obstacle_list* o_list -> Pointer to list of obstacles.
+*/
+void sr_draw_obstacle(sr_Runner* runner, sr_Obstacle_list* o_list);
+
+/*!
+*@brief Generates a new obstacle and adds it to list.
+*@param[in] @c sr_Obstacle_list* o_list -> Pointer to list of obstacles.
+*/
+void sr_gen_obstacle(sr_Obstacle_list* o_list);
+
+/*!
+*@brief Activates when joystick is pushed up. If player is not in air, set Y-velocity to jump speed.
+*@param[in] @c sr_Runner* runner -> Pointer to player struct.
+*/
+void sr_jump(sr_Runner* runner);
+
+/*!
+*@brief Activates when player collides with an obstacle. Print score, make screen white. Set Game Over-flag to 1.
+*/
+void sr_crash();
+
+/********Function definitions*********/
+
 void sr_sram_init() {
 		/*Clear SRAM*/
 		for (int p = 0; p < OLED_PAGES; p++) {
 			for (int x = 0; x < OLED_COLS; x++) {
-				oled_sram_adress[p*OLED_COLS + x] = 0b00000000;
+				oled_sram_address[p*OLED_COLS + x] = 0b00000000;
 			}
 		}
 		/*Draw ground*/
 		char ground = 0b01001011;
 		for (int x = 0; x < OLED_COLS; x++) {
-			oled_sram_adress[7*OLED_COLS + x] = ground;
+			oled_sram_address[7*OLED_COLS + x] = ground;
 		}
+    oled_pos(3,0);
+    oled_sram_write_string("Use right slider");
+    oled_pos(4,0);
+    oled_sram_write_string("to change speed");
 		oled_draw();
+    _delay_ms(1000);
 }
 
 void sr_sprite_init(sr_Runner* runner) {
@@ -127,7 +218,7 @@ void sr_init(sr_Runner* runner, sr_Obstacle_list* o_list) {
     srand(seed);
 }
 
-void sr_play(char* diff) {
+void sr_play() {
 	sr_Runner* 			runner;
 	sr_Obstacle_list* 	o_list;
 	runner 		= malloc(sizeof(sr_Runner));
@@ -230,7 +321,7 @@ void sr_run(sr_Runner* runner, sr_Obstacle_list* o_list) {
 			}
 			for (int h = 0; h < 2; h++) {
 				for (int x = 0; x < SR_OBSTACLE_DIM + runner->posx; x++) {
-		 			oled_sram_adress[(6-h)*OLED_COLS + x] = 0x00;
+		 			oled_sram_address[(6-h)*OLED_COLS + x] = 0x00;
 		 		}
 			}
 
@@ -270,9 +361,9 @@ void sr_draw_runner(sr_Runner* runner) {
 						}
 					}
           /*Write 8 bits to SRAM*/
-					oled_sram_adress[p*OLED_COLS + x] = temp[0];
+					oled_sram_address[p*OLED_COLS + x] = temp[0];
 					/*Clear page above Runner*/
-					oled_sram_adress[4*OLED_COLS + x] = 0x00;
+					oled_sram_address[4*OLED_COLS + x] = 0x00;
 				}
 				i++;
 			}
@@ -302,8 +393,8 @@ void sr_draw_runner(sr_Runner* runner) {
 							}
 							/*Clear out pages above runner*/
 							if (p > 1) {
-								oled_sram_adress[(p-1)*OLED_COLS + x] = 0x00;
-								oled_sram_adress[(p-2)*OLED_COLS + x] = 0x00;
+								oled_sram_address[(p-1)*OLED_COLS + x] = 0x00;
+								oled_sram_address[(p-2)*OLED_COLS + x] = 0x00;
 								}
 						}
 
@@ -332,7 +423,7 @@ void sr_draw_runner(sr_Runner* runner) {
 									temp[0] &= ~(1 << (7-y));
 								}
 								if (p >1) { /*Clear page above runner*/
-									oled_sram_adress[(p-1)*OLED_COLS + x] = 0x00;
+									oled_sram_address[(p-1)*OLED_COLS + x] = 0x00;
 								}
 							}
 
@@ -347,10 +438,10 @@ void sr_draw_runner(sr_Runner* runner) {
 						}
 					}
           /*Write column data to SRAM*/
-          oled_sram_adress[p*OLED_COLS + x] = temp[0];
+          oled_sram_address[p*OLED_COLS + x] = temp[0];
 					temp[0] 			= 0b00000000; //reset
 					if(bottom_page < 6) { /*Clear pages below runner*/
-						oled_sram_adress[(bottom_page+1)*OLED_COLS+x] = 0x00;
+						oled_sram_address[(bottom_page+1)*OLED_COLS+x] = 0x00;
 					}
 				}
 				i++;
@@ -384,16 +475,16 @@ void sr_draw_obstacle(sr_Runner* runner, sr_Obstacle_list* o_list) {
 			for (int x = o_list->obstacles[o].posx; x < o_list->obstacles[o].posx + SR_OBSTACLE_DIM; x++) {
 				if (x >= 0 && x < SR_MAX_X) { //if within bounds
 					if (h == height-1) {	//draw a spike shape
-						oled_sram_adress[(page-h)*OLED_COLS + x] = obstacle_spike[x - o_list->obstacles[0].posx];
+						oled_sram_address[(page-h)*OLED_COLS + x] = obstacle_spike[x - o_list->obstacles[0].posx];
 					}
 					else { //Square 8x8 Obstacle
-						oled_sram_adress[(page-h)*OLED_COLS + x] = 0xFF;
+						oled_sram_address[(page-h)*OLED_COLS + x] = 0xFF;
 					}
 
 				/*Clear the old obstable position columns, depending on runner speed*/
 				if (x < SR_MAX_X - runner->velx) {
 					for (int c = 0; c < runner->velx; c++) {
-						oled_sram_adress[(page-h)*OLED_COLS + x + c + 1] = 0x00;
+						oled_sram_address[(page-h)*OLED_COLS + x + c + 1] = 0x00;
 						}
 					}
 				}
@@ -444,20 +535,20 @@ void sr_crash() {
 	for (int p = 0; p < OLED_PAGES; p++) {
 		if (p != 3) {
 			for (int x = 3; x < OLED_COLS+3; x += 4) {
-				oled_sram_adress[p*OLED_COLS + x]     = 0xFF;
-				oled_sram_adress[p*OLED_COLS + x - 1] = 0xFF;
-				oled_sram_adress[p*OLED_COLS + x - 2] = 0xFF;
-				oled_sram_adress[p*OLED_COLS + x - 3] = 0xFF;
+				oled_sram_address[p*OLED_COLS + x]     = 0xFF;
+				oled_sram_address[p*OLED_COLS + x - 1] = 0xFF;
+				oled_sram_address[p*OLED_COLS + x - 2] = 0xFF;
+				oled_sram_address[p*OLED_COLS + x - 3] = 0xFF;
 				oled_draw();
 			}
 		}
 	}
 	_delay_ms(500);
 	for (int x = 3; x < OLED_COLS+3; x += 4) {
-		oled_sram_adress[3*OLED_COLS + x]     = 0xFF;
-		oled_sram_adress[3*OLED_COLS + x - 1] = 0xFF;
-		oled_sram_adress[3*OLED_COLS + x - 2] = 0xFF;
-		oled_sram_adress[3*OLED_COLS + x - 3] = 0xFF;
+		oled_sram_address[3*OLED_COLS + x]     = 0xFF;
+		oled_sram_address[3*OLED_COLS + x - 1] = 0xFF;
+		oled_sram_address[3*OLED_COLS + x - 2] = 0xFF;
+		oled_sram_address[3*OLED_COLS + x - 3] = 0xFF;
 		oled_draw();
 	}
 	_delay_ms(100);
