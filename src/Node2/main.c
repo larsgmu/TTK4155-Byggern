@@ -29,9 +29,7 @@ void main () {
   cli();
   string_init();
   music_init();
-  music_play(MARIO);
-  //play_mario();
-  /*can_init();
+  can_init();
   timer_init();
   motor_init();
   ir_adc_init();
@@ -45,7 +43,6 @@ void main () {
   run_menu.length = 1;
   run_menu.data[0] = 8;
   printf("########### Reboot ##############\n\r");
-  music_play(MARIO);
   typedef enum {IDLE = 0, PINGPONG = 1}mode;
   mode MODE = IDLE;
   while (1){
@@ -58,6 +55,9 @@ void main () {
                //Implementer detta
                //set_difficulty(get_CAN_msg().data[0]);
            }
+           if (get_CAN_msg().id == 7 && get_CAN_msg().data[0] == 1){
+              music_play(SOVJET);
+           }
            break;
         case PINGPONG:
             printf("MODE: PINGPONG\n\r");
@@ -66,6 +66,7 @@ void main () {
             _delay_ms(100);
             can_send_msg(&run_menu);
             break;
+
     }
-  }*/
+  }
 }

@@ -77,6 +77,6 @@ CANmsg get_CAN_msg(){
 }
 
 ISR(INT2_vect){
-  //printf("Message recieved");
+ //printf("Message recieved");
  latest_msg = can_receive_msg();
 }

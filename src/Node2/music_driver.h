@@ -6,7 +6,7 @@
 #define MUSIC_DRIVER_H
 #include <stdint.h>
 
-typedef enum {MARIO = 0, UNDERWORLD = 1}song;
+typedef enum {MARIO = 0, UNDERWORLD = 1, SOVJET = 2}song;
 
 /*!
 *@brief Function to initialize the music driver

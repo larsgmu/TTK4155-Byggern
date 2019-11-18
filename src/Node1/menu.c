@@ -5,7 +5,6 @@
 
 #include <util/delay.h>
 #include <stdlib.h>
-
 #include "oled_driver.h"
 #include "can_driver.h"
 #include "games.h"
@@ -58,13 +57,14 @@ void change_difficulty(char* info){
 void music_run(char* name){
   CANmsg music_msg;
   music_msg.id = 7;
-  music_msg.length = 2;
+  music_msg.length = 1;
 
   if (name == "Play Music"){
     music_msg.data[0] = 1;
     current_menu->sub_menu[current_line-1]->name = "Stop Music";
+
   }
-  else {
+  else  {
     music_msg.data[0] = 0;
     current_menu->sub_menu[current_line-1]->name = "Play Music";
   }
