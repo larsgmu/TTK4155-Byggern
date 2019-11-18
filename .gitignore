@@ -1,1 +1,4 @@
-**/src/build
+/src/Node1/build/
+/src/Node2/build/
+latex/
+html/
