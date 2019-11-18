@@ -35,9 +35,10 @@ void pingpong_score(){
   game.score += 1;
 }
 
-void play_pingpong(char* player) {
+void play_pingpong() {
+  char* player = ""; // TODO
 
-    /*Update current player and reset score*/
+  /*Update current player and reset score*/
   game.player_name = player;
   game.score = 0;
 

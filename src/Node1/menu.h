@@ -21,7 +21,7 @@ typedef struct Menu_struct {
   Menu*     parent_menu; /*!<Pointer to parent menu */
   Menu**    sub_menu; /*!<Array containing pointers to sub menus*/
   uint8_t   num_sub_menu;/*!<Variable to count number of submenus conneted to parent menu*/
-  void      (*fun_ptr)(char*); /*!<Function pointer*/
+  void      (*fun_ptr)(void); /*!<Function pointer*/
 } Menu;
 
 /*!
@@ -30,9 +30,9 @@ typedef struct Menu_struct {
 *@param[in] @c char* name -> Name of menu
 *@param[in] @c char* header -> Header to display at top page. Use "" if same as name.
 *@param[in] @c char* info -> Text to display at bottom page. Use "" if not desired.
-*@param[in] void (*function)(char*)) -> Function to perform if menu is selected. Use NULL if no function.
+*@param[in] void (*function)(void)) -> Function to perform if menu is selected. Use NULL if no function.
 */
-Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info, void (*function)(char*));
+Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info, void (*function)(void));
 
 /*!
 *@brief Creates the main menu and all submenus.
