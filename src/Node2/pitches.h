@@ -1,3 +1,5 @@
+#ifndef PITCHES_H
+#define PITCHES_H
 /*!@file
 * This file contains all the pitch
 values for typical notes. For example, NOTE_C4 is middle C.
@@ -92,3 +94,5 @@ values for typical notes. For example, NOTE_C4 is middle C.
 #define NOTE_CS8 4435
 #define NOTE_D8  4699
 #define NOTE_DS8 4978
+
+#endif

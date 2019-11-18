@@ -18,7 +18,7 @@
 #include "spi_driver.h"
 #include "timer_driver.h"
 #include "usart_driver.h"
-
+#include "music_driver.h"
 
 ISR(__vector_default){
   printf("FUCK ME\n\r");
@@ -27,7 +27,10 @@ void main () {
 
   cli();
   string_init();
-  can_init();
+  music_init();
+  music_play(MARIO);
+  //play_mario();
+  /*can_init();
   timer_init();
   //motor_init();
   ir_adc_init();
@@ -62,5 +65,5 @@ void main () {
             can_send_msg(&run_menu);
             break;
     }
-  }
+  }*/
 }

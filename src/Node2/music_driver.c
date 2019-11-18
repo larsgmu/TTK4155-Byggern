@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <util/delay.h>
 #include <float.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
 
 void music_init(){
@@ -27,46 +29,48 @@ void music_init(){
 
 
 void music_play(song title){
-
-  switch (song) {
+  int size = 0;
+  switch (title) {
     case MARIO:
-        int size = sizeof(mario_melody)/sizeof(int);
+        size = sizeof(mario_melody)/sizeof(int);
+        //size = 49;
         //Iterate through all notes of the song
         for (int current_note = 0; current_note < size; current_note++){
 
             //Calculating the note duration - 1sec/Notetype eg. 1000/8
-            float note_duration = 1000/mario_tempo[current_note]
+            int note_duration = 1000 / mario_tempo[current_note];
 
             music_buzzer(mario_melody[current_note], note_duration);
 
             //Small delay between notes
-            float note_delay = note_duration * 1.30
-            _delay_ms((int)note_delay);
-
-            //Stop current note
-            music_buzzer(0, note_duration);
+            int note_delay = note_duration * 2;
+            for(int i = 1; i < note_delay; i++){
+            _delay_ms(1);
+          }
         }
-
   }
-
-
-
 }
 
 
-void music_buzzer(uint16_t freq, uint16_t length){
+void music_buzzer(float freq, int length){
 
-/*
-
-pwm = clock / 2 * Prescaler
-
-*/
-  int pwm_signal = (F_CPU/(2*64*feq)) - 1;
-
+  float clock = F_CPU;
+  int pwm_signal = (clock/(2*64*freq)) - 1;
   /*IC3 defines top value of counter, hence our freq*/
-  IC3 = pwm_signal;
+  ICR3 = pwm_signal;
+  printf("PWM: %d\n\r", pwm_signal);
+
   for (int i = 1; i < length; i++){
-        _delay_ms(1);
-    }
+        _delay_us(20);
+  }
+
+}
+
+void set_tone(float freq){
+  float clock = F_CPU;
+  int pwm_signal = (clock/(2*64*freq)) - 1;
+  /*IC3 defines top value of counter, hence our freq*/
+  ICR3 = pwm_signal;
+
 
 }

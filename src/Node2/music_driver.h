@@ -2,7 +2,7 @@
 * This file contains functions to play music from the piezo buzzer on the
 * USB Multifuncion card by sending PWM signals from the atmega2560.
 */
-#ifndef
+#ifndef MUSIC_DRIVER_H
 #define MUSIC_DRIVER_H
 #include <stdint.h>
 
@@ -24,6 +24,8 @@ void music_play(song title);
 *@param[in] @c uint16_t freq -> Frequency of note to be played.
 *@param[in] @c uint8_t data -> Lenght of note.
 */
-void music_buzzer(uint16_t freq, uint16_t length);
+void music_buzzer(float freq, int length);
+void set_tone(float freq);
+
 
 #endif
