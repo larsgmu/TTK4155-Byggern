@@ -9,8 +9,6 @@
 
 #include "adc_driver.h"
 
-
-/*! */
 volatile static uint8_t adc_FLAG = 0;
 
 /*!

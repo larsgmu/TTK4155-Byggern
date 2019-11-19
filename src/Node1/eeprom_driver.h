@@ -1,3 +1,7 @@
+/*!@file
+* This file conatins fucntions to write to the EEPROM of the atmega162
+*/
+
 #ifndef EEPROM_DRIVER_H
 #define EEPROM_DRIVER_H
 #define HIGHSCORE_PINGPONG_ADDR 0

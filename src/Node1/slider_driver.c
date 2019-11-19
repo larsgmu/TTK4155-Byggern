@@ -1,5 +1,5 @@
 /*!@file
-* Slider interface
+* This file contains fuctions to use the slider on the game controller
 */
 
 #define F_CPU 4915200
@@ -83,4 +83,3 @@ uint8_t slider_right_button_pressed() {
   }
   return 0;
 }
-

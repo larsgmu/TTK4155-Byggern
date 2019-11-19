@@ -1,16 +1,15 @@
+/*!@file
+* This file contains different songs that can be played
+*/
 #ifndef SONGS_H
 #define SONGS_H
 
 
 
-/*
 
-########################
-########################
-SUPER MARIO
-
+/*!
+*@brief SUPER MARIO
 */
-//Mario main theme melody
 int mario_melody[] = {
   NOTE_E7, NOTE_E7, 0, NOTE_E7,
   0, NOTE_C7, NOTE_E7, 0,
@@ -37,7 +36,9 @@ int mario_melody[] = {
   0, NOTE_E7, 0,NOTE_C7,
   NOTE_D7, NOTE_B6, 0, 0
 };
-//Mario main theme tempo
+/*!
+*@brief SUPER MARIO TEMPO
+*/
 int mario_tempo[] = {
   12, 12, 12, 12,
   12, 12, 12, 12,
@@ -65,9 +66,9 @@ int mario_tempo[] = {
   12, 12, 12, 12,
 };
 
-//
-
-//Mario Underworld melody
+/*!
+*@brief SUPER MARIO UNDERWORLD
+*/
 int underworld_melody[] = {
   NOTE_C4, NOTE_C5, NOTE_A3, NOTE_A4,
   NOTE_AS3, NOTE_AS4, 0,
@@ -89,7 +90,10 @@ int underworld_melody[] = {
   NOTE_AS3, NOTE_A3, NOTE_GS3,
   0, 0, 0
 };
-//Mario Underwolrd tempo
+
+/*!
+*@brief SUPER MARIO UNDERWORLD TEMPO
+*/
 int underworld_tempo[] = {
   12, 12, 12, 12,
   12, 12, 6,
@@ -112,8 +116,9 @@ int underworld_tempo[] = {
   3, 3, 3
 };
 
-
-//SOVJET ANTHEM
+/*!
+*@brief SOVIET ANTHEM
+*/
 int sovjet_melody[] = {
   NOTE_G4, NOTE_C5, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_E4, NOTE_E4,
   NOTE_A4, NOTE_G4, NOTE_F4, NOTE_G4, NOTE_C4, NOTE_C4,
@@ -130,6 +135,9 @@ int sovjet_melody[] = {
   NOTE_C5, NOTE_B4, NOTE_A4, NOTE_G4, NOTE_C4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5
 };
 
+/*!
+*@brief SOVIET ANTHEM TEMPO
+*/
 int sovjet_tempo[] = {
   8, 4, 6, 16, 4, 8, 8,
   4, 6, 16, 4, 8, 8,

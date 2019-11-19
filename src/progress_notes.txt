@@ -53,6 +53,7 @@ Menysystemet fungerer
   DONE - Difficulty
   DONE - Stopp musikk før spillet begynner!!!
   DONE - Fikse Death tresh
+  DONE - Fjerne testtegn
   Doxygen - legge til slider der det gjelder
   SIA KABLING
 

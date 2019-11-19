@@ -1,5 +1,5 @@
 /*!@file
-* Slider interface
+* This file contains fuctions to use the slider on the game controller
 */
 #ifndef SLIDER_H
 #define SLIDER_H

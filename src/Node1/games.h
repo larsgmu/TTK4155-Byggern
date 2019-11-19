@@ -1,5 +1,5 @@
 /*!@file
-* This file contains the different games to play.
+* This file contains functions to play the pingpong game.
 */
 
 #ifndef GAMES_H

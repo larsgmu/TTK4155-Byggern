@@ -1,3 +1,7 @@
+/*!@file
+* This file conatins fucntions to write to the EEPROM of the atmega162
+*/
+
 #include "eeprom_driver.h"
 #include <avr/io.h>
 

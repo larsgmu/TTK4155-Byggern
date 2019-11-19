@@ -1,5 +1,5 @@
 /*!@file
-* This file contains the different games to play.
+* This file contains functions to play the pingpong game.
 */
 #define F_CPU 4915200
 
