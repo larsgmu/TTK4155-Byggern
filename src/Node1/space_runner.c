@@ -16,7 +16,7 @@
 #include "oled_driver.h"
 #include "slider_driver.h"
 #include "space_runner.h"
-#include "EEPROM_driver.h"
+#include "eeprom_driver.h"
 
 /*!
 *@brief Struct containing the player info; X/Y-position, X/Y-velocity and Player sprite.
@@ -218,7 +218,7 @@ void sr_sprite_init(sr_Runner* runner) {
 
 void sr_init(sr_Runner* runner, sr_Obstacle_list* o_list) {
 		/*Initialize OLED for game purposes*/
-		oled_init();
+		//oled_init();
     /*Reset flags and counters*/
 		sr_GAMEOVER = 0;
 		sr_JUMPFLAG = 0;
@@ -535,23 +535,20 @@ void sr_crash() {
 	/*Print message to OLED */
 	char score[5];
   itoa(sr_SCORE, score, 10);
-  uint16_t currentHS = (EEPROM_read(HIGHSCORE_SRH_ADDR)<<8) + (EEPROM_read(HIGHSCORE_SRL_ADDR));
+	/*Check High score, overwrite if new*/
+  uint16_t currentHS = (eeprom_read(HIGHSCORE_SRH_ADDR)<<8) + (eeprom_read(HIGHSCORE_SRL_ADDR));
   if (sr_SCORE > currentHS ) {
-    EEPROM_write(HIGHSCORE_SRL_ADDR, (0b00000000 & 0xFF));
-    EEPROM_write(HIGHSCORE_SRH_ADDR, (0b00000000 >> 8));
-    EEPROM_write(HIGHSCORE_SRL_ADDR, (sr_SCORE));
-    EEPROM_write(HIGHSCORE_SRH_ADDR, (sr_SCORE >> 8));
-    oled_pos(3,30);
-    oled_sram_write_string("Score: ");
-  	oled_sram_write_string(score);
+    eeprom_write(HIGHSCORE_SRL_ADDR, (0b00000000 & 0xFF));
+    eeprom_write(HIGHSCORE_SRH_ADDR, (0b00000000 >> 8));	//clear old
+    eeprom_write(HIGHSCORE_SRL_ADDR, (sr_SCORE));					//add new
+    eeprom_write(HIGHSCORE_SRH_ADDR, (sr_SCORE >> 8));
   	oled_pos(5,10);
     oled_sram_write_string("New Highscore!");
   }
-  else {
 	oled_pos(3,20);
 	oled_sram_write_string("Score: ");
 	oled_sram_write_string(score);
-  }
+  
 	/*Draws OLED white, a few columns at a time*/
 	for (int p = 0; p < OLED_PAGES; p++) {
 		if (p != 3) {

@@ -49,34 +49,33 @@ Menysystemet fungerer
   DONE - Slider: left og right er byttet om
   DONE - OLED: Timer update screen
   DONE - Disable motor on reset - slik at den ikke kjører av seg selv
-  Highscore med player valg
+  DONE - Highscore
+  DONE - Difficulty
+  DONE - Stopp musikk før spillet begynner!!!
+  DONE - Fikse Death tresh
   Doxygen - legge til slider der det gjelder
   SIA KABLING
-##########################
-#Ideas
-- Settings meny med:
-  - Velge å styre med slider med pid vs. Joystick med 2V eller no
-  - Valg av sang
 
-- Knappene på Universal-Seriell-Buss Multifunksjonelt-Kort kan endre PID-parametere:
-    -Knapp 1: Kp
-    -Knapp 2: Ki
-    -Knapp 3: Kd
+  - Koble alle tomme pins til enten jord eller Vcc
+  - Avlastningskondensatorer på alle ICs . Inkludert mini breadboard.
+  - 2 spenningskilder ?
+  - egen fargekode på analoge?
+
+  - Les tips på alle oppgaver.
+
 
 
 
 ##########################
 ~=EXTRAS=~
-- SRAM Dual buffering. Oled laster kun inn når noe har endret seg.
+- SRAM Dual buffering med interrupts. Oled laster kun inn når noe har endret seg.
+- Styrer med slider og joystick samtidig
 - Joystick auto-kalibrering med digitalt filter
 - Interrupts med ADC - (Node1)
-- Spill som benytter full OLED-oppløsning, slider og joystick inputs.
-
 - PID: Interrupts med fast frekvens, Node2
 
+- Highscore lagres i EEPROM
+- Valgfri vansklighetsgrad - endrer PID variable
+- Spill som benytter full OLED-oppløsning, slider og joystick inputs.
+- Musikk - Bruker Can buss til å starte/stoppe musikk og velge sang
 - Dokumentasjon gjennom Doxygen
-
-
-//TODO
-- Musikk (fra node2?)
--

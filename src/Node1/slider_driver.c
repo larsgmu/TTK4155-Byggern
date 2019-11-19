@@ -36,16 +36,23 @@ uint8_t slider_right_button_pressed();
 /*-------------------------------------------------------*/
 /********Function implementations*********/
 
-void send_slider_pos() {
+Slider slider_get() {
+  Slider slider;
+  slider.right_pos   = adc_read(Right_slider);
+  slider.left_pos    = adc_read(Left_slider);
+  return slider;
+}
+
+void slider_send_pos() {
     Slider slid = slider_get();
     CANmsg slider_msg;
     slider_msg.id     = 2;
     slider_msg.length = 3;
     button = slider_right_button_pressed();
 
-    if ( (abs(slid.right_pos-prev_slider[0])>SLIDER_THRESHOLD)
-    || (abs(slid.left_pos-prev_slider[1])>SLIDER_THRESHOLD)
-    || (button != prev_slider[2]) ){
+    if ((abs(slid.right_pos-prev_slider[0])>SLIDER_THRESHOLD)
+     || (abs(slid.left_pos-prev_slider[1])>SLIDER_THRESHOLD)
+     || (button != prev_slider[2])) {
       slider_msg.data[0]  = slid.right_pos; // RIGHT slider
       prev_slider[0]      = slider_msg.data[0];
       slider_msg.data[1]  = slid.left_pos; // LEFT slider
@@ -63,23 +70,17 @@ void send_slider_pos() {
     }
 }
 
-uint8_t slider_left_button_pressed(){
+uint8_t slider_left_button_pressed() {
   if (PINB&(1<<PB3)) {
     return 1;
   }
   return 0;
 }
 
-uint8_t slider_right_button_pressed(){
+uint8_t slider_right_button_pressed() {
   if (PINB&(1<<PB2)) {
     return 1;
   }
   return 0;
 }
 
-Slider slider_get() {
-  Slider slid;
-  slid.right_pos   = adc_read(Right_slider);
-  slid.left_pos    = adc_read(Left_slider);
-  return slid;
-}

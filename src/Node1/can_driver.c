@@ -25,7 +25,7 @@ static CANmsg latest_msg;
 CANmsg can_receive_msg();
 
 /*-------------------------------------------------------*/
-/*Function implementations*/
+/********Function implementations*********/
 
 void can_init() {
   mcp2515_init();

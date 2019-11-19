@@ -5,7 +5,6 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <util/delay.h>
 
@@ -21,9 +20,6 @@
 #include "music_driver.h"
 
 
-ISR(__vector_default){
-  printf("FUCK ME\n\r");
-}
 void main () {
 
   cli();
@@ -49,7 +45,6 @@ void main () {
   run_menu.id = 0;
   run_menu.length = 1;
   run_menu.data[0] = 8;
-  printf("########### Reboot ##############\n\r");
   typedef enum {IDLE = 0, PINGPONG = 1}mode;
   mode MODE = IDLE;
   while (1){
@@ -60,8 +55,7 @@ void main () {
 
            }
            if (get_CAN_msg().id == 3){
-               //Implementer detta
-               //set_difficulty(get_CAN_msg().data[0]);
+              pid_set_difficulty(get_CAN_msg().data[0]);
            }
            if (get_CAN_msg().id == 7 && get_CAN_msg().data[0] == 1){
               music_init();
@@ -69,7 +63,6 @@ void main () {
            }
            break;
         case PINGPONG:
-            printf("MODE: PINGPONG\n\r");
             play_pingpong();
             MODE = IDLE;
             _delay_ms(100);

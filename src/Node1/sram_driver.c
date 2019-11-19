@@ -1,9 +1,11 @@
 /*!@file
 * This file contains functions to use the IDT_7164SL chip as external SRAM for the atmega162.
 */
-#include "sram_driver.h"
 #include <avr/io.h>
+#include "sram_driver.h"
 
+/*-------------------------------------------------------*/
+/********Function implementations*********/
 
 /*!
 *@brief Writes specified data to given address.

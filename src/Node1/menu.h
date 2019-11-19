@@ -4,7 +4,8 @@
 #ifndef MENU_H
 #define MENU_H
 
-typedef struct Menu_struct Menu;
+typedef struct Menu_struct Menu; //TRENGS DENNNE?
+
 /*!
 *@brief Struct containing information about a menu object.
 */
@@ -22,7 +23,7 @@ typedef struct Menu_struct {
 *@brief Creates the main menu and all submenus.
 * Updates current line to top line.
 */
-Menu* menu_init();
+void menu_init();
 
 /*!
 *@brief Runs the menu.

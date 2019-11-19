@@ -91,13 +91,13 @@ void music_play(song title){
           _delay_ms(1);
         }
       }
+      music_buzzer(0,0);
       break;
   }
 }
 
 
 void music_buzzer(float freq, int length){
-
   float clock = F_CPU;
   int pwm_signal = (clock/(2*64*freq)) - 1;
   /*IC3 defines top value of counter, hence our freq*/
@@ -105,7 +105,6 @@ void music_buzzer(float freq, int length){
   for (int i = 1; i < length; i++){
         _delay_us(50);
   }
-
 }
 
 void set_tone(float freq){

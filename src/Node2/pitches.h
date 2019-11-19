@@ -4,7 +4,6 @@
 * This file contains all the pitch
 values for typical notes. For example, NOTE_C4 is middle C.
 */
-
 #define NOTE_B0  31
 #define NOTE_C1  33
 #define NOTE_CS1 35

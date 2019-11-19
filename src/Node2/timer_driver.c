@@ -43,14 +43,3 @@ ISR(TIMER1_COMPA_vect) {
   /*Clear interrupt flag (if necessary)*/
   TIFR1 |= (1 << OCF1A);
 }
-
-/*
-TCNT0(timer/counter) og OCR0A og B(Output compare)  er 8-bit.
-
-Alle interrupts request signals er synlige i  Timer Interrupt Flag Register (TIFR0)
-og er individuelt masked med Timer Interrupt Mask Register (TIMSK0).
-
-The clock source is selected by theClock Select logic which is controlled by
-the Clock Select (CS02:0) bits located in the Timer/Counter Control Reg-ister (TCCR0B).
-
-*/

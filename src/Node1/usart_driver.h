@@ -16,5 +16,4 @@ void usart_init(unsigned int ubrr);
 */
 void string_init();
 
-
 #endif

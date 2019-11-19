@@ -12,6 +12,9 @@
 
 #include "usart_driver.h"
 
+/*-------------------------------------------------------*/
+/*Function declarations*/
+
 /*!
 *@brief Sends specified data.
 *@param[in] @c unsigned char data -> Data to send.
@@ -43,7 +46,6 @@ void usart_transmit(unsigned char data){
     while ( !( UCSR0A & (1<<UDRE0)) );
     /* Put data into buffer, sends the data */
     UDR0 = data;
-
 }
 
 unsigned char usart_receive(void){
@@ -54,7 +56,6 @@ unsigned char usart_receive(void){
 }
 
 void string_init(){
-
     usart_init ( MYUBRR );
     fdevopen(usart_transmit, usart_receive); //Make a stream between terminal and t/r functions
 }

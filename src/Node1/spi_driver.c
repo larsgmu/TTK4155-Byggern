@@ -1,10 +1,12 @@
 /*!@file
 * This file contains functions to enable SPI communication between the atmega162 and MCP2515 chip.
 */
-#define F_CPU 4915200
+#include <avr/io.h>
 
 #include "spi_driver.h"
-#include <avr/io.h>
+
+/*-------------------------------------------------------*/
+/********Function implementations*********/
 
 void spi_master_init(){
   /* Sets MCU-pins to output mode */

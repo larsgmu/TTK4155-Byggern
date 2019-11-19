@@ -31,27 +31,19 @@ typedef struct Joystick_position_struct {
 *@brief Initializes and calibrate the joystick.
 * The center of the joystick is updated.
 * Current direction and position is set to 0.
-*@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
 */
 void joystick_init();
 
 /*!
 *@brief Updates the current direction of the joystick.
-*@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
+@return @c uint8_t -> Returns the direction as an integer value correspondin to @c joystick_dir 
 */
 uint8_t joystick_get_direction();
 
 /*!
 *@brief Constructs a CAN message with data from specified joystick and sends the message.
 * X and Y position is updated from [-100,100] to [0,200].
-*@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
 */
-void send_joystick_pos();
-
-/*!
-*@brief Global function to update joystick data.
-*@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
-*/
-// Joystick joystick_run();
+void joystick_send_pos();
 
 #endif

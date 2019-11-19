@@ -17,8 +17,8 @@ CAN MESSAGE ID
 
   3 = Difficulty
     3.0 = easy
-    3.1 = medium
-    3.3 = hard
+    3.1 = hard
+    
 
 
 

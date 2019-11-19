@@ -15,13 +15,26 @@
 #include "adc_driver.h"
 #include "can_driver.h"
 
-/*This is a global variable which enables sending CAN-msg
-  with joystick position to node 2. In order to acess from other
-	files, initialize it with extern int*/
+
+/* This is a global variable which enables sending CAN-msg 
+ * with joystick position to node 2. In order to acess from other
+ * files, initialize it with extern int*/
 static uint8_t prev_joy[2] = {0,0};
+/*Global variables containing the actual center position of joystick*/
 static int8_t  neutralx;
 static int8_t  neutraly;
 
+/*-------------------------------------------------------*/
+/********Function declarations*********/
+
+/*!
+*@brief Updates current X and Y-position as integers between -100 and 100.
+*@param[out] @c Joystick_ pos -> Joystick position struct.
+*/
+Joystick_pos joystick_get_position();
+
+/*-------------------------------------------------------*/
+/********Function implementations*********/
 
 void joystick_init(){
 	uint16_t x_sum = 0;
@@ -37,25 +50,20 @@ void joystick_init(){
   neutraly = JOYSTICK_CONSTANT*(y_sum / JOYSTICK_SAMPLE_NO) - JOYSTICK_OFFSET;
 }
 
-/*!
-*@brief Updates current X and Y-position as integers between -100 and 100.
-*@param[in] @c Joystick* joy -> Pointer to game controller joystick struct.
-*/
 Joystick_pos joystick_get_position(){
 	Joystick_pos joy_pos;
-  joy_pos.x 				= (uint8_t)(JOYSTICK_CONSTANT*adc_read(X_axis) - JOYSTICK_OFFSET) ;
-  joy_pos.y 				= (uint8_t)(JOYSTICK_CONSTANT*adc_read(Y_axis) - JOYSTICK_OFFSET) ;
+  joy_pos.x 	= (uint8_t)(JOYSTICK_CONSTANT*adc_read(X_axis) - JOYSTICK_OFFSET) ;
+  joy_pos.y 	= (uint8_t)(JOYSTICK_CONSTANT*adc_read(Y_axis) - JOYSTICK_OFFSET) ;
 	return joy_pos;
 }
 
 uint8_t joystick_get_direction() {
   /*Threshold on 15 percent*/
-  uint8_t threshold = 15;
-	Joystick_pos joy_pos = joystick_get_position();
+  uint8_t 			threshold = 15;
+	Joystick_pos 	joy_pos		= joystick_get_position();
 
   /*Calculates direction based on angle*/
-  double anglerad = atan2(joy_pos.y,joy_pos.x);
-	int angle = 180 * anglerad / M_PI;
+	int angle = (int)(180 * atan2(joy_pos.y,joy_pos.x) / M_PI);
   if ((abs(joy_pos.x - neutralx) < threshold) && (abs(joy_pos.y - neutraly) < threshold))  {
 		return NEUTRAL;
 	}
@@ -66,7 +74,7 @@ uint8_t joystick_get_direction() {
 	return NEUTRAL;
 }
 
-void send_joystick_pos(){
+void joystick_send_pos(){
 	Joystick_pos joy_pos = joystick_get_position();
 	CANmsg joystick_msg;
 	joystick_msg.id 		= 1;
@@ -80,7 +88,3 @@ void send_joystick_pos(){
 	}
 }
 
-// Joystick joystick_run() {
-// 	analog_position();
-// 	analog_direction();
-// }

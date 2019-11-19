@@ -4,7 +4,6 @@
 #ifndef SPI_DRIVER_H
 #define SPI_DRIVER_H
 
-
 /*!
 *@brief Configures the atmega162 pins and enables SPI
 */

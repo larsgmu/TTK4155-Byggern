@@ -37,7 +37,7 @@ int mario_melody[] = {
   0, NOTE_E7, 0,NOTE_C7,
   NOTE_D7, NOTE_B6, 0, 0
 };
-//Mario main them tempo
+//Mario main theme tempo
 int mario_tempo[] = {
   12, 12, 12, 12,
   12, 12, 12, 12,
@@ -67,7 +67,7 @@ int mario_tempo[] = {
 
 //
 
-//Underworld melody
+//Mario Underworld melody
 int underworld_melody[] = {
   NOTE_C4, NOTE_C5, NOTE_A3, NOTE_A4,
   NOTE_AS3, NOTE_AS4, 0,
@@ -89,7 +89,7 @@ int underworld_melody[] = {
   NOTE_AS3, NOTE_A3, NOTE_GS3,
   0, 0, 0
 };
-//Underwolrd tempo
+//Mario Underwolrd tempo
 int underworld_tempo[] = {
   12, 12, 12, 12,
   12, 12, 6,
@@ -111,8 +111,7 @@ int underworld_tempo[] = {
   10, 10, 10,
   3, 3, 3
 };
-//###################################
-//###################################
+
 
 //SOVJET ANTHEM
 int sovjet_melody[] = {
@@ -146,5 +145,6 @@ int sovjet_tempo[] = {
   2, 8, 8, 8, 8, 3, 8, 2,
   4, 6, 16, 4, 4, 2, 4, 4, 1
 };
-//
+
+
 #endif

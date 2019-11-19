@@ -13,9 +13,9 @@
 #include <util/delay.h>
 /*TUNING*/
 
-#define DT 0.02  //our PID frequency (20ms rn)
+#define DT 0.03  //our PID frequency (20ms)
 
-/*PID Tuning - Normal mode*/
+/*PID Tuning - Default is NTH(Hard)*/
 double Kp = 1;
 double Kd = 1;
 double Ki = 3;
@@ -52,10 +52,11 @@ void pid_init() {
 
   /*CTC INTERRUPT ENBALE*/
   TIMSK4 |= (1 << OCIE4A);
+
 }
 
 void pid_controller() {
-    if(get_CAN_msg().id == 2) {
+    if (get_CAN_msg().id == 2) {
        ref = get_CAN_msg().data[0];
        ref = 255 - ref;
        uint16_t position   = motor_get_position();
@@ -63,13 +64,25 @@ void pid_controller() {
        integral     += (uint16_t)(error*DT);
        derivative   = error - prev_error;
        prev_error   = error;
-       u    = (int16_t) (Kp*error + Ki*integral + Kd*derivative);
+       u = (int16_t) (Kp*error + Ki*integral + Kd*derivative);
   }
   motor_run_slider(u);
 }
 
-ISR(TIMER4_COMPA_vect) {
+void pid_set_difficulty(uint8_t difficulty) {
+  if (difficulty == 1) {
+      Kp = 1;
+      Kd = 1;
+      Ki = 3;
+  }
+  else if (difficulty == 0) {
+      Kp = 0.7;
+      Kd = 2;
+      Ki = 3;
+  }
+}
 
+ISR(TIMER4_COMPA_vect) {
   pid_controller();
   TIFR4 |= (1 << OCF4A);
   TCNT4 = 0;

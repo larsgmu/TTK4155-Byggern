@@ -36,13 +36,4 @@ void can_send_msg(CANmsg* can_msg);
 */
 CANmsg get_CAN_msg();
 
-// ER DENNE BRUKT? 
-enum joystick_dir {
-  NEUTRAL = 0,
-  UP = 1,
-  DOWN = 2,
-  LEFT = 3,
-  RIGHT = 4,
-};
-
 #endif

@@ -17,4 +17,10 @@ void pid_init();
 */
 void pid_controller();
 
+/*!
+*@brief Change Difficulty of the ping pong game by altering regulator paramters
+*@param[in] @c uint8_t difficulty -> Either Dragvoll(0) or NTH(1).
+*/
+void pid_set_difficulty(uint8_t difficulty);
+
 #endif

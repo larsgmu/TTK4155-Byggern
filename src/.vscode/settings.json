@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "motor_driver.h": "c"
+        "motor_driver.h": "c",
+        "sram_driver.h": "c"
     }
 }

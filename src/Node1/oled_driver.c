@@ -33,32 +33,17 @@ void oled_write_c(uint8_t command);
 */
 void oled_write_d(uint8_t data);
 
-
-
 /*!
 *@brief Updates current state struct goes to top page and left most column.
 */
 void oled_home(void);
 
-/*!
-*@brief Updates current state and writes specified data to given adress.
-*@param[in] @c uint8_t adr -> Adress to write data to.
-*@param[in] @c uint8_t data -> Data to write to adress.
-*/
-// void oled_sram_write_d(uint8_t adr, uint8_t data);  //TROR IKKE DENNE BRUKES
 
 /*!
 *@brief Updates current state and writes a character to OLED-SRAM.
 *@param[in] @c unsigned char c -> Charachter to write to OLED-SRAM.
 */
 void oled_sram_write_char(unsigned char c);
-
-/*!
-*@brief Resets the specified page of the OLED-SRAM.
-*@param[in] @c int line -> Page to reset.
-*/
-void oled_sram_clear_line(int line);
-
 
 /*-------------------------------------------------------*/
 /*Function implementations*/
@@ -88,39 +73,36 @@ void oled_init()   {
   oled_write_c(0xa6);        // set  normal  display
   oled_write_c(0xaf);        // display  on
 
-  // /*  Want the timer to overflow every
-  //60Hz = 0.01667s= 16.67ms                // CPU = 4915200 Hz
-
   /*Ensuring clear on compare mode*/
   TCCR0 &= ~(1 << WGM00);
-  TCCR0 |= (1 << WGM01);
+  TCCR0 |=  (1 << WGM01);
 
   /*Normal compare operation*/
   TCCR0 &= ~(1 << COM00);
   TCCR0 &= ~(1 << COM01);
 
   /*Setting Prescaler to 1024*/
-  TCCR0 |= (1 << CS00);
+  TCCR0 |=  (1 << CS00);
   TCCR0 &= ~(1 << CS01);
-  TCCR0 |= (1 << CS02);
-
-  OCR0 = 160; //81;
+  TCCR0 |=  (1 << CS02);
+  /*Setting compare register and resetting counter*/
+  OCR0  = 160; 
   TCNT0 = 0;
   /*Enable interrupt on Timer Compare Match*/
-  TIMSK |= (1 << OCIE0);
+  TIMSK |=  (1 << OCIE0);
   /*Clear interrupt flag*/
-  TIFR |= (1 << OCF0);
+  TIFR  |=  (1 << OCF0);
 
-  oled_state.CHANGED = 1; //Draws main menu;
-  oled_state.LINE = 0;
-  oled_state.COL = 0;
-  oled_state.COLOR = 1;
+  oled_state.CHANGED    = 1; //Draws main menu;
+  oled_state.LINE       = 0;
+  oled_state.COL        = 0;
+  oled_state.COLOR      = 1;
   oled_state.BRIGHTNESS = 170;
 
 
 }
 
-void oled_set_brightness(){
+void oled_set_brightness() {
   oled_state.BRIGHTNESS += 85;
   if (oled_state.BRIGHTNESS == 0) {
     oled_state.BRIGHTNESS += 85;
@@ -129,7 +111,7 @@ void oled_set_brightness(){
   oled_write_c(oled_state.BRIGHTNESS);
 }
 
-void oled_flip_colors(){
+void oled_flip_colors() {
   if (oled_state.COLOR) {
     oled_write_c(0xa7);
     oled_state.COLOR = 0;
@@ -139,18 +121,15 @@ void oled_flip_colors(){
   oled_state.COLOR = 1;
 }
 
-
-
-void oled_write_c(uint8_t command){
+void oled_write_c(uint8_t command) {
   *oled_command_address = command;
 }
 
-void oled_write_d(uint8_t data){
+void oled_write_d (uint8_t data) {
   *oled_data_address = data;
 }
 
-void oled_goto_line(int line){
-
+void oled_goto_line(uint8_t line) {
     oled_state.LINE = line;
 
     oled_write_c(0x22); //Choosing page/line (synonyms)
@@ -162,8 +141,7 @@ void oled_goto_line(int line){
     oled_write_c(127);
 }
 
-void oled_goto_column(int column){
-
+void oled_goto_column(uint8_t column) {
     oled_state.COL = column;
 
     oled_write_c(0x21);
@@ -171,10 +149,9 @@ void oled_goto_column(int column){
     oled_write_c(127);
 }
 
-void oled_home(void){
-
+void oled_home(void) {
     oled_state.LINE = 0;
-    oled_state.COL = 0;
+    oled_state.COL  = 0;
 
     oled_write_c(0x22); //Choosing page/line 1
     oled_write_c(0);
@@ -185,9 +162,9 @@ void oled_home(void){
     oled_write_c(127);
 }
 
-void oled_pos(int row,int column){
+void oled_pos(uint8_t row, uint8_t column) {
     oled_state.LINE = row;
-    oled_state.COL = column;
+    oled_state.COL  = column;
 
     oled_write_c(0x22); //Choosing page/line (synonyms)
     oled_write_c(row);
@@ -198,77 +175,63 @@ void oled_pos(int row,int column){
     oled_write_c(127);
 }
 
-
-// void oled_sram_write_d(uint8_t adr, uint8_t data){
-//   oled_sram_adress[adr] = data;
-//   oled_state.CHANGED = 1;
-// }
-
-void oled_sram_write_char(unsigned char c){
+void oled_sram_write_char(unsigned char c) {
     int output = c - 32;
-    for(int i = 0; i<OLED_PAGE_HEIGHT; i++){
+    for (int i = 0; i<OLED_PAGE_HEIGHT; i++){
       oled_sram_adress[oled_state.LINE*OLED_COLS + oled_state.COL + i] = pgm_read_byte(&font8[output][i]);
     }
 }
 
-void oled_sram_write_string(char* str){
+void oled_sram_write_string(char* str) {
   int length = strlen(str);
-  for(int i = 0; i < length; i++){
+  for (int i = 0; i < length; i++){
       oled_sram_write_char(str[i]);
       oled_state.COL += OLED_PAGE_HEIGHT;
   }
 }
 
-void oled_sram_reset(void){
-    for(int row =0; row < 8; row++){
-      for(int col = 0; col < OLED_COLS; col++){
+void oled_sram_reset(void) {
+    for (int row = 0; row < 8; row++){
+      for (int col = 0; col < OLED_COLS; col++){
         oled_sram_adress[row*OLED_COLS + col] = 0x00;
       }
     }
     oled_home();
 }
 
-void oled_sram_clear_line(int line){
-  oled_goto_line(line);
-  for(int col = 0; col < OLED_COLS; col++){
-    oled_sram_adress[oled_state.LINE*OLED_COLS + col] = 0x00;
-  }
-}
-
 void oled_sram_menu(Menu* menu) {
   oled_sram_reset();
-  //oled_home();
-  if(menu->header != ""){
+  if (menu->header != ""){
     oled_sram_write_string(menu->header);
-  }else{
+  }
+  else {
     oled_sram_write_string(menu->name); //print menu name on top
   }
-  for (int i = 0; i < menu->num_sub_menu; i++ ) {
+  /*Print submenues to screen*/
+  for (int i = 0; i < menu->num_sub_menu; i++) {
     oled_goto_line(i+1);
     oled_goto_column(15);
     oled_sram_write_string(menu->sub_menu[i]->name);
   }
-  oled_state.CHANGED = 1;
+  oled_state.CHANGED = 1; // Flush SRAM at next interrupt
 }
 
-void oled_sram_arrow(uint8_t line){
+void oled_sram_arrow(uint8_t line) {
   oled_pos(line, 0);
   oled_sram_write_string("~");
-  oled_state.CHANGED = 1;
+  oled_state.CHANGED = 1; // Flush SRAM at next interrupt
 }
 
-void oled_draw(){
-  //oled_write_c(0xD3);
-  //oled_write_c(0b111111);
+void oled_draw() {
   for (int line = 0; line < OLED_PAGES; line++ ) {
-    for (int col = 0; col < OLED_COLS; col++){
+    for (int col = 0; col < OLED_COLS; col++) {
       oled_pos(line,col);
       oled_write_d(oled_sram_adress[line*OLED_COLS + col]);
     }
   }
 }
 
-ISR(TIMER0_COMP_vect){
+ISR(TIMER0_COMP_vect) {
   if (!(oled_state.CHANGED)) {
     TCNT0 = 0;
     return;

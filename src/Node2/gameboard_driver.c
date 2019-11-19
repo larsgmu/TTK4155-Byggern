@@ -1,13 +1,12 @@
 /*!@file
-* This file contains functions to play the pingpong game including the IR-sensor.
+* This file contains functions to play the pingpong game including the IR-sensor and solenoid.
 */
 #define MOTOR_ADDRESS_WRITE 0x50 // 0101 000 0
 #define COMMAND_BYTE 0x00
 #define F_CPU 16000000
 #define IR_SAMPLE_NO 4
-#define DEAD 25
+#define DEAD 20
 
-#include <stdio.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -23,6 +22,9 @@ volatile static int       playing               = 0;
 volatile static int       adc_value;
 volatile static uint16_t  ir_value;
 
+/*!
+*@brief Struct containing the current game state.
+*/
 typedef struct Game_struct {
   uint8_t right_slider_pos;
   uint8_t right_button;
@@ -70,33 +72,33 @@ void servo_joystick_control(uint8_t pos_msg){
 void ir_adc_init() {
 
   /*Enable ADC*/
-  ADCSRA |= (1 << ADEN);
-
+  ADCSRA  |=  (1 << ADEN);
   /*Set prescaler to 128*/
-  ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);
-
+  ADCSRA  |=  (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);
   /*Choose input pin*/
-  DDRF &=  ~(1 << PF0);
-
+  DDRF    &= ~(1 << PF0);
   /*Choose reference voltage*/
-  ADMUX &= ~(1 << REFS1);
-  ADMUX |= (1 << REFS0);
-
+  ADMUX   &= ~(1 << REFS1);
+  ADMUX   |=  (1 << REFS0);
   /*Enable interrupts*/
-  ADCSRA |= (1 << ADIE);
-
+  ADCSRA  |=  (1 << ADIE);
   /*Clear interrupt flag */
-  ADCSRA &= ~(1 << ADIF);
-
-
+  ADCSRA  &= ~(1 << ADIF);
 }
 
 void solenoid_init(){
   /*Set output pin to enable solenoid relay */
-  DDRB |= (1 << PB5);
-
+  DDRB  |=  (1 << PB5);
   /* "Active high"  */
   PORTB &= ~(1 << PB5);
+}
+
+void solenoid_extend(uint8_t right_button){
+  if (right_button) {
+    PORTB |= (1 << PB5);
+    _delay_ms(100);
+    PORTB &= ~(1 << PB5);
+  }
 }
 
 uint16_t ir_adc_read() {
@@ -112,23 +114,16 @@ uint16_t ir_adc_read() {
   return adc_value/IR_SAMPLE_NO;
 }
 
-void solenoid_extend(uint8_t right_button){
-  if (right_button) {
-    PORTB |= (1 << PB5);
-    _delay_ms(100);
-    PORTB &= ~(1 << PB5);
-  }
-}
 
 void play_pingpong() {
-
-  /*CTC INTERRUPT disable*/
-  TIMSK4 &= ~(1 << OCIE4A);
+  /*CTC Interrupt disable*/
+    TIMSK4 &= ~(1 << OCIE4A);
     motor_calibrate();
     _delay_ms(200);
     pid_init();
     _delay_ms(1000);
     while(1) {
+        /*Check if IR signal is cut*/
         if (ir_adc_read() < DEAD){
           TIMSK4 &= ~(1 << OCIE4A);
           int8_t message[3];
@@ -139,40 +134,34 @@ void play_pingpong() {
           _delay_ms(1000);
           break;
         }
-        /*SLIDER INPUT*/
+        /*Slider input*/
         if(get_CAN_msg().id == 2) {
           current_game.right_slider_pos = get_CAN_msg().data[0];
-          if (get_CAN_msg().data[2] && current_game.right_button == 0 ){
-             current_game.right_button = 1;
+          if (get_CAN_msg().data[2] && current_game.right_button == 0 ) {
+             current_game.right_button    = 1;
              current_game.solenoid_extend = 1;
           }
-          else if (get_CAN_msg().data[2] && current_game.right_button == 1){
-            current_game.solenoid_extend = 0;
+          else if (get_CAN_msg().data[2] && current_game.right_button == 1) {
+            current_game.solenoid_extend  = 0;
           }
-          else if (get_CAN_msg().data[2] == 0){
-            current_game.right_button = 0;
-            current_game.solenoid_extend = 0;
+          else if (get_CAN_msg().data[2] == 0) {
+            current_game.right_button     = 0;
+            current_game.solenoid_extend  = 0;
           }
         }
         /*JOYSTICK INPUT*/
         if (get_CAN_msg().id == 1) {
             current_game.servo = get_CAN_msg().data[0];
         }
-        //_delay_ms(20); //60 Hz frequency
-        //pid_controller(current_game.right_slider_pos);
         servo_joystick_control(current_game.servo);
         solenoid_extend(current_game.solenoid_extend);
     }
     /*Disable motor*/
-
-
-
     CANmsg stop_pingpong;
-    stop_pingpong.id = 0;
-    stop_pingpong.length = 1;
+    stop_pingpong.id      = 0;
+    stop_pingpong.length  = 1;
     stop_pingpong.data[0] = 0;
     can_send_msg(&stop_pingpong);
-    printf("STOP PINGPONG SENT\n\r");
     servo_joystick_control(100); //Center servo
     _delay_ms(200);
 }

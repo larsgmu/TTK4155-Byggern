@@ -12,12 +12,12 @@
 #define F_CPU 4915200
 #define ASCII_OFFSET ((volatile unsigned int) 32)
 
+#include <stdint.h>
 #include "menu.h"
 
-
-
 /*!
-*@brief Struct containing current state of OLED.
+*@brief Struct containing current state of OLED and current cursor location.
+* Also contains info wether or not the OLED display data have been changed.
 */
 struct oled_data_marker_struct
 {
@@ -27,6 +27,7 @@ struct oled_data_marker_struct
     uint8_t COLOR;
     uint8_t BRIGHTNESS;
 };
+
 /*!
 *@brief Initializes the OLED screen.
 * Configure OLED screen to horizontal addressing mode.
@@ -37,6 +38,7 @@ void oled_init();
 *@brief Changes oled screen brightness.
 */
 void oled_set_brightness();
+
 /*!
 *@brief Flips oled colors.
 */
@@ -46,20 +48,20 @@ void oled_flip_colors();
 *@brief Updates current state struct and chooses specified page.
 *@param[in] @c int line -> Page to move to.
 */
-void oled_goto_line(int line);
+void oled_goto_line(uint8_t line);
 
 /*!
 *@brief Updates current state struct and chooses specified column.
 *@param[in] @c int column -> Column to move to.
 */
-void oled_goto_column(int column);
+void oled_goto_column(uint8_t column);
 
 /*!
 *@brief Updates current state struct and goes to specified page and column.
 *@param[in] int row -> Page to go to.
 *@param[in] int Column -> Column to go to.
 */
-void oled_pos(int row,int column); //Goes to row,col
+void oled_pos(uint8_t row, uint8_t column); //Goes to row,col
 
 /*!
 *@brief Updates current state and writes a char string to OLED-SRAM.
