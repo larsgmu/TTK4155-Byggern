@@ -49,7 +49,7 @@ void can_init() {
   /* clear interrupt flag*/
   mcp2515_bit_modify(MCP_CANINTF, 0b00000011, 0);
 
-  latest_msg.id = 8;
+  latest_msg.id = 6;
   latest_msg.data[0] = 8;
 }
 

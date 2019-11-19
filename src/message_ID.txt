@@ -18,12 +18,11 @@ CAN MESSAGE ID
   3 = Difficulty
     3.0 = easy
     3.1 = hard
-    
 
+
+    6 = DUMMY
 
 
   7 = Play/Stop
     7.0 = 0 ->stop
     7.0 = 1 ->play
-
-  8 = DUMMY

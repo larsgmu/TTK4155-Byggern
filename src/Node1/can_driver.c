@@ -51,7 +51,7 @@ void can_init() {
   /*Clear interrupt flag on PD2*/
   GIFR |= (1 << INTF0);
 
-  latest_msg.id = 8;
+  latest_msg.id = 6;
   latest_msg.data[0] = 8;
 }
 
