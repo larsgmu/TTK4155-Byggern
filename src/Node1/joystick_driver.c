@@ -2,7 +2,7 @@
 * This file contains functions to use the joystick and buttons on the game controller
 */
 #define F_CPU 4915200
-#define JOYSTICK_THRESHOLD 5
+#define JOYSTICK_THRESHOLD 3
 #define JOYSTICK_CONSTANT 0.78431
 #define JOYSTICK_SAMPLE_NO 4
 #define JOYSTICK_OFFSET 100
@@ -16,7 +16,7 @@
 #include "can_driver.h"
 
 
-/* This is a global variable which enables sending CAN-msg 
+/* This is a global variable which enables sending CAN-msg
  * with joystick position to node 2. In order to acess from other
  * files, initialize it with extern int*/
 static uint8_t prev_joy[2] = {0,0};
@@ -79,12 +79,12 @@ void joystick_send_pos(){
 	CANmsg joystick_msg;
 	joystick_msg.id 		= 1;
 	joystick_msg.length	= 2;
-	if ((abs(joy_pos.x + 100 - prev_joy[0]) > JOYSTICK_THRESHOLD) || (abs(joy_pos.y + 100 - prev_joy[1]) > JOYSTICK_THRESHOLD)) {
+	if ((abs(joy_pos.x + 100 - prev_joy[0]) >= JOYSTICK_THRESHOLD) || (abs(joy_pos.y + 100 - prev_joy[1]) >= JOYSTICK_THRESHOLD)) {
 		joystick_msg.data[0] 	= (uint8_t)joy_pos.x + 100;
-		prev_joy[0] 					= (uint8_t)joy_pos.x + 100;
 		joystick_msg.data[1] 	= (uint8_t)joy_pos.y + 100;
-		prev_joy[1] 					= (uint8_t)joy_pos.y + 100;
-		can_send_msg(&joystick_msg);
+		if (can_send_msg(&joystick_msg)){
+			prev_joy[0] 					= (uint8_t)joy_pos.x + 100;
+			prev_joy[1] 					= (uint8_t)joy_pos.y + 100;
+		}
 	}
 }
-

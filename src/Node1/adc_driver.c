@@ -28,8 +28,6 @@ void adc_init(void) {
   /*Enable interrupt on PE0*/
   GICR |= (1 << INT2);
 
-
-/*Flytte disse til en annen fil kanskje?*/
   //Setup PB2 as input for right button on game controller
   DDRB &= ~(1 << PB2);
 

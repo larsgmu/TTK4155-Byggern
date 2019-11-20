@@ -85,8 +85,11 @@ void oled_init()   {
   TCCR0 |=  (1 << CS00);
   TCCR0 &= ~(1 << CS01);
   TCCR0 |=  (1 << CS02);
-  /*Setting compare register and resetting counter*/
-  OCR0  = 160; 
+
+  /*Setting frequency to 30 HZ*/
+  OCR0  = 160;
+
+  /*resetting counter*/
   TCNT0 = 0;
   /*Enable interrupt on Timer Compare Match*/
   TIMSK |=  (1 << OCIE0);

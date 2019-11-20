@@ -13,7 +13,7 @@
 #include <util/delay.h>
 /*TUNING*/
 
-#define DT 0.03  //our PID frequency (20ms)
+#define DT 0.03  //our PID frequency
 
 /*PID Tuning - Default is NTH(Hard)*/
 double Kp = 1;
@@ -43,7 +43,7 @@ void pid_init() {
   /* Sets prescalar to 1024*/
   TCCR4B |= (1 << CS42) | (1 << CS40);
 
-  /*Running with 30 Hz*/
+  /*Running with 33 Hz*/
   OCR4A = 468;
   TCNT4 = 0;
 

@@ -48,18 +48,22 @@ void main () {
   typedef enum {IDLE = 0, PINGPONG = 1}mode;
   mode MODE = IDLE;
   while (1){
+      CANmsg latest_message = get_CAN_msg();
       switch (MODE) {
         case IDLE:
-           if (get_CAN_msg().id == 0 && get_CAN_msg().data[0] == 1){
+           if (latest_message.id == 0 && latest_message.data[0] == 1){
                MODE = PINGPONG;
-
+               break;
            }
-           if (get_CAN_msg().id == 3){
-              pid_set_difficulty(get_CAN_msg().data[0]);
+           if (latest_message.id == 3){
+              pid_set_difficulty(latest_message.data[0]);
+              break;
            }
-           if (get_CAN_msg().id == 7 && get_CAN_msg().data[0] == 1){
+           if (latest_message.id == 7 && latest_message.data[0] == 1){
+              printf("Test\n\r");
               music_init();
               music_play(SOVJET);
+              break;
            }
            break;
         case PINGPONG:

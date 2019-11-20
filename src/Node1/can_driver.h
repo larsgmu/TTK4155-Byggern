@@ -29,7 +29,7 @@ void can_init();
 *@brief Function to send specified CAN message.
 *@param[in] CANmsg* can_msg -> Pointer to CAN message to send.
 */
-void can_send_msg(CANmsg* can_msg);
+uint8_t can_send_msg(CANmsg* can_msg);
 
 /*!
 *@brief Returns the latest received CAN message.

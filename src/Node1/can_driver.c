@@ -9,6 +9,7 @@
 #define CAN_SHIFT_CONSTANT 5
 
 #include <avr/interrupt.h>
+#include <avr/io.h>
 #include <stdio.h>
 #include <util/delay.h>
 
@@ -16,6 +17,7 @@
 #include "mcp2515_driver.h"
 #include "MCP2515.h"
 
+uint8_t can_send_FLAG = 0;
 static CANmsg latest_msg;
 
 /*!
@@ -42,6 +44,7 @@ void can_init() {
   /* clear interrupt flag*/
   mcp2515_bit_modify(MCP_CANINTF, 0b00000001, 0);
 
+  /****Receive-interrupt****/
   /*Set interrupt on PD2 to falling edge */
   MCUCR |= (1 << ISC01);
 
@@ -51,11 +54,39 @@ void can_init() {
   /*Clear interrupt flag on PD2*/
   GIFR |= (1 << INTF0);
 
+  /****Send-interrupt****/
+
+  /*Set CTC Mode*/
+  TCCR1B |= (1 << WGM12);
+  /*Normal operation*/
+  TCCR1A &= ~(1 << COM1A0);
+  TCCR1A &= ~(1 << COM1A1);
+
+
+  /*Set prescalar to 1024*/
+  TCCR1B |= (1 << CS10);
+  TCCR1B &= ~(1 << CS11);
+  TCCR1B |= (1 << CS12);
+
+  /*Set frequency to 10 Hz*/
+  OCR1A = 480;//240;//480;
+
+  /*Reset timer*/
+  TCNT1 = 0;
+
+  /*Enable*/
+  TIMSK |= (1 << OCIE1A);
+
+
   latest_msg.id = 6;
   latest_msg.data[0] = 8;
+  can_send_FLAG = 0;
 }
 
-void can_send_msg(CANmsg* can_msg) {
+uint8_t can_send_msg(CANmsg* can_msg) {
+  if (!can_send_FLAG) {
+    return 0;
+  }
   mcp2515_write(MCP_TXB0SIDH, 0);
   mcp2515_write(MCP_TXB0SIDL, can_msg->id << CAN_SHIFT_CONSTANT);
   mcp2515_write(MCP_TXB0DLC, can_msg->length);
@@ -65,10 +96,14 @@ void can_send_msg(CANmsg* can_msg) {
     _delay_ms(1);
   }
   mcp2515_request_send(0);
-  _delay_ms(20);
+  can_send_FLAG = 0;
+  return 1;
+  //printf("Melding sendt\n");
+  //_delay_ms(100);
 }
 
 CANmsg can_receive_msg() {
+
   CANmsg msg;
   msg.length = mcp2515_read(MCP_RXB0DLC);
   msg.id = ( (mcp2515_read(MCP_RXB0SIDH) >> 3) + (mcp2515_read(MCP_RXB0SIDL) >> CAN_SHIFT_CONSTANT) );
@@ -85,4 +120,9 @@ CANmsg get_CAN_msg(){
 
 ISR(INT0_vect){
     latest_msg = can_receive_msg();
+}
+
+ISR(TIMER1_COMPA_vect){
+  can_send_FLAG = 1;
+  TCNT1 = 0;
 }

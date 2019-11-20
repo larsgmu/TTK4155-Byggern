@@ -74,6 +74,7 @@ CANmsg can_receive_msg() {
     msg.data[i] = mcp2515_read(MCP_RXB0D0 + i);
   }
   mcp2515_bit_modify(MCP_CANINTF, 0b00000001, 0);
+  //printf("Melding mottat\n");
   return msg;
 }
 
