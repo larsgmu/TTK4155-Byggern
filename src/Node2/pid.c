@@ -77,8 +77,8 @@ void pid_set_difficulty(uint8_t difficulty) {
   }
   else if (difficulty == 0) {
       Kp = 0.7;
-      Kd = 2;
-      Ki = 3;
+      Kd = 0.5;
+      Ki = 1;
   }
 }
 

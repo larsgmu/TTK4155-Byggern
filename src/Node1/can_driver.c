@@ -98,8 +98,6 @@ uint8_t can_send_msg(CANmsg* can_msg) {
   mcp2515_request_send(0);
   can_send_FLAG = 0;
   return 1;
-  //printf("Melding sendt\n");
-  //_delay_ms(100);
 }
 
 CANmsg can_receive_msg() {

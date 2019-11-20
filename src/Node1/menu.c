@@ -1,5 +1,6 @@
 /*!@file
-* This file contains functions to create and run the OLED menu.
+* This file contains functions to create and run the OLED menu, as well as the
+* functions within the menu.
 */
 #define F_CPU 4915200
 
@@ -113,8 +114,8 @@ Menu* menu_make_sub_menu(Menu* parent_menu, char* name, char* header, char* info
   new_menu->sub_menu        = NULL;
   new_menu->fun_ptr         = function;
   new_menu->num_sub_menu    = 0;
-  //update parent menu
 
+  //update parent menu
   parent_menu->num_sub_menu += 1;
   uint8_t nsm = parent_menu->num_sub_menu;
   parent_menu->sub_menu         = realloc(parent_menu->sub_menu,sizeof(Menu*)*nsm);
@@ -140,7 +141,7 @@ void menu_run() {
       }
       break;
 
-    case LEFT:
+    case LEFT: /*Go back*/
       if (current_menu->parent_menu != NULL){
         current_menu = current_menu->parent_menu;
         current_line = 1;

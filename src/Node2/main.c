@@ -60,7 +60,6 @@ void main () {
               break;
            }
            if (latest_message.id == 7 && latest_message.data[0] == 1){
-              printf("Test\n\r");
               music_init();
               music_play(SOVJET);
               break;

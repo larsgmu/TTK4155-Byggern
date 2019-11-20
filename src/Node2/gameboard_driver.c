@@ -5,7 +5,7 @@
 #define COMMAND_BYTE 0x00
 #define F_CPU 16000000
 #define IR_SAMPLE_NO 4
-#define DEAD 20
+#define DEAD 4
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -26,10 +26,10 @@ volatile static uint16_t  ir_value;
 *@brief Struct containing the current game state.
 */
 typedef struct Game_struct {
-  uint8_t right_slider_pos;
-  uint8_t right_button;
-  uint8_t solenoid_extend;
-  uint8_t servo;
+  uint8_t right_slider_pos;     /*!Position of right slider*/
+  uint8_t right_button;         /*!1 if right button is pressed, 0 if not*/
+  uint8_t solenoid_extend;      /*!1 if solenoid is extended, 0 if not.*/
+  uint8_t servo;                /*!Direction of servo*/
 } Game;
 
 Game current_game;
@@ -59,8 +59,8 @@ void solenoid_extend(uint8_t right_button);
 
 void game_board_init(){
   current_game.right_slider_pos = 127;
-  current_game.right_button = 0;
-  current_game.servo = 100;
+  current_game.right_button     = 0;
+  current_game.servo            = 100;
 }
 
 void servo_joystick_control(uint8_t pos_msg){
@@ -88,9 +88,9 @@ void ir_adc_init() {
 
 void solenoid_init(){
   /*Set output pin to enable solenoid relay */
-  DDRB  |=  (1 << PB5);
+  DDRB  |= (1 << PB5);// (1 << PB5);
   /* "Active high"  */
-  PORTB &= ~(1 << PB5);
+  PORTB &= ~(1 << PB5);//~(1 << PB5);
 }
 
 void solenoid_extend(uint8_t right_button){
@@ -110,6 +110,7 @@ uint16_t ir_adc_read() {
     while(!ir_adc_interrupt_flag);
     ir_adc_interrupt_flag = 0;
     adc_value += ADC;
+    _delay_ms(5);
   }
   return adc_value/IR_SAMPLE_NO;
 }

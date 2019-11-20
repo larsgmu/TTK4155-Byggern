@@ -37,34 +37,25 @@ Menysystemet fungerer
   - fjernet printf flere steder fordi det fucket opp alt
   - implementert pid-regulator m/ slider . men pådragsverdiene er veldig s
 
-
-
 #15 Nov
 - SLIDER og JOYSTICK har nå uint8_t  som posisjon, bør fungere fint
 
 #########################
 
-  #TO DO
-  DONE - Solenoide extension time
-  DONE - Slider: left og right er byttet om
-  DONE - OLED: Timer update screen
-  DONE - Disable motor on reset - slik at den ikke kjører av seg selv
-  DONE - Highscore
-  DONE - Difficulty
-  DONE - Stopp musikk før spillet begynner!!!
-  DONE - Fikse Death tresh
-  DONE - Fjerne testtegn
-  Doxygen - legge til slider der det gjelder
-  SIA KABLING
+  #TODO
+   Stopp musikk før spillet begynner!!! (klarer ikke gjenskape det nå kl 22)
 
-  - Koble alle tomme pins til enten jord eller Vcc
   - Avlastningskondensatorer på alle ICs . Inkludert mini breadboard.
   - 2 spenningskilder ?
-  - egen fargekode på analoge?
 
   - Les tips på alle oppgaver.
 
-
+############################
+AFTER DELIVERY FIX
+- CAN-timer 10 Hz
+- IR ADC sampling delay and DEAD-Threshold update
+- Minor bug fixes
+- Minor comment updates
 
 
 ##########################
@@ -72,7 +63,7 @@ Menysystemet fungerer
 - SRAM Dual buffering med interrupts. Oled laster kun inn når noe har endret seg.
 - Styrer med slider og joystick samtidig
 - Joystick auto-kalibrering med digitalt filter
-- Interrupts med ADC - (Node1)
+- Interrupts med ADC - (Node1 og Node2)
 - PID: Interrupts med fast frekvens, Node2
 
 - Highscore lagres i EEPROM

@@ -28,6 +28,7 @@ void can_init();
 /*!
 *@brief Function to send specified CAN message.
 *@param[in] CANmsg* can_msg -> Pointer to CAN message to send.
+*@return @x uint8_t -> Return 1 on success, 0 on failure.
 */
 uint8_t can_send_msg(CANmsg* can_msg);
 
