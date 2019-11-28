@@ -4,4 +4,7 @@ This term project aims for creating a computer controlled electromechanical ping
 
 To create doxygen documentation enter "doxygen Doxyfile"
 
+
+By Lars Musæus, Knut Vågnes Eriksen and Jakob Eide Grepperud.
+
 ![Alt text](img/result.png?raw=true "Final result")
